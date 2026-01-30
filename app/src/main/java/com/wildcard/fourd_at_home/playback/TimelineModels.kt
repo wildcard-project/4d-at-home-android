@@ -50,27 +50,32 @@ enum class EffectType {
 /**
  * 振動モード（JSON_SPECIFICATION.md準拠）
  */
-enum class VibrationMode(val jsonMode: String, val target: MotorTarget, val intensity: Int) {
+enum class VibrationMode(
+    val jsonMode: String,
+    val target: MotorTarget,
+    val intensity: Int,
+    val esp32Command: String  // ESP32が期待するコマンド名
+) {
     // 上（背中）のみ - Motor1
-    UP_WEAK("up_weak", MotorTarget.MOTOR_1, 64),
-    UP_MID_WEAK("up_mid_weak", MotorTarget.MOTOR_1, 128),
-    UP_MID_STRONG("up_mid_strong", MotorTarget.MOTOR_1, 192),
-    UP_STRONG("up_strong", MotorTarget.MOTOR_1, 255),
+    UP_WEAK("up_weak", MotorTarget.MOTOR_1, 64, "WEAK"),
+    UP_MID_WEAK("up_mid_weak", MotorTarget.MOTOR_1, 128, "MEDIUM_WEAK"),
+    UP_MID_STRONG("up_mid_strong", MotorTarget.MOTOR_1, 192, "MEDIUM_STRONG"),
+    UP_STRONG("up_strong", MotorTarget.MOTOR_1, 255, "STRONG"),
     
     // 下（お尻）のみ - Motor2
-    DOWN_WEAK("down_weak", MotorTarget.MOTOR_2, 64),
-    DOWN_MID_WEAK("down_mid_weak", MotorTarget.MOTOR_2, 128),
-    DOWN_MID_STRONG("down_mid_strong", MotorTarget.MOTOR_2, 192),
-    DOWN_STRONG("down_strong", MotorTarget.MOTOR_2, 255),
+    DOWN_WEAK("down_weak", MotorTarget.MOTOR_2, 64, "WEAK"),
+    DOWN_MID_WEAK("down_mid_weak", MotorTarget.MOTOR_2, 128, "MEDIUM_WEAK"),
+    DOWN_MID_STRONG("down_mid_strong", MotorTarget.MOTOR_2, 192, "MEDIUM_STRONG"),
+    DOWN_STRONG("down_strong", MotorTarget.MOTOR_2, 255, "STRONG"),
     
     // 上下同時 - 両方
-    UP_DOWN_WEAK("up_down_weak", MotorTarget.BOTH, 64),
-    UP_DOWN_MID_WEAK("up_down_mid_weak", MotorTarget.BOTH, 128),
-    UP_DOWN_MID_STRONG("up_down_mid_strong", MotorTarget.BOTH, 192),
-    UP_DOWN_STRONG("up_down_strong", MotorTarget.BOTH, 255),
+    UP_DOWN_WEAK("up_down_weak", MotorTarget.BOTH, 64, "WEAK"),
+    UP_DOWN_MID_WEAK("up_down_mid_weak", MotorTarget.BOTH, 128, "MEDIUM_WEAK"),
+    UP_DOWN_MID_STRONG("up_down_mid_strong", MotorTarget.BOTH, 192, "MEDIUM_STRONG"),
+    UP_DOWN_STRONG("up_down_strong", MotorTarget.BOTH, 255, "STRONG"),
     
     // 特殊
-    HEARTBEAT("heartbeat", MotorTarget.BOTH, 200);
+    HEARTBEAT("heartbeat", MotorTarget.BOTH, 200, "HEARTBEAT");
     
     companion object {
         fun fromJsonMode(mode: String): VibrationMode? = 

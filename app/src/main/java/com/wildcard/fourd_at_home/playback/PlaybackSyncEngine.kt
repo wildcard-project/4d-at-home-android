@@ -259,16 +259,18 @@ class PlaybackSyncEngine @Inject constructor(
             
             EffectType.VIBRATION -> {
                 VibrationMode.fromJsonMode(mode)?.let { vibMode ->
+                    // ESP32が理解できるコマンド名（WEAK, MEDIUM_WEAK等）に変換
+                    val command = vibMode.esp32Command
                     when (vibMode.target) {
                         MotorTarget.MOTOR_1 -> {
-                            commandSender.sendMotor1StringCommand(vibMode.name)
+                            commandSender.sendMotor1StringCommand(command)
                         }
                         MotorTarget.MOTOR_2 -> {
-                            commandSender.sendMotor2StringCommand(vibMode.name)
+                            commandSender.sendMotor2StringCommand(command)
                         }
                         MotorTarget.BOTH -> {
-                            commandSender.sendMotor1StringCommand(vibMode.name)
-                            commandSender.sendMotor2StringCommand(vibMode.name)
+                            commandSender.sendMotor1StringCommand(command)
+                            commandSender.sendMotor2StringCommand(command)
                         }
                     }
                 }

@@ -12,6 +12,8 @@ import com.wildcard.fourd_at_home.ble.BleConnection
 import com.wildcard.fourd_at_home.ble.BleDeviceManager
 import com.wildcard.fourd_at_home.ble.ConnectionState
 import com.wildcard.fourd_at_home.ble.DeviceType
+import com.wildcard.fourd_at_home.domain.Content
+import com.wildcard.fourd_at_home.domain.ContentLibrary
 import com.wildcard.fourd_at_home.playback.PlaybackSyncEngine
 import com.wildcard.fourd_at_home.playback.PlaybackSyncState
 import com.wildcard.fourd_at_home.playback.TimelineFile
@@ -33,6 +35,10 @@ import javax.inject.Inject
  * 再生画面のUI状態
  */
 data class PlaybackUiState(
+    // コンテンツ状態
+    val availableContents: List<Content> = ContentLibrary.contents,
+    val selectedContent: Content? = null,
+    
     // ビデオ状態
     val videoUri: Uri? = null,
     val videoTitle: String = "",
@@ -54,7 +60,7 @@ data class PlaybackUiState(
     
     // その他
     val error: String? = null,
-    val showFileSelector: Boolean = false
+    val showContentSelector: Boolean = true
 )
 
 /**
@@ -85,22 +91,33 @@ class PlaybackViewModel @Inject constructor(
 
     private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
+            Log.d(TAG, "Playback state changed: $playbackState")
             when (playbackState) {
+                Player.STATE_IDLE -> {
+                    Log.d(TAG, "Player STATE_IDLE")
+                }
+                Player.STATE_BUFFERING -> {
+                    Log.d(TAG, "Player STATE_BUFFERING")
+                }
                 Player.STATE_READY -> {
+                    Log.d(TAG, "Player STATE_READY")
                     exoPlayer?.let { player ->
                         _uiState.value = _uiState.value.copy(
                             isVideoLoaded = true,
                             duration = player.duration
                         )
+                        Log.d(TAG, "Video loaded, duration: ${player.duration}ms")
                     }
                 }
                 Player.STATE_ENDED -> {
+                    Log.d(TAG, "Player STATE_ENDED")
                     onPlaybackEnded()
                 }
             }
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
+            Log.d(TAG, "IsPlaying changed: $isPlaying")
             _uiState.value = _uiState.value.copy(isPlaying = isPlaying)
             
             if (isPlaying) {
@@ -110,6 +127,13 @@ class PlaybackViewModel @Inject constructor(
                 syncEngine.pause()
                 stopPositionUpdates()
             }
+        }
+        
+        override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
+            Log.e(TAG, "Player error: ${error.message}", error)
+            _uiState.value = _uiState.value.copy(
+                error = "再生エラー: ${error.message}"
+            )
         }
     }
 
@@ -202,6 +226,70 @@ class PlaybackViewModel @Inject constructor(
     fun loadSampleTimeline() {
         val sampleTimeline = timelineParser.createSampleTimeline()
         syncEngine.loadTimeline(sampleTimeline)
+    }
+
+    /**
+     * 内蔵コンテンツを読み込む
+     */
+    fun loadContent(content: Content) {
+        Log.d(TAG, "内蔵コンテンツ読み込み: ${content.title}")
+        
+        viewModelScope.launch {
+            try {
+                // 動画を読み込み (ExoPlayerのassets用URIスキーム)
+                val videoUri = Uri.parse("file:///android_asset/${content.videoAssetPath}")
+                Log.d(TAG, "Video URI: $videoUri")
+                
+                exoPlayer?.let { player ->
+                    val mediaItem = MediaItem.fromUri(videoUri)
+                    player.setMediaItem(mediaItem)
+                    player.prepare()
+                }
+                
+                // UIを即座に更新（動画読み込み開始）
+                _uiState.value = _uiState.value.copy(
+                    selectedContent = content,
+                    videoUri = videoUri,
+                    videoTitle = content.title,
+                    showContentSelector = false,
+                    error = null
+                )
+                
+                // タイムラインを読み込み
+                val result = timelineParser.parseFromAssets(content.timelineAssetPath)
+                result.fold(
+                    onSuccess = { timeline ->
+                        syncEngine.loadTimeline(timeline)
+                        Log.d(TAG, "タイムライン読み込み完了: ${timeline.events.size}イベント")
+                    },
+                    onFailure = { error ->
+                        Log.e(TAG, "タイムライン読み込み失敗", error)
+                        _uiState.value = _uiState.value.copy(
+                            error = "タイムライン読み込み失敗: ${error.message}"
+                        )
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "コンテンツ読み込み失敗", e)
+                _uiState.value = _uiState.value.copy(
+                    error = "コンテンツ読み込み失敗: ${e.message}"
+                )
+            }
+        }
+    }
+
+    /**
+     * コンテンツ選択画面を表示
+     */
+    fun showContentSelector() {
+        _uiState.value = _uiState.value.copy(showContentSelector = true)
+    }
+
+    /**
+     * コンテンツ選択画面を非表示
+     */
+    fun hideContentSelector() {
+        _uiState.value = _uiState.value.copy(showContentSelector = false)
     }
 
     /**
@@ -309,20 +397,6 @@ class PlaybackViewModel @Inject constructor(
     private fun stopPositionUpdates() {
         positionUpdateJob?.cancel()
         positionUpdateJob = null
-    }
-
-    /**
-     * ファイル選択ダイアログを表示
-     */
-    fun showFileSelector() {
-        _uiState.value = _uiState.value.copy(showFileSelector = true)
-    }
-
-    /**
-     * ファイル選択ダイアログを非表示
-     */
-    fun hideFileSelector() {
-        _uiState.value = _uiState.value.copy(showFileSelector = false)
     }
 
     /**
