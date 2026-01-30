@@ -1,18 +1,149 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# =============================================================================
+# 4D at Home Android Project - .gitignore
+# =============================================================================
+
+# =============================================================================
+# [1] 秘密情報・認証情報（最重要 - 絶対にコミットしない）
+# =============================================================================
+# 環境変数
+.env
+.env.local
+.env.*
+!.env.example
+
+# Firebase / GCP 認証情報
+google-services.json
+*serviceAccount*.json
+credentials.*
+secrets.*
+
+# 署名鍵・キーストア
+*.jks
+*.keystore
+signing.properties
+keystore.properties
+
+# Google Play Store アップロードキー
+play-store-keys/
+
+# ローカル設定（SDKパスなど）
 local.properties
 
+# =============================================================================
+# [2] Android / Gradle ビルド成果物
+# =============================================================================
+# Gradle
+.gradle/
+build/
+app/build/
+!gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android Studio 生成ファイル
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+
+# ネイティブビルド
+.externalNativeBuild/
+.cxx/
+
+# キャプチャ・プロファイル
+captures/
+*.hprof
+
+# =============================================================================
+# [3] IDE 設定（Android Studio / IntelliJ）
+# =============================================================================
+*.iml
+.idea/caches/
+.idea/libraries/
+.idea/shelf/
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/.name
+.idea/dictionaries/
+.idea/httpRequests/
+.idea/deploymentTargetSelector.xml
+.idea/deviceManager.xml
+.idea/migrations.xml
+
+# チーム共有すべきIDEファイルは除外しない:
+# - .idea/gradle.xml
+# - .idea/runConfigurations/
+# - .idea/inspectionProfiles/
+# - .idea/codeStyles/
+# - .idea/compiler.xml
+# - .idea/misc.xml
+# - .idea/vcs.xml
+
+# =============================================================================
+# [4] Kotlin
+# =============================================================================
+.kotlin/
+
+# =============================================================================
+# [5] OS 生成ファイル
+# =============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# =============================================================================
+# [6] ESP32 / PlatformIO（共通設定）
+# =============================================================================
+# 各サブプロジェクトにも個別.gitignoreあり
+esp32/**/.pio/
+esp32/**/.vscode/.browse.c_cpp.db*
+esp32/**/.vscode/c_cpp_properties.json
+esp32/**/.vscode/launch.json
+esp32/**/.vscode/ipch/
+
+# =============================================================================
+# [7] プロジェクト固有の除外
+# =============================================================================
 # 動画ファイル（著作権の問題があるため除外）
 app/src/main/assets/videos/
+
+# テスト結果・レポート（CIで生成）
+app/build/reports/
+app/build/test-results/
+
+# =============================================================================
+# [8] その他の一時ファイル・ログ
+# =============================================================================
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.orig
+
+# Coverage
+coverage/
+*.lcov
+
+# =============================================================================
+# [9] エディタ設定
+# =============================================================================
+# VSCode（チーム設定は残す場合はコメントアウト）
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
