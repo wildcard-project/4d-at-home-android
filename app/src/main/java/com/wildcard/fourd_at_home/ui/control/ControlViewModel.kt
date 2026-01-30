@@ -91,13 +91,13 @@ class ControlViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(
             effectState = _uiState.value.effectState.copy(fanIntensity = intensity)
         )
-        sendFanCommand(intensity)
+        sendFanCommand(intensity > 0)
     }
 
-    private fun sendFanCommand(intensity: Int) {
+    private fun sendFanCommand(on: Boolean) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendFanCommand(intensity)
+            val result = commandSender.sendFanCommand(on)
             handleResult(result)
         }
     }
@@ -108,13 +108,16 @@ class ControlViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(
             effectState = _uiState.value.effectState.copy(waterIntensity = intensity)
         )
-        sendWaterCommand(intensity)
+        // 水噴射はワンショット
+        if (intensity > 0) {
+            sendSplashCommand()
+        }
     }
 
-    private fun sendWaterCommand(intensity: Int) {
+    private fun sendSplashCommand() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendWaterCommand(intensity)
+            val result = commandSender.sendSplashCommand()
             handleResult(result)
         }
     }

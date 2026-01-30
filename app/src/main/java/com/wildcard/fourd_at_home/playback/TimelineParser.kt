@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * タイムラインパーサー
+ * タイムラインパーサー（JSON_SPECIFICATION.md準拠）
  * JSONファイルを読み込み、タイムラインデータに変換
  */
 @Singleton
@@ -65,7 +65,7 @@ class TimelineParser @Inject constructor(
     }
 
     /**
-     * JSON文字列からタイムラインをパース
+     * JSON文字列からタイムラインをパース（JSON_SPECIFICATION.md準拠）
      */
     fun parseFromString(jsonString: String): Result<TimelineFile> {
         return try {
@@ -73,12 +73,10 @@ class TimelineParser @Inject constructor(
             
             // イベントを時間順にソート
             val sortedTimeline = timeline.copy(
-                events = timeline.events.sortedBy { it.time }
+                events = timeline.events.sortedBy { it.t }
             )
             
-            Log.d(TAG, "タイムライン読み込み完了: ${sortedTimeline.title}, " +
-                    "${sortedTimeline.events.size}イベント, " +
-                    "${sortedTimeline.duration}ms")
+            Log.d(TAG, "タイムライン読み込み完了: ${sortedTimeline.events.size}イベント")
             
             Result.success(sortedTimeline)
         } catch (e: Exception) {
@@ -88,7 +86,7 @@ class TimelineParser @Inject constructor(
     }
 
     /**
-     * タイムラインを検証
+     * タイムラインを検証（JSON_SPECIFICATION.md準拠）
      */
     fun validate(timeline: TimelineFile): List<String> {
         val errors = mutableListOf<String>()
@@ -97,22 +95,39 @@ class TimelineParser @Inject constructor(
             errors.add("イベントがありません")
         }
         
+        var lastTime = -1.0
         timeline.events.forEachIndexed { index, event ->
-            if (event.time < 0) {
-                errors.add("イベント$index: 時間が負の値です")
+            // 時刻チェック
+            if (event.t < 0) {
+                errors.add("イベント$index: 時刻が負の値です")
             }
+            if (event.t < lastTime) {
+                errors.add("イベント$index: 時刻が順序通りでありません（警告）")
+            }
+            lastTime = event.t
             
-            when (event.type) {
-                EventType.FAN, EventType.WATER, EventType.MIST, EventType.VIBRATION -> {
-                    if (event.params.intensity !in 0..255) {
-                        errors.add("イベント$index: intensity は 0-255 の範囲で指定してください")
+            // アクションに応じた検証
+            when (event.action) {
+                EventAction.CAPTION -> {
+                    if (event.text.isNullOrBlank()) {
+                        errors.add("イベント$index: captionにtextがありません")
                     }
                 }
-                EventType.LED -> {
-                    if (event.params.r !in 0..255 ||
-                        event.params.g !in 0..255 ||
-                        event.params.b !in 0..255) {
-                        errors.add("イベント$index: RGB値は 0-255 の範囲で指定してください")
+                EventAction.START, EventAction.STOP, EventAction.SHOT -> {
+                    if (event.effect == null) {
+                        errors.add("イベント$index: effectが指定されていません")
+                    }
+                    if (event.mode == null) {
+                        errors.add("イベント$index: modeが指定されていません")
+                    }
+                    
+                    // effect/modeの組み合わせ検証
+                    event.effect?.let { effect ->
+                        event.mode?.let { mode ->
+                            if (!isValidEffectMode(effect, mode)) {
+                                errors.add("イベント$index: 未知のeffect/mode組み合わせ: $effect/$mode")
+                            }
+                        }
                     }
                 }
             }
@@ -122,68 +137,42 @@ class TimelineParser @Inject constructor(
     }
 
     /**
-     * サンプルタイムラインを生成
+     * 有効なeffect/mode組み合わせかチェック
+     */
+    private fun isValidEffectMode(effect: EffectType, mode: String): Boolean {
+        return when (effect) {
+            EffectType.VIBRATION -> VibrationMode.fromJsonMode(mode) != null
+            EffectType.FLASH -> FlashMode.fromJsonMode(mode) != null
+            EffectType.COLOR -> ColorMode.fromJsonMode(mode) != null
+            EffectType.WATER, EffectType.WIND, EffectType.MIST -> mode == "burst"
+        }
+    }
+
+    /**
+     * タイムラインから最大時刻を取得（ミリ秒）
+     */
+    fun getMaxDuration(timeline: TimelineFile): Long {
+        return timeline.events.maxOfOrNull { (it.t * 1000).toLong() } ?: 0L
+    }
+
+    /**
+     * サンプルタイムラインを生成（JSON_SPECIFICATION.md準拠）
      */
     fun createSampleTimeline(): TimelineFile {
         return TimelineFile(
-            version = "1.0",
-            title = "サンプルタイムライン",
-            duration = 30000,  // 30秒
             events = listOf(
-                // 0秒: LED緑点灯
-                TimelineEventData(
-                    time = 0,
-                    type = EventType.LED,
-                    params = EventParams(r = 0, g = 255, b = 0, brightness = 200)
-                ),
-                // 2秒: ファン開始
-                TimelineEventData(
-                    time = 2000,
-                    type = EventType.FAN,
-                    params = EventParams(intensity = 128)
-                ),
-                // 5秒: 振動開始
-                TimelineEventData(
-                    time = 5000,
-                    type = EventType.VIBRATION,
-                    params = EventParams(intensity = 180, motor = 0)
-                ),
-                // 8秒: 水噴射
-                TimelineEventData(
-                    time = 8000,
-                    type = EventType.WATER,
-                    params = EventParams(intensity = 200, duration = 500)
-                ),
-                // 10秒: LED赤に変更
-                TimelineEventData(
-                    time = 10000,
-                    type = EventType.LED,
-                    params = EventParams(r = 255, g = 0, b = 0, brightness = 255)
-                ),
-                // 15秒: ミスト開始
-                TimelineEventData(
-                    time = 15000,
-                    type = EventType.MIST,
-                    params = EventParams(intensity = 150)
-                ),
-                // 20秒: ファン最大
-                TimelineEventData(
-                    time = 20000,
-                    type = EventType.FAN,
-                    params = EventParams(intensity = 255)
-                ),
-                // 25秒: 振動停止
-                TimelineEventData(
-                    time = 25000,
-                    type = EventType.VIBRATION,
-                    params = EventParams(intensity = 0)
-                ),
-                // 28秒: 全停止
-                TimelineEventData(
-                    time = 28000,
-                    type = EventType.ALL_OFF,
-                    params = EventParams()
-                )
+                TimelineEventData(t = 0.0, action = EventAction.CAPTION, text = "サンプル開始"),
+                TimelineEventData(t = 0.0, action = EventAction.START, effect = EffectType.COLOR, mode = "green"),
+                TimelineEventData(t = 2.0, action = EventAction.START, effect = EffectType.WIND, mode = "burst"),
+                TimelineEventData(t = 5.0, action = EventAction.START, effect = EffectType.VIBRATION, mode = "up_down_mid_strong"),
+                TimelineEventData(t = 8.0, action = EventAction.SHOT, effect = EffectType.WATER, mode = "burst"),
+                TimelineEventData(t = 10.0, action = EventAction.STOP, effect = EffectType.COLOR, mode = "green"),
+                TimelineEventData(t = 10.0, action = EventAction.START, effect = EffectType.COLOR, mode = "red"),
+                TimelineEventData(t = 15.0, action = EventAction.SHOT, effect = EffectType.MIST, mode = "burst"),
+                TimelineEventData(t = 20.0, action = EventAction.STOP, effect = EffectType.WIND, mode = "burst"),
+                TimelineEventData(t = 25.0, action = EventAction.STOP, effect = EffectType.VIBRATION, mode = "up_down_mid_strong"),
+                TimelineEventData(t = 28.0, action = EventAction.STOP, effect = EffectType.COLOR, mode = "red"),
+                TimelineEventData(t = 28.0, action = EventAction.CAPTION, text = "サンプル終了")
             )
         )
     }
