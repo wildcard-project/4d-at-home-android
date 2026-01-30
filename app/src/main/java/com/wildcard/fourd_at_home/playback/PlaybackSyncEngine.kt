@@ -154,6 +154,14 @@ class PlaybackSyncEngine @Inject constructor(
 
     /**
      * 指定位置でのイベント処理
+     * 
+     * 同じ時刻のイベントは以下の順序で処理する:
+     * 1. STOP - まず停止処理を行う
+     * 2. CAPTION - キャプション更新
+     * 3. START/SHOT - エフェクト開始
+     * 
+     * さらに、同じエフェクトのSTOP→STARTがある場合は最適化し、
+     * STOPを送らずに直接新しいモードでSTARTを送る（BLE通信の効率化）
      */
     private fun processEventsAtPosition(positionMs: Long) {
         val eventsToExecute = scheduledEvents.filter { scheduled ->
@@ -164,15 +172,80 @@ class PlaybackSyncEngine @Inject constructor(
         if (eventsToExecute.isEmpty()) return
         
         scope.launch {
-            eventsToExecute.forEach { scheduled ->
-                scheduled.executed = true
-                executeEvent(scheduled.event)
+            // 同じ時刻のイベントをグループ化
+            val eventsByTime = eventsToExecute.groupBy { it.timestampMs }
+            
+            eventsByTime.keys.sorted().forEach { timestamp ->
+                val eventsAtTime = eventsByTime[timestamp] ?: return@forEach
+                
+                // イベントをアクション順にソート (STOP -> CAPTION -> START -> SHOT)
+                val sortedEvents = eventsAtTime.sortedWith(
+                    compareBy { scheduled ->
+                        when (scheduled.event.action) {
+                            EventAction.STOP -> 0
+                            EventAction.CAPTION -> 1
+                            EventAction.START -> 2
+                            EventAction.SHOT -> 3
+                        }
+                    }
+                )
+                
+                // 同じエフェクトのSTOP→START最適化を検出
+                val optimizedEvents = optimizeStopStartEvents(sortedEvents)
+                
+                optimizedEvents.forEach { (scheduled, skipStop) ->
+                    scheduled.executed = true
+                    if (!skipStop) {
+                        executeEvent(scheduled.event)
+                    } else {
+                        Log.d(TAG, "STOP最適化によりスキップ: ${scheduled.event.effect} @ ${scheduled.event.t}s")
+                    }
+                }
             }
             
             _state.value = _state.value.copy(
                 currentEventIndex = scheduledEvents.count { it.executed }
             )
         }
+    }
+    
+    /**
+     * 同じ時刻で同じエフェクトのSTOP→STARTがある場合、STOPをスキップする最適化
+     * これによりBLE通信回数を減らし、デバイス側でのタイミング問題を回避する
+     * 
+     * @return Pair<ScheduledEvent, Boolean> - Boolean=trueの場合はスキップ（実行しない）
+     */
+    private fun optimizeStopStartEvents(
+        sortedEvents: List<ScheduledEvent>
+    ): List<Pair<ScheduledEvent, Boolean>> {
+        val result = mutableListOf<Pair<ScheduledEvent, Boolean>>()
+        
+        // STOPイベントを抽出
+        val stopEvents = sortedEvents.filter { it.event.action == EventAction.STOP }
+        // STARTイベントを抽出
+        val startEvents = sortedEvents.filter { it.event.action == EventAction.START }
+        
+        // 同じエフェクトタイプのSTOP→STARTペアを検出
+        val stopsToSkip = mutableSetOf<ScheduledEvent>()
+        
+        stopEvents.forEach { stopEvent ->
+            val matchingStart = startEvents.find { startEvent ->
+                startEvent.event.effect == stopEvent.event.effect
+            }
+            if (matchingStart != null) {
+                // 同じエフェクトのSTOP→STARTがあるので、STOPはスキップ
+                stopsToSkip.add(stopEvent)
+                Log.d(TAG, "STOP→START最適化: ${stopEvent.event.effect} " +
+                    "mode ${stopEvent.event.mode} → ${matchingStart.event.mode}")
+            }
+        }
+        
+        sortedEvents.forEach { scheduled ->
+            val skipThis = stopsToSkip.contains(scheduled)
+            result.add(scheduled to skipThis)
+        }
+        
+        return result
     }
 
     /**
@@ -348,6 +421,8 @@ class PlaybackSyncEngine @Inject constructor(
 
     /**
      * 指定位置でのエフェクト状態を復元
+     * 
+     * 同じ時刻のイベントはSTOP→STARTの順序で処理する
      */
     private fun restoreStateAtPosition(positionMs: Long) {
         scope.launch {
@@ -358,37 +433,55 @@ class PlaybackSyncEngine @Inject constructor(
             // 現在位置までのstart/stop/shotイベントを再生
             val eventsUpToNow = scheduledEvents
                 .filter { it.timestampMs <= positionMs }
-                .sortedBy { it.timestampMs }
+            
+            // 同じ時刻のイベントをグループ化し、時刻順に処理
+            val eventsByTime = eventsUpToNow.groupBy { it.timestampMs }
             
             // アクティブなエフェクトを計算
             val currentActiveEffects = mutableMapOf<String, TimelineEventData>()
             
-            eventsUpToNow.forEach { scheduled ->
-                val event = scheduled.event
-                when (event.action) {
-                    EventAction.START -> {
-                        event.effect?.let { effect ->
-                            event.mode?.let { mode ->
-                                currentActiveEffects["${effect.name}:$mode"] = event
+            eventsByTime.keys.sorted().forEach { timestamp ->
+                val eventsAtTime = eventsByTime[timestamp] ?: return@forEach
+                
+                // 同じ時刻内でSTOP→STARTの順序で処理
+                val sortedEvents = eventsAtTime.sortedWith(
+                    compareBy { scheduled ->
+                        when (scheduled.event.action) {
+                            EventAction.STOP -> 0
+                            EventAction.CAPTION -> 1
+                            EventAction.START -> 2
+                            EventAction.SHOT -> 3
+                        }
+                    }
+                )
+                
+                sortedEvents.forEach { scheduled ->
+                    val event = scheduled.event
+                    when (event.action) {
+                        EventAction.START -> {
+                            event.effect?.let { effect ->
+                                event.mode?.let { mode ->
+                                    currentActiveEffects["${effect.name}:$mode"] = event
+                                }
                             }
                         }
-                    }
-                    EventAction.STOP -> {
-                        event.effect?.let { effect ->
-                            event.mode?.let { mode ->
-                                currentActiveEffects.remove("${effect.name}:$mode")
+                        EventAction.STOP -> {
+                            event.effect?.let { effect ->
+                                event.mode?.let { mode ->
+                                    currentActiveEffects.remove("${effect.name}:$mode")
+                                }
                             }
                         }
-                    }
-                    EventAction.CAPTION -> {
-                        event.text?.let { text ->
-                            _currentCaption.value = CurrentCaption(
-                                text = text,
-                                timestamp = (event.t * 1000).toLong()
-                            )
+                        EventAction.CAPTION -> {
+                            event.text?.let { text ->
+                                _currentCaption.value = CurrentCaption(
+                                    text = text,
+                                    timestamp = (event.t * 1000).toLong()
+                                )
+                            }
                         }
+                        else -> {}
                     }
-                    else -> {}
                 }
             }
             

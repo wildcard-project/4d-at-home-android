@@ -66,12 +66,16 @@ class TimelineParser @Inject constructor(
 
     /**
      * JSON文字列からタイムラインをパース（JSON_SPECIFICATION.md準拠）
+     * 
+     * 注意: 同じ時刻のイベントはJSONファイル内の出現順序を維持する（安定ソート）
+     * これにより、同じ秒数でstop→startの順序が正しく処理される
      */
     fun parseFromString(jsonString: String): Result<TimelineFile> {
         return try {
             val timeline = json.decodeFromString<TimelineFile>(jsonString)
             
-            // イベントを時間順にソート
+            // イベントを時間順にソート（安定ソート - 同じ時刻は元の順序を維持）
+            // KotlinのsortedByは安定ソートなので、同じ時刻のイベントはJSON内の出現順序を維持
             val sortedTimeline = timeline.copy(
                 events = timeline.events.sortedBy { it.t }
             )
