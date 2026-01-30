@@ -1,0 +1,270 @@
+{
+  "version": "1.0",
+  "title": "4DX デモタイムライン",
+  "duration": 60000,
+  "events": [
+    {
+      "time": 0,
+      "type": "led",
+      "params": {
+        "r": 0,
+        "g": 0,
+        "b": 255,
+        "brightness": 100
+      }
+    },
+    {
+      "time": 1000,
+      "type": "led",
+      "params": {
+        "r": 0,
+        "g": 100,
+        "b": 255,
+        "brightness": 150
+      }
+    },
+    {
+      "time": 2000,
+      "type": "fan",
+      "params": {
+        "intensity": 80
+      }
+    },
+    {
+      "time": 3000,
+      "type": "led",
+      "params": {
+        "r": 0,
+        "g": 200,
+        "b": 255,
+        "brightness": 200
+      }
+    },
+    {
+      "time": 5000,
+      "type": "fan",
+      "params": {
+        "intensity": 150
+      }
+    },
+    {
+      "time": 6000,
+      "type": "vibration",
+      "params": {
+        "intensity": 100,
+        "motor": 1
+      }
+    },
+    {
+      "time": 7000,
+      "type": "vibration",
+      "params": {
+        "intensity": 100,
+        "motor": 2
+      }
+    },
+    {
+      "time": 8000,
+      "type": "vibration",
+      "params": {
+        "intensity": 150,
+        "motor": 0
+      }
+    },
+    {
+      "time": 10000,
+      "type": "led",
+      "params": {
+        "r": 255,
+        "g": 100,
+        "b": 0,
+        "brightness": 255
+      }
+    },
+    {
+      "time": 10500,
+      "type": "water",
+      "params": {
+        "intensity": 200,
+        "duration": 300
+      }
+    },
+    {
+      "time": 12000,
+      "type": "fan",
+      "params": {
+        "intensity": 255
+      }
+    },
+    {
+      "time": 13000,
+      "type": "vibration",
+      "params": {
+        "intensity": 200,
+        "motor": 0
+      }
+    },
+    {
+      "time": 15000,
+      "type": "led",
+      "params": {
+        "r": 255,
+        "g": 0,
+        "b": 0,
+        "brightness": 255
+      }
+    },
+    {
+      "time": 17000,
+      "type": "mist",
+      "params": {
+        "intensity": 150
+      }
+    },
+    {
+      "time": 20000,
+      "type": "led",
+      "params": {
+        "r": 200,
+        "g": 0,
+        "b": 200,
+        "brightness": 200
+      }
+    },
+    {
+      "time": 22000,
+      "type": "vibration",
+      "params": {
+        "intensity": 255,
+        "motor": 0
+      }
+    },
+    {
+      "time": 24000,
+      "type": "water",
+      "params": {
+        "intensity": 255,
+        "duration": 500
+      }
+    },
+    {
+      "time": 26000,
+      "type": "led",
+      "params": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "brightness": 180
+      }
+    },
+    {
+      "time": 28000,
+      "type": "fan",
+      "params": {
+        "intensity": 180
+      }
+    },
+    {
+      "time": 30000,
+      "type": "mist",
+      "params": {
+        "intensity": 200
+      }
+    },
+    {
+      "time": 32000,
+      "type": "vibration",
+      "params": {
+        "intensity": 180,
+        "motor": 1
+      }
+    },
+    {
+      "time": 33000,
+      "type": "vibration",
+      "params": {
+        "intensity": 180,
+        "motor": 2
+      }
+    },
+    {
+      "time": 35000,
+      "type": "led",
+      "params": {
+        "r": 255,
+        "g": 200,
+        "b": 100,
+        "brightness": 220
+      }
+    },
+    {
+      "time": 38000,
+      "type": "fan",
+      "params": {
+        "intensity": 100
+      }
+    },
+    {
+      "time": 40000,
+      "type": "vibration",
+      "params": {
+        "intensity": 100,
+        "motor": 0
+      }
+    },
+    {
+      "time": 42000,
+      "type": "mist",
+      "params": {
+        "intensity": 100
+      }
+    },
+    {
+      "time": 45000,
+      "type": "led",
+      "params": {
+        "r": 100,
+        "g": 150,
+        "b": 255,
+        "brightness": 150
+      }
+    },
+    {
+      "time": 48000,
+      "type": "fan",
+      "params": {
+        "intensity": 50
+      }
+    },
+    {
+      "time": 50000,
+      "type": "vibration",
+      "params": {
+        "intensity": 50,
+        "motor": 0
+      }
+    },
+    {
+      "time": 52000,
+      "type": "mist",
+      "params": {
+        "intensity": 50
+      }
+    },
+    {
+      "time": 55000,
+      "type": "led",
+      "params": {
+        "r": 50,
+        "g": 50,
+        "b": 100,
+        "brightness": 80
+      }
+    },
+    {
+      "time": 58000,
+      "type": "all_off",
+      "params": {}
+    }
+  ]
+}
