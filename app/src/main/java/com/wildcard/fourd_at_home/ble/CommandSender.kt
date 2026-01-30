@@ -5,8 +5,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * コマンド送信ユーティリティ
- * 各エフェクトデバイスへのコマンド送信を抽象化
+ * コマンド送信ユーティリティ（JSON_SPECIFICATION.md準拠）
+ * 各エフェクトデバイスへの文字列ベースコマンド送信
+ * 
+ * コマンド形式:
+ * - EffectStation: "FAN,0/1", "LED,colorId,brightness,effect,transition", "SPLASH", "MIST,0/1/2"
+ * - ActionDrive: "MOTOR,mode_name" (up_weak, down_strong, etc.)
  */
 @Singleton
 class CommandSender @Inject constructor(
@@ -14,103 +18,168 @@ class CommandSender @Inject constructor(
 ) {
     companion object {
         private const val TAG = "CommandSender"
-
-        // === EffectStation コマンド ===
-        // コマンド形式: [CMD_TYPE, VALUE, ...]
-        const val CMD_FAN = 0x01.toByte()
-        const val CMD_WATER = 0x02.toByte()
-        const val CMD_MIST = 0x03.toByte()
-        const val CMD_LED = 0x04.toByte()
-        const val CMD_ALL_OFF = 0xFF.toByte()
-
-        // === ActionDrive コマンド ===
-        const val CMD_VIBRATION = 0x10.toByte()
     }
 
     // ===============================
-    // EffectStation コマンド
+    // EffectStation コマンド（文字列ベース）
     // ===============================
 
     /**
      * ファンを制御
-     * @param intensity 0-255 (0=OFF, 255=MAX)
+     * @param on true=ON, false=OFF
      */
-    suspend fun sendFanCommand(intensity: Int): Result<Unit> {
-        return sendToEffectStation(byteArrayOf(CMD_FAN, intensity.coerceIn(0, 255).toByte()))
+    suspend fun sendFanCommand(on: Boolean): Result<Unit> {
+        val command = "FAN,${if (on) 1 else 0}"
+        return sendStringToEffectStation(command)
     }
 
     /**
-     * 水噴射を制御
-     * @param intensity 0-255 (0=OFF, 255=MAX)
+     * 水噴射（ワンショット）
      */
-    suspend fun sendWaterCommand(intensity: Int): Result<Unit> {
-        return sendToEffectStation(byteArrayOf(CMD_WATER, intensity.coerceIn(0, 255).toByte()))
+    suspend fun sendSplashCommand(): Result<Unit> {
+        return sendStringToEffectStation("SPLASH")
     }
 
     /**
      * ミストを制御
-     * @param intensity 0-255 (0=OFF, 255=MAX)
+     * @param mode 0=OFF, 1=一瞬(shot), 2=継続(start)
      */
-    suspend fun sendMistCommand(intensity: Int): Result<Unit> {
-        return sendToEffectStation(byteArrayOf(CMD_MIST, intensity.coerceIn(0, 255).toByte()))
+    suspend fun sendMistCommand(mode: Int): Result<Unit> {
+        val command = "MIST,${mode.coerceIn(0, 2)}"
+        return sendStringToEffectStation(command)
     }
 
     /**
-     * LEDを制御
-     * @param r Red 0-255
-     * @param g Green 0-255
-     * @param b Blue 0-255
-     * @param brightness 明るさ 0-255
+     * LEDを色IDで制御（JSON_SPECIFICATION.md準拠）
+     * @param colorId 0-11 (0=PINK, 1=RED, ..., 10=WHITE, 11=OFF)
+     * @param brightness 0-2 (0=弱, 1=中, 2=強)
+     * @param effect 0=点灯, 1=ゆっくり点滅, 2=速い点滅
+     * @param transition 0=即時, 1=フェード
+     */
+    suspend fun sendLedColorCommand(
+        colorId: Int, 
+        brightness: Int = 2, 
+        effect: Int = 0, 
+        transition: Int = 0
+    ): Result<Unit> {
+        val command = "LED,${colorId.coerceIn(0, 11)},${brightness.coerceIn(0, 2)},${effect.coerceIn(0, 2)},${transition.coerceIn(0, 1)}"
+        return sendStringToEffectStation(command)
+    }
+
+    /**
+     * LEDをRGB値で制御（互換性のため維持）
+     * 内部でcolorIdにマッピング
      */
     suspend fun sendLedCommand(r: Int, g: Int, b: Int, brightness: Int = 255): Result<Unit> {
-        return sendToEffectStation(
-            byteArrayOf(
-                CMD_LED,
-                r.coerceIn(0, 255).toByte(),
-                g.coerceIn(0, 255).toByte(),
-                b.coerceIn(0, 255).toByte(),
-                brightness.coerceIn(0, 255).toByte()
-            )
-        )
+        // RGBを最も近い色IDにマッピング
+        val colorId = mapRgbToColorId(r, g, b)
+        val brightnessLevel = when {
+            brightness <= 85 -> 0   // 弱
+            brightness <= 170 -> 1  // 中
+            else -> 2               // 強
+        }
+        return sendLedColorCommand(colorId, brightnessLevel, 0, 0)
+    }
+
+    /**
+     * RGBを色IDにマッピング
+     */
+    private fun mapRgbToColorId(r: Int, g: Int, b: Int): Int {
+        // 消灯チェック
+        if (r == 0 && g == 0 && b == 0) return 11  // OFF
+        
+        // 簡易マッピング（最も近い色を選択）
+        return when {
+            r > 200 && g < 100 && b < 100 -> 1    // RED
+            r > 200 && g > 100 && b < 100 -> 3    // ORANGE
+            r > 200 && g > 200 && b < 100 -> 4    // YELLOW
+            r < 100 && g > 200 && b < 100 -> 5    // GREEN
+            r < 100 && g < 100 && b > 200 -> 7    // BLUE
+            r > 150 && g < 100 && b > 150 -> 9    // PURPLE
+            r > 200 && g > 200 && b > 200 -> 10   // WHITE
+            r > 200 && g < 150 && b > 150 -> 0    // PINK
+            r < 100 && g > 150 && b > 200 -> 6    // CYAN
+            r < 50 && g > 50 && b > 100 -> 8      // INDIGO
+            r > 150 && g > 200 && b < 50 -> 2     // LIME
+            else -> 10  // デフォルトはWHITE
+        }
     }
 
     /**
      * EffectStationの全エフェクトをOFF
      */
     suspend fun sendEffectStationAllOff(): Result<Unit> {
-        return sendToEffectStation(byteArrayOf(CMD_ALL_OFF))
+        val results = mutableListOf<Result<Unit>>()
+        results.add(sendFanCommand(false))
+        results.add(sendMistCommand(0))
+        results.add(sendLedColorCommand(11, 0, 0, 0))  // LED OFF
+        
+        return if (results.all { it.isSuccess }) {
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception("EffectStation全停止の一部が失敗しました"))
+        }
     }
 
     /**
-     * EffectStationにコマンドを送信
+     * EffectStationに文字列コマンドを送信
      */
-    private suspend fun sendToEffectStation(command: ByteArray): Result<Unit> {
+    private suspend fun sendStringToEffectStation(command: String): Result<Unit> {
         val device = deviceManager.getDeviceByType(DeviceType.EFFECT_STATION)
         if (device == null) {
             Log.w(TAG, "EffectStationが接続されていません")
             return Result.failure(Exception("EffectStationが接続されていません"))
         }
-        return deviceManager.sendCommand(device.address, command)
+        Log.d(TAG, "EffectStation送信: $command")
+        return deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
     }
 
     // ===============================
-    // ActionDrive コマンド
+    // ActionDrive コマンド（文字列ベース）
     // ===============================
 
     /**
-     * Motor1(振動1)を制御
+     * Motor1に振動モードを送信
+     * @param mode VibrationModeの名前（up_weak, down_strong, heartbeat等）
+     */
+    suspend fun sendMotor1StringCommand(mode: String): Result<Unit> {
+        val command = "MOTOR,$mode"
+        return sendStringToActionDrive1(command)
+    }
+
+    /**
+     * Motor2に振動モードを送信
+     */
+    suspend fun sendMotor2StringCommand(mode: String): Result<Unit> {
+        val command = "MOTOR,$mode"
+        return sendStringToActionDrive2(command)
+    }
+
+    /**
+     * Motor1(振動1)を制御（互換性のため維持）
      * @param intensity 0-255 (0=OFF, 255=MAX)
      */
     suspend fun sendMotor1Command(intensity: Int): Result<Unit> {
-        return sendToActionDrive1(byteArrayOf(CMD_VIBRATION, intensity.coerceIn(0, 255).toByte()))
+        val mode = when {
+            intensity == 0 -> "OFF"
+            intensity < 85 -> "up_weak"
+            intensity < 170 -> "up"
+            else -> "up_strong"
+        }
+        return sendMotor1StringCommand(mode)
     }
 
     /**
-     * Motor2(振動2)を制御
-     * @param intensity 0-255 (0=OFF, 255=MAX)
+     * Motor2(振動2)を制御（互換性のため維持）
      */
     suspend fun sendMotor2Command(intensity: Int): Result<Unit> {
-        return sendToActionDrive2(byteArrayOf(CMD_VIBRATION, intensity.coerceIn(0, 255).toByte()))
+        val mode = when {
+            intensity == 0 -> "OFF"
+            intensity < 85 -> "down_weak"
+            intensity < 170 -> "down"
+            else -> "down_strong"
+        }
+        return sendMotor2StringCommand(mode)
     }
 
     /**
@@ -131,31 +200,40 @@ class CommandSender @Inject constructor(
      * 全モーターをOFF
      */
     suspend fun sendAllMotorsOff(): Result<Unit> {
-        return sendBothMotorsCommand(0)
+        val result1 = sendMotor1StringCommand("OFF")
+        val result2 = sendMotor2StringCommand("OFF")
+        
+        return if (result1.isSuccess && result2.isSuccess) {
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception("モーター停止に一部失敗しました"))
+        }
     }
 
     /**
-     * ActionDrive Motor1にコマンドを送信
+     * ActionDrive Motor1に文字列コマンドを送信
      */
-    private suspend fun sendToActionDrive1(command: ByteArray): Result<Unit> {
+    private suspend fun sendStringToActionDrive1(command: String): Result<Unit> {
         val device = deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_1)
         if (device == null) {
             Log.w(TAG, "ActionDrive Motor1が接続されていません")
             return Result.failure(Exception("ActionDrive Motor1が接続されていません"))
         }
-        return deviceManager.sendCommand(device.address, command)
+        Log.d(TAG, "ActionDrive1送信: $command")
+        return deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
     }
 
     /**
-     * ActionDrive Motor2にコマンドを送信
+     * ActionDrive Motor2に文字列コマンドを送信
      */
-    private suspend fun sendToActionDrive2(command: ByteArray): Result<Unit> {
+    private suspend fun sendStringToActionDrive2(command: String): Result<Unit> {
         val device = deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_2)
         if (device == null) {
             Log.w(TAG, "ActionDrive Motor2が接続されていません")
             return Result.failure(Exception("ActionDrive Motor2が接続されていません"))
         }
-        return deviceManager.sendCommand(device.address, command)
+        Log.d(TAG, "ActionDrive2送信: $command")
+        return deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
     }
 
     // ===============================
@@ -188,64 +266,4 @@ class CommandSender @Inject constructor(
             Result.failure(Exception("一部のデバイスでエフェクト停止に失敗しました"))
         }
     }
-
-    /**
-     * タイムラインイベントを送信
-     * JSONタイムラインからのイベントを各デバイスに送信
-     */
-    suspend fun sendTimelineEvent(event: TimelineEvent): Result<Unit> {
-        return when (event) {
-            is TimelineEvent.Fan -> sendFanCommand(event.intensity)
-            is TimelineEvent.Water -> sendWaterCommand(event.intensity)
-            is TimelineEvent.Mist -> sendMistCommand(event.intensity)
-            is TimelineEvent.Led -> sendLedCommand(event.r, event.g, event.b, event.brightness)
-            is TimelineEvent.Vibration -> when (event.motor) {
-                1 -> sendMotor1Command(event.intensity)
-                2 -> sendMotor2Command(event.intensity)
-                else -> sendBothMotorsCommand(event.intensity)
-            }
-            is TimelineEvent.AllOff -> sendAllDevicesOff()
-        }
-    }
-}
-
-/**
- * タイムラインイベント
- * JSONタイムラインから解析されるイベント
- */
-sealed class TimelineEvent {
-    abstract val timestampMs: Long
-
-    data class Fan(
-        override val timestampMs: Long,
-        val intensity: Int
-    ) : TimelineEvent()
-
-    data class Water(
-        override val timestampMs: Long,
-        val intensity: Int
-    ) : TimelineEvent()
-
-    data class Mist(
-        override val timestampMs: Long,
-        val intensity: Int
-    ) : TimelineEvent()
-
-    data class Led(
-        override val timestampMs: Long,
-        val r: Int,
-        val g: Int,
-        val b: Int,
-        val brightness: Int = 255
-    ) : TimelineEvent()
-
-    data class Vibration(
-        override val timestampMs: Long,
-        val intensity: Int,
-        val motor: Int = 0  // 0=both, 1=motor1, 2=motor2
-    ) : TimelineEvent()
-
-    data class AllOff(
-        override val timestampMs: Long
-    ) : TimelineEvent()
 }

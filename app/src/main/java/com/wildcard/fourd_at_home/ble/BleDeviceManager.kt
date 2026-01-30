@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothProfile
+import android.bluetooth.BluetoothStatusCodes
 import android.content.Context
 import android.os.Build
 import android.util.Log
@@ -366,7 +367,7 @@ class BleDeviceManager @Inject constructor(
                     characteristic,
                     value,
                     BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
-                ) == BluetoothGatt.GATT_SUCCESS
+                ) == BluetoothStatusCodes.SUCCESS
             } else {
                 @Suppress("DEPRECATION")
                 characteristic.value = value

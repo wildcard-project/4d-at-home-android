@@ -4,55 +4,124 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * タイムラインファイルのルートモデル
+ * タイムラインファイルのルートモデル（JSON_SPECIFICATION.md準拠）
  */
 @Serializable
 data class TimelineFile(
-    val version: String = "1.0",
-    val title: String = "",
-    val duration: Long = 0,  // ミリ秒
     val events: List<TimelineEventData> = emptyList()
 )
 
 /**
- * タイムラインイベントデータ（JSON用）
+ * タイムラインイベントデータ（JSON_SPECIFICATION.md準拠）
  */
 @Serializable
 data class TimelineEventData(
-    val time: Long,  // ミリ秒
-    val type: String,
-    val params: EventParams = EventParams()
+    val t: Double,                                    // 時刻（秒）
+    val action: EventAction,                          // start/stop/shot/caption
+    val effect: EffectType? = null,                   // 効果タイプ
+    val mode: String? = null,                         // モード
+    val text: String? = null                          // キャプション用
 )
 
 /**
- * イベントパラメータ
+ * アクションタイプ（JSON_SPECIFICATION.md準拠）
  */
 @Serializable
-data class EventParams(
-    // 共通
-    val intensity: Int = 0,
-    val duration: Long = 0,
-    
-    // LED用
-    val r: Int = 0,
-    val g: Int = 0,
-    val b: Int = 0,
-    val brightness: Int = 255,
-    
-    // 振動用
-    val motor: Int = 0  // 0=both, 1=motor1, 2=motor2
-)
+enum class EventAction {
+    @SerialName("start") START,
+    @SerialName("stop") STOP,
+    @SerialName("shot") SHOT,
+    @SerialName("caption") CAPTION
+}
 
 /**
- * イベントタイプ定義
+ * 効果タイプ（JSON_SPECIFICATION.md準拠）
  */
-object EventType {
-    const val FAN = "fan"
-    const val WATER = "water"
-    const val MIST = "mist"
-    const val LED = "led"
-    const val VIBRATION = "vibration"
-    const val ALL_OFF = "all_off"
+@Serializable
+enum class EffectType {
+    @SerialName("vibration") VIBRATION,
+    @SerialName("flash") FLASH,
+    @SerialName("color") COLOR,
+    @SerialName("water") WATER,
+    @SerialName("wind") WIND,
+    @SerialName("mist") MIST
+}
+
+/**
+ * 振動モード（JSON_SPECIFICATION.md準拠）
+ */
+enum class VibrationMode(val jsonMode: String, val target: MotorTarget, val intensity: Int) {
+    // 上（背中）のみ - Motor1
+    UP_WEAK("up_weak", MotorTarget.MOTOR_1, 64),
+    UP_MID_WEAK("up_mid_weak", MotorTarget.MOTOR_1, 128),
+    UP_MID_STRONG("up_mid_strong", MotorTarget.MOTOR_1, 192),
+    UP_STRONG("up_strong", MotorTarget.MOTOR_1, 255),
+    
+    // 下（お尻）のみ - Motor2
+    DOWN_WEAK("down_weak", MotorTarget.MOTOR_2, 64),
+    DOWN_MID_WEAK("down_mid_weak", MotorTarget.MOTOR_2, 128),
+    DOWN_MID_STRONG("down_mid_strong", MotorTarget.MOTOR_2, 192),
+    DOWN_STRONG("down_strong", MotorTarget.MOTOR_2, 255),
+    
+    // 上下同時 - 両方
+    UP_DOWN_WEAK("up_down_weak", MotorTarget.BOTH, 64),
+    UP_DOWN_MID_WEAK("up_down_mid_weak", MotorTarget.BOTH, 128),
+    UP_DOWN_MID_STRONG("up_down_mid_strong", MotorTarget.BOTH, 192),
+    UP_DOWN_STRONG("up_down_strong", MotorTarget.BOTH, 255),
+    
+    // 特殊
+    HEARTBEAT("heartbeat", MotorTarget.BOTH, 200);
+    
+    companion object {
+        fun fromJsonMode(mode: String): VibrationMode? = 
+            entries.find { it.jsonMode == mode }
+    }
+}
+
+/**
+ * フラッシュモード（JSON_SPECIFICATION.md準拠）
+ */
+enum class FlashMode(val jsonMode: String, val ledEffect: Int) {
+    STEADY("steady", 0),        // 点灯
+    SLOW_BLINK("slow_blink", 1), // 遅い点滅
+    FAST_BLINK("fast_blink", 3); // 速い点滅
+    
+    companion object {
+        fun fromJsonMode(mode: String): FlashMode? = 
+            entries.find { it.jsonMode == mode }
+    }
+}
+
+/**
+ * カラーモード（JSON_SPECIFICATION.md準拠）
+ */
+enum class ColorMode(val jsonMode: String, val ledColorId: Int, val r: Int, val g: Int, val b: Int) {
+    PINK("pink", 0, 255, 20, 100),
+    RED("red", 1, 255, 0, 0),
+    ORANGE("orange", 2, 255, 100, 0),
+    YELLOW("yellow", 3, 255, 255, 0),
+    YELLOW_GREEN("yellow_green", 4, 150, 255, 0),
+    GREEN("green", 5, 0, 255, 0),
+    DARK_GREEN("dark_green", 6, 0, 100, 0),
+    CYAN("cyan", 7, 0, 255, 255),
+    BLUE("blue", 8, 0, 0, 255),
+    PURPLE("purple", 9, 150, 0, 255),
+    WHITE("white", 10, 255, 255, 255),
+    OFF("off", 11, 0, 0, 0);
+    
+    companion object {
+        fun fromJsonMode(mode: String): ColorMode? = 
+            entries.find { it.jsonMode == mode }
+    }
+}
+
+/**
+ * モーター対象
+ */
+enum class MotorTarget {
+    MOTOR_1,    // 背中 (up)
+    MOTOR_2,    // お尻 (down)
+    BOTH        // 両方 (up_down)
 }
 
 /**
@@ -73,4 +142,12 @@ data class TimelineState(
     val totalDuration: Long = 0,
     val totalEvents: Int = 0,
     val currentEventIndex: Int = 0
+)
+
+/**
+ * 現在のキャプション
+ */
+data class CurrentCaption(
+    val text: String = "",
+    val timestamp: Long = 0
 )

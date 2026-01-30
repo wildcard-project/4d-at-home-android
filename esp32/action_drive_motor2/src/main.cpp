@@ -1,8 +1,14 @@
 /**
  * 4D@HOME ActionDrive Motor2 ESP32 ファームウェア
+ * JSON_SPECIFICATION.md準拠の文字列コマンド対応
  * 
  * BLE経由でコマンドを受信し、振動モーターを制御
  * Motor2: 座席右側/後方振動用
+ * 
+ * コマンド形式: "MOTOR,mode_name"
+ * mode: up_weak, up, up_strong, down_weak, down, down_strong,
+ *       left_weak, left, left_strong, right_weak, right, right_strong,
+ *       heartbeat, OFF
  */
 
 #include <Arduino.h>
@@ -25,9 +31,14 @@
 #define COMMAND_CHAR_UUID   "4D580002-0000-1000-8000-00805F9B34FB"
 #define STATUS_CHAR_UUID    "4D580003-0000-1000-8000-00805F9B34FB"
 
-// === コマンド定義 ===
-#define CMD_VIBRATION 0x10
-#define CMD_STOP      0x00
+// === 振動モード定義（JSON_SPECIFICATION.md準拠）===
+// Motor2は下方向と右方向を担当
+struct VibrationPattern {
+    uint8_t intensity;      // PWM強度 (0-255)
+    uint16_t onTime;        // ON時間 (ms)
+    uint16_t offTime;       // OFF時間 (ms)
+    bool continuous;        // 連続振動か
+};
 
 // === グローバル変数 ===
 BLEServer* pServer = nullptr;
@@ -36,7 +47,14 @@ BLECharacteristic* pStatusChar = nullptr;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
+String currentMode = "OFF";
 uint8_t currentIntensity = 0;
+
+// パターン再生用
+VibrationPattern currentPattern = {0, 0, 0, false};
+bool patternActive = false;
+unsigned long patternStartTime = 0;
+bool patternPhase = true;  // true=ON, false=OFF
 
 // デバイス名生成
 String getDeviceName() {
@@ -55,49 +73,127 @@ void setMotor(uint8_t intensity) {
     
     // 状態LED
     digitalWrite(PIN_LED, intensity > 0 ? HIGH : LOW);
-    
-    Serial.printf("Motor2: %d\n", intensity);
 }
 
 void stopMotor() {
+    patternActive = false;
+    currentMode = "OFF";
     setMotor(0);
     Serial.println("Motor2 stopped");
+}
+
+// 振動パターンを開始
+void startPattern(VibrationPattern pattern, const String& modeName) {
+    currentMode = modeName;
+    currentPattern = pattern;
+    
+    if (pattern.continuous) {
+        // 連続振動
+        patternActive = false;
+        setMotor(pattern.intensity);
+    } else {
+        // パターン振動
+        patternActive = true;
+        patternPhase = true;
+        patternStartTime = millis();
+        setMotor(pattern.intensity);
+    }
+    
+    Serial.printf("Motor2 pattern: %s, intensity=%d\n", modeName.c_str(), pattern.intensity);
 }
 
 // ステータス送信
 void sendStatus() {
     if (deviceConnected && pStatusChar != nullptr) {
-        uint8_t status[2] = {
+        uint8_t status[4] = {
             0x02,  // Motor2識別子
-            currentIntensity
+            currentIntensity,
+            patternActive ? 1 : 0,
+            0x00
         };
-        pStatusChar->setValue(status, 2);
+        pStatusChar->setValue(status, 4);
         pStatusChar->notify();
     }
 }
 
-// === コマンド処理 ===
+// === 文字列コマンド処理（JSON_SPECIFICATION.md準拠）===
 
-void processCommand(const uint8_t* data, size_t length) {
-    if (length < 1) return;
+void processStringCommand(const String& cmd) {
+    Serial.printf("Motor2 received: %s\n", cmd.c_str());
     
-    uint8_t cmd = data[0];
+    // コマンドをカンマで分割
+    int comma = cmd.indexOf(',');
+    String cmdType = (comma > 0) ? cmd.substring(0, comma) : cmd;
+    String mode = (comma > 0) ? cmd.substring(comma + 1) : "";
+    cmdType.trim();
+    cmdType.toUpperCase();
+    mode.trim();
+    mode.toLowerCase();
     
-    switch (cmd) {
-        case CMD_VIBRATION:
-            if (length >= 2) {
-                setMotor(data[1]);
-            }
-            break;
-            
-        case CMD_STOP:
+    if (cmdType == "MOTOR" || cmdType == "VIB" || cmdType == "VIBRATION") {
+        // モード名から振動パターンを決定
+        VibrationPattern pattern;
+        
+        if (mode == "off" || mode == "") {
             stopMotor();
-            break;
-            
-        default:
-            // 直接強度値として解釈
-            setMotor(cmd);
-            break;
+            return;
+        }
+        // 下方向 (Motor2が担当)
+        else if (mode == "down_weak") {
+            pattern = {64, 0, 0, true};  // 弱い連続振動
+        }
+        else if (mode == "down") {
+            pattern = {150, 0, 0, true};  // 中程度の連続振動
+        }
+        else if (mode == "down_strong") {
+            pattern = {255, 0, 0, true};  // 強い連続振動
+        }
+        // 上方向 (Motor2も対応可能、バックアップ)
+        else if (mode == "up_weak") {
+            pattern = {48, 0, 0, true};
+        }
+        else if (mode == "up") {
+            pattern = {120, 0, 0, true};
+        }
+        else if (mode == "up_strong") {
+            pattern = {200, 0, 0, true};
+        }
+        // 右方向 (Motor2が担当)
+        else if (mode == "right_weak") {
+            pattern = {64, 300, 200, false};  // パターン振動
+        }
+        else if (mode == "right") {
+            pattern = {150, 300, 200, false};
+        }
+        else if (mode == "right_strong") {
+            pattern = {255, 300, 200, false};
+        }
+        // 左方向 (Motor2バックアップ)
+        else if (mode == "left_weak") {
+            pattern = {64, 300, 200, false};
+        }
+        else if (mode == "left") {
+            pattern = {150, 300, 200, false};
+        }
+        else if (mode == "left_strong") {
+            pattern = {255, 300, 200, false};
+        }
+        // 特殊パターン
+        else if (mode == "heartbeat") {
+            pattern = {200, 150, 100, false};  // ドクドク
+        }
+        else {
+            Serial.printf("Unknown mode: %s\n", mode.c_str());
+            return;
+        }
+        
+        startPattern(pattern, mode);
+    }
+    else if (cmdType == "OFF" || cmdType == "STOP") {
+        stopMotor();
+    }
+    else {
+        Serial.printf("Unknown command: %s\n", cmdType.c_str());
     }
     
     sendStatus();
@@ -132,13 +228,10 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* pCharacteristic) {
         String value = pCharacteristic->getValue();
         if (value.length() > 0) {
-            Serial.printf("Received: ");
-            for (int i = 0; i < value.length(); i++) {
-                Serial.printf("%02X ", (uint8_t)value[i]);
-            }
-            Serial.println();
+            Serial.printf("Received: %s\n", value.c_str());
             
-            processCommand((const uint8_t*)value.c_str(), value.length());
+            // 文字列コマンドとして処理
+            processStringCommand(value);
         }
     }
 };
@@ -148,6 +241,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
 void setup() {
     Serial.begin(115200);
     Serial.println("4D@HOME ActionDrive Motor2 starting...");
+    Serial.println("JSON_SPECIFICATION.md compliant (String commands)");
     
     // GPIO設定
     pinMode(PIN_LED, OUTPUT);
@@ -214,6 +308,27 @@ void setup() {
 // === メインループ ===
 
 void loop() {
+    // パターン振動の処理
+    if (patternActive) {
+        unsigned long elapsed = millis() - patternStartTime;
+        
+        if (patternPhase) {
+            // ON期間
+            if (elapsed >= currentPattern.onTime) {
+                patternPhase = false;
+                patternStartTime = millis();
+                setMotor(0);
+            }
+        } else {
+            // OFF期間
+            if (elapsed >= currentPattern.offTime) {
+                patternPhase = true;
+                patternStartTime = millis();
+                setMotor(currentPattern.intensity);
+            }
+        }
+    }
+    
     // 再接続処理
     if (!deviceConnected && oldDeviceConnected) {
         delay(500);

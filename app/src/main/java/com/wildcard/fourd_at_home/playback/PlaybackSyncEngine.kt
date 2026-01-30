@@ -2,22 +2,19 @@ package com.wildcard.fourd_at_home.playback
 
 import android.util.Log
 import com.wildcard.fourd_at_home.ble.CommandSender
-import com.wildcard.fourd_at_home.ble.TimelineEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * 再生同期エンジン
+ * 再生同期エンジン（JSON_SPECIFICATION.md準拠）
  * 動画再生位置に同期してエフェクトを発火
  */
 @Singleton
@@ -26,7 +23,6 @@ class PlaybackSyncEngine @Inject constructor(
 ) {
     companion object {
         private const val TAG = "PlaybackSyncEngine"
-        private const val SYNC_INTERVAL_MS = 16L  // ~60fps
         private const val LOOKAHEAD_MS = 50L      // 先読み時間
     }
 
@@ -36,29 +32,40 @@ class PlaybackSyncEngine @Inject constructor(
     private var timeline: TimelineFile? = null
     private var scheduledEvents: MutableList<ScheduledEvent> = mutableListOf()
     
+    // 現在アクティブなエフェクト状態を追跡
+    private val activeEffects = mutableMapOf<String, TimelineEventData>()
+    
     private val _state = MutableStateFlow(PlaybackSyncState())
     val state: StateFlow<PlaybackSyncState> = _state.asStateFlow()
 
     private val _currentPositionMs = MutableStateFlow(0L)
     val currentPositionMs: StateFlow<Long> = _currentPositionMs.asStateFlow()
+    
+    private val _currentCaption = MutableStateFlow(CurrentCaption())
+    val currentCaption: StateFlow<CurrentCaption> = _currentCaption.asStateFlow()
 
     /**
-     * タイムラインを読み込む
+     * タイムラインを読み込む（JSON_SPECIFICATION.md準拠）
      */
     fun loadTimeline(timelineFile: TimelineFile) {
-        Log.d(TAG, "タイムライン読み込み: ${timelineFile.title}")
+        Log.d(TAG, "タイムライン読み込み: ${timelineFile.events.size}イベント")
         
         timeline = timelineFile
+        // 秒をミリ秒に変換してスケジュール
         scheduledEvents = timelineFile.events.map { 
-            ScheduledEvent(it.time, it) 
+            ScheduledEvent((it.t * 1000).toLong(), it) 
         }.toMutableList()
+        
+        val maxDuration = scheduledEvents.maxOfOrNull { it.timestampMs } ?: 0L
         
         _state.value = PlaybackSyncState(
             isLoaded = true,
-            title = timelineFile.title,
-            totalDuration = timelineFile.duration,
+            title = "",
+            totalDuration = maxDuration,
             totalEvents = timelineFile.events.size
         )
+        
+        activeEffects.clear()
     }
 
     /**
@@ -80,6 +87,11 @@ class PlaybackSyncEngine @Inject constructor(
     fun pause() {
         Log.d(TAG, "同期再生一時停止")
         _state.value = _state.value.copy(isPlaying = false)
+        
+        // 一時停止時に全エフェクト停止
+        scope.launch {
+            commandSender.sendAllDevicesOff()
+        }
     }
 
     /**
@@ -98,7 +110,9 @@ class PlaybackSyncEngine @Inject constructor(
         
         // 状態リセット
         resetEvents()
+        activeEffects.clear()
         _currentPositionMs.value = 0
+        _currentCaption.value = CurrentCaption()
         _state.value = _state.value.copy(
             isPlaying = false,
             currentEventIndex = 0
@@ -162,52 +176,171 @@ class PlaybackSyncEngine @Inject constructor(
     }
 
     /**
-     * イベントを実行
+     * イベントを実行（JSON_SPECIFICATION.md準拠）
      */
     private suspend fun executeEvent(eventData: TimelineEventData) {
-        Log.d(TAG, "イベント実行: ${eventData.type} @ ${eventData.time}ms")
+        Log.d(TAG, "イベント実行: ${eventData.action} ${eventData.effect ?: ""} @ ${eventData.t}s")
         
-        val event = convertToTimelineEvent(eventData)
-        val result = commandSender.sendTimelineEvent(event)
-        
-        if (result.isFailure) {
-            Log.e(TAG, "イベント実行失敗: ${result.exceptionOrNull()?.message}")
+        when (eventData.action) {
+            EventAction.CAPTION -> {
+                eventData.text?.let { text ->
+                    _currentCaption.value = CurrentCaption(
+                        text = text,
+                        timestamp = (eventData.t * 1000).toLong()
+                    )
+                }
+            }
+            
+            EventAction.START -> {
+                eventData.effect?.let { effect ->
+                    eventData.mode?.let { mode ->
+                        val key = "${effect.name}:$mode"
+                        activeEffects[key] = eventData
+                        executeEffectStart(effect, mode)
+                    }
+                }
+            }
+            
+            EventAction.STOP -> {
+                eventData.effect?.let { effect ->
+                    eventData.mode?.let { mode ->
+                        val key = "${effect.name}:$mode"
+                        activeEffects.remove(key)
+                        executeEffectStop(effect, mode)
+                    }
+                }
+            }
+            
+            EventAction.SHOT -> {
+                eventData.effect?.let { effect ->
+                    eventData.mode?.let { mode ->
+                        executeEffectShot(effect, mode)
+                    }
+                }
+            }
         }
     }
 
     /**
-     * JSONイベントをTimelineEventに変換
+     * エフェクト開始
      */
-    private fun convertToTimelineEvent(data: TimelineEventData): TimelineEvent {
-        return when (data.type) {
-            EventType.FAN -> TimelineEvent.Fan(
-                timestampMs = data.time,
-                intensity = data.params.intensity
-            )
-            EventType.WATER -> TimelineEvent.Water(
-                timestampMs = data.time,
-                intensity = data.params.intensity
-            )
-            EventType.MIST -> TimelineEvent.Mist(
-                timestampMs = data.time,
-                intensity = data.params.intensity
-            )
-            EventType.LED -> TimelineEvent.Led(
-                timestampMs = data.time,
-                r = data.params.r,
-                g = data.params.g,
-                b = data.params.b,
-                brightness = data.params.brightness
-            )
-            EventType.VIBRATION -> TimelineEvent.Vibration(
-                timestampMs = data.time,
-                intensity = data.params.intensity,
-                motor = data.params.motor
-            )
-            EventType.ALL_OFF -> TimelineEvent.AllOff(
-                timestampMs = data.time
-            )
-            else -> TimelineEvent.AllOff(timestampMs = data.time)
+    private suspend fun executeEffectStart(effect: EffectType, mode: String) {
+        when (effect) {
+            EffectType.WIND -> {
+                commandSender.sendFanCommand(true)
+            }
+            
+            EffectType.MIST -> {
+                commandSender.sendMistCommand(2)  // 継続モード
+            }
+            
+            EffectType.COLOR -> {
+                ColorMode.fromJsonMode(mode)?.let { colorMode ->
+                    commandSender.sendLedColorCommand(
+                        colorId = colorMode.ledColorId,
+                        brightness = 2,  // 強
+                        effect = 0,      // 点灯
+                        transition = 0   // 即時
+                    )
+                }
+            }
+            
+            EffectType.FLASH -> {
+                FlashMode.fromJsonMode(mode)?.let { flashMode ->
+                    // 白色で点滅
+                    commandSender.sendLedColorCommand(
+                        colorId = 10,  // 白
+                        brightness = 2,
+                        effect = flashMode.ledEffect,
+                        transition = 0
+                    )
+                }
+            }
+            
+            EffectType.VIBRATION -> {
+                VibrationMode.fromJsonMode(mode)?.let { vibMode ->
+                    when (vibMode.target) {
+                        MotorTarget.MOTOR_1 -> {
+                            commandSender.sendMotor1StringCommand(vibMode.name)
+                        }
+                        MotorTarget.MOTOR_2 -> {
+                            commandSender.sendMotor2StringCommand(vibMode.name)
+                        }
+                        MotorTarget.BOTH -> {
+                            commandSender.sendMotor1StringCommand(vibMode.name)
+                            commandSender.sendMotor2StringCommand(vibMode.name)
+                        }
+                    }
+                }
+            }
+            
+            EffectType.WATER -> {
+                // WATERはshotアクションのみ
+            }
+        }
+    }
+
+    /**
+     * エフェクト停止
+     */
+    private suspend fun executeEffectStop(effect: EffectType, mode: String) {
+        when (effect) {
+            EffectType.WIND -> {
+                commandSender.sendFanCommand(false)
+            }
+            
+            EffectType.MIST -> {
+                commandSender.sendMistCommand(0)  // OFF
+            }
+            
+            EffectType.COLOR, EffectType.FLASH -> {
+                commandSender.sendLedColorCommand(
+                    colorId = 11,  // 消灯
+                    brightness = 0,
+                    effect = 0,
+                    transition = 0
+                )
+            }
+            
+            EffectType.VIBRATION -> {
+                VibrationMode.fromJsonMode(mode)?.let { vibMode ->
+                    when (vibMode.target) {
+                        MotorTarget.MOTOR_1 -> {
+                            commandSender.sendMotor1StringCommand("OFF")
+                        }
+                        MotorTarget.MOTOR_2 -> {
+                            commandSender.sendMotor2StringCommand("OFF")
+                        }
+                        MotorTarget.BOTH -> {
+                            commandSender.sendMotor1StringCommand("OFF")
+                            commandSender.sendMotor2StringCommand("OFF")
+                        }
+                    }
+                }
+            }
+            
+            EffectType.WATER -> {
+                // WATERは停止なし
+            }
+        }
+    }
+
+    /**
+     * ワンショットエフェクト
+     */
+    private suspend fun executeEffectShot(effect: EffectType, mode: String) {
+        when (effect) {
+            EffectType.WATER -> {
+                commandSender.sendSplashCommand()
+            }
+            
+            EffectType.MIST -> {
+                commandSender.sendMistCommand(1)  // 一瞬モード
+            }
+            
+            else -> {
+                // 他のエフェクトはshotをサポートしない
+            }
         }
     }
 
@@ -218,22 +351,56 @@ class PlaybackSyncEngine @Inject constructor(
         scope.launch {
             // まず全てOFF
             commandSender.sendAllDevicesOff()
+            activeEffects.clear()
             
-            // 現在位置より前の最新状態を適用
-            val latestStates = mutableMapOf<String, TimelineEventData>()
-            
-            scheduledEvents
+            // 現在位置までのstart/stop/shotイベントを再生
+            val eventsUpToNow = scheduledEvents
                 .filter { it.timestampMs <= positionMs }
-                .forEach { scheduled ->
-                    latestStates[scheduled.event.type] = scheduled.event
-                }
+                .sortedBy { it.timestampMs }
             
-            // 各エフェクトの最新状態を適用
-            latestStates.values.forEach { eventData ->
-                if (eventData.type != EventType.ALL_OFF) {
-                    executeEvent(eventData)
+            // アクティブなエフェクトを計算
+            val currentActiveEffects = mutableMapOf<String, TimelineEventData>()
+            
+            eventsUpToNow.forEach { scheduled ->
+                val event = scheduled.event
+                when (event.action) {
+                    EventAction.START -> {
+                        event.effect?.let { effect ->
+                            event.mode?.let { mode ->
+                                currentActiveEffects["${effect.name}:$mode"] = event
+                            }
+                        }
+                    }
+                    EventAction.STOP -> {
+                        event.effect?.let { effect ->
+                            event.mode?.let { mode ->
+                                currentActiveEffects.remove("${effect.name}:$mode")
+                            }
+                        }
+                    }
+                    EventAction.CAPTION -> {
+                        event.text?.let { text ->
+                            _currentCaption.value = CurrentCaption(
+                                text = text,
+                                timestamp = (event.t * 1000).toLong()
+                            )
+                        }
+                    }
+                    else -> {}
                 }
             }
+            
+            // アクティブなエフェクトを適用
+            currentActiveEffects.values.forEach { event ->
+                event.effect?.let { effect ->
+                    event.mode?.let { mode ->
+                        executeEffectStart(effect, mode)
+                    }
+                }
+            }
+            
+            activeEffects.clear()
+            activeEffects.putAll(currentActiveEffects)
         }
     }
 
