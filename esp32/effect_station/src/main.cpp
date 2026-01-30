@@ -491,7 +491,7 @@ void loop() {
     // 再接続処理
     if (!deviceConnected && oldDeviceConnected) {
         delay(500);  // Bluetoothスタックに時間を与える
-        pServer->startAdvertising();
+        BLEDevice::startAdvertising();
         Serial.println("Advertising restarted");
         oldDeviceConnected = deviceConnected;
     }

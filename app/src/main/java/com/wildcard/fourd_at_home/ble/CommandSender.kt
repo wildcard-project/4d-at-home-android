@@ -157,38 +157,28 @@ class CommandSender @Inject constructor(
     }
 
     /**
-     * Motor1(振動1)を制御（互換性のため維持）
-     * @param intensity 0-255 (0=OFF, 255=MAX)
+     * Motor1(振動ユニット1)を制御（MQTT版互換）
+     * @param mode OFF, WEAK, MEDIUM_WEAK, MEDIUM_STRONG, STRONG, HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW
      */
-    suspend fun sendMotor1Command(intensity: Int): Result<Unit> {
-        val mode = when {
-            intensity == 0 -> "OFF"
-            intensity < 85 -> "up_weak"
-            intensity < 170 -> "up"
-            else -> "up_strong"
-        }
+    suspend fun sendMotor1Command(mode: String): Result<Unit> {
         return sendMotor1StringCommand(mode)
     }
 
     /**
-     * Motor2(振動2)を制御（互換性のため維持）
+     * Motor2(振動ユニット2)を制御（MQTT版互換）
+     * @param mode OFF, WEAK, MEDIUM_WEAK, MEDIUM_STRONG, STRONG, HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW
      */
-    suspend fun sendMotor2Command(intensity: Int): Result<Unit> {
-        val mode = when {
-            intensity == 0 -> "OFF"
-            intensity < 85 -> "down_weak"
-            intensity < 170 -> "down"
-            else -> "down_strong"
-        }
+    suspend fun sendMotor2Command(mode: String): Result<Unit> {
         return sendMotor2StringCommand(mode)
     }
 
     /**
-     * 両方のモーターを制御
+     * 両方のモーターを制御（MQTT版互換）
+     * @param mode OFF, WEAK, MEDIUM_WEAK, MEDIUM_STRONG, STRONG, HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW
      */
-    suspend fun sendBothMotorsCommand(intensity: Int): Result<Unit> {
-        val result1 = sendMotor1Command(intensity)
-        val result2 = sendMotor2Command(intensity)
+    suspend fun sendBothMotorsCommand(mode: String): Result<Unit> {
+        val result1 = sendMotor1Command(mode)
+        val result2 = sendMotor2Command(mode)
         
         return if (result1.isSuccess && result2.isSuccess) {
             Result.success(Unit)

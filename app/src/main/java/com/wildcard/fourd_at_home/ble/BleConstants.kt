@@ -13,7 +13,8 @@ object BleConstants {
     // 4D_ES_XXXX  : EffectStation
     // 4D_AD1_XXXX : ActionDrive Motor1
     // 4D_AD2_XXXX : ActionDrive Motor2
-    val DEVICE_NAME_PATTERN = Regex("4D_(ES|AD1|AD2)_[0-9A-Fa-f]{4}")
+    // 4D_で始まるすべてのデバイスを受け入れる
+    val DEVICE_NAME_PATTERN = Regex("4D_[A-Za-z0-9]+_[0-9A-Fa-f]{4}")
 
     // デバイスタイプ判定用プレフィックス
     const val PREFIX_EFFECT_STATION = "4D_ES_"

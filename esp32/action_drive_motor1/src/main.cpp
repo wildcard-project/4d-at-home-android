@@ -1,14 +1,19 @@
 /**
  * 4D@HOME ActionDrive Motor1 ESP32 ファームウェア
- * JSON_SPECIFICATION.md準拠の文字列コマンド対応
+ * MQTT版互換 - 4ピン構成・デジタルON/OFF制御
  * 
  * BLE経由でコマンドを受信し、振動モーターを制御
  * Motor1: 座席左側/前方振動用
  * 
  * コマンド形式: "MOTOR,mode_name"
- * mode: up_weak, up, up_strong, down_weak, down, down_strong,
- *       left_weak, left, left_strong, right_weak, right, right_strong,
- *       heartbeat, OFF
+ * mode: STRONG, MEDIUM_STRONG, MEDIUM_WEAK, WEAK, 
+ *       HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW, OFF
+ * 
+ * ピン構成（MQTT版と同一）:
+ * - GPIO 14 (D5): 振動 強 (STRONG)
+ * - GPIO 12 (D6): 振動 中強 (MEDIUM_STRONG)
+ * - GPIO 13 (D7): 振動 中強/中弱 (MEDIUM_STRONG/MEDIUM_WEAK)
+ * - GPIO 15 (D8): 振動 弱 (WEAK)
  */
 
 #include <Arduino.h>
@@ -17,27 +22,28 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-// === ピン定義 ===
-#define PIN_MOTOR     25    // モーター制御 (PWM)
+// === ピン定義（MQTT版と同一）===
+#define MOTOR_PIN_D5  14    // 振動 強 (STRONG)
+#define MOTOR_PIN_D6  12    // 振動 中強 (MEDIUM_STRONG)
+#define MOTOR_PIN_D7  13    // 振動 中強/中弱 (MEDIUM_STRONG/MEDIUM_WEAK)
+#define MOTOR_PIN_D8  15    // 振動 弱 (WEAK)
 #define PIN_LED       2     // 状態表示LED (オンボード)
-
-// === PWM設定 ===
-#define PWM_CHANNEL   0
-#define PWM_FREQ      20000  // 20kHz (モーター向け高周波)
-#define PWM_RESOLUTION 8
 
 // === BLE UUIDs ===
 #define SERVICE_UUID        "4D580001-0000-1000-8000-00805F9B34FB"
 #define COMMAND_CHAR_UUID   "4D580002-0000-1000-8000-00805F9B34FB"
 #define STATUS_CHAR_UUID    "4D580003-0000-1000-8000-00805F9B34FB"
 
-// === 振動モード定義（JSON_SPECIFICATION.md準拠）===
-// Motor1は上方向と左方向を担当
-struct VibrationPattern {
-    uint8_t intensity;      // PWM強度 (0-255)
-    uint16_t onTime;        // ON時間 (ms)
-    uint16_t offTime;       // OFF時間 (ms)
-    bool continuous;        // 連続振動か
+// === モーター制御モード（MQTT版と同一）===
+enum MotorMode {
+    MOTOR_OFF,
+    MOTOR_WEAK,
+    MOTOR_MEDIUM_WEAK,
+    MOTOR_MEDIUM_STRONG,
+    MOTOR_STRONG,
+    MOTOR_HEARTBEAT,
+    MOTOR_RUMBLE_FAST,
+    MOTOR_RUMBLE_SLOW
 };
 
 // === グローバル変数 ===
@@ -47,14 +53,12 @@ BLECharacteristic* pStatusChar = nullptr;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
-String currentMode = "OFF";
-uint8_t currentIntensity = 0;
+String currentModeName = "OFF";
+MotorMode currentMotorMode = MOTOR_OFF;
 
-// パターン再生用
-VibrationPattern currentPattern = {0, 0, 0, false};
-bool patternActive = false;
-unsigned long patternStartTime = 0;
-bool patternPhase = true;  // true=ON, false=OFF
+// ノンブロッキング制御用タイマー
+unsigned long lastPatternTime = 0;
+int patternStep = 0;
 
 // デバイス名生成
 String getDeviceName() {
@@ -65,41 +69,28 @@ String getDeviceName() {
     return String(name);
 }
 
-// === モーター制御 ===
+// === モーター制御ヘルパー（MQTT版と同一ロジック）===
 
-void setMotor(uint8_t intensity) {
-    currentIntensity = intensity;
-    ledcWrite(PWM_CHANNEL, intensity);
+/**
+ * @brief 全モーターの ON/OFF を一括設定
+ */
+void setAllMotors(bool state) {
+    digitalWrite(MOTOR_PIN_D5, state);
+    digitalWrite(MOTOR_PIN_D6, state);
+    digitalWrite(MOTOR_PIN_D7, state);
+    digitalWrite(MOTOR_PIN_D8, state);
     
     // 状態LED
-    digitalWrite(PIN_LED, intensity > 0 ? HIGH : LOW);
+    digitalWrite(PIN_LED, state ? HIGH : LOW);
 }
 
-void stopMotor() {
-    patternActive = false;
-    currentMode = "OFF";
-    setMotor(0);
+void stopMotors() {
+    currentMotorMode = MOTOR_OFF;
+    currentModeName = "OFF";
+    patternStep = 0;
+    lastPatternTime = 0;
+    setAllMotors(LOW);
     Serial.println("Motor1 stopped");
-}
-
-// 振動パターンを開始
-void startPattern(VibrationPattern pattern, const String& modeName) {
-    currentMode = modeName;
-    currentPattern = pattern;
-    
-    if (pattern.continuous) {
-        // 連続振動
-        patternActive = false;
-        setMotor(pattern.intensity);
-    } else {
-        // パターン振動
-        patternActive = true;
-        patternPhase = true;
-        patternStartTime = millis();
-        setMotor(pattern.intensity);
-    }
-    
-    Serial.printf("Motor1 pattern: %s, intensity=%d\n", modeName.c_str(), pattern.intensity);
 }
 
 // ステータス送信
@@ -107,8 +98,8 @@ void sendStatus() {
     if (deviceConnected && pStatusChar != nullptr) {
         uint8_t status[4] = {
             0x01,  // Motor1識別子
-            currentIntensity,
-            (uint8_t)(patternActive ? 1 : 0),
+            (uint8_t)currentMotorMode,
+            (uint8_t)(patternStep > 0 ? 1 : 0),
             0x00
         };
         pStatusChar->setValue(status, 4);
@@ -116,7 +107,7 @@ void sendStatus() {
     }
 }
 
-// === 文字列コマンド処理（JSON_SPECIFICATION.md準拠）===
+// === 文字列コマンド処理（MQTT版互換）===
 
 void processStringCommand(const String& cmd) {
     Serial.printf("Motor1 received: %s\n", cmd.c_str());
@@ -128,75 +119,170 @@ void processStringCommand(const String& cmd) {
     cmdType.trim();
     cmdType.toUpperCase();
     mode.trim();
-    mode.toLowerCase();
+    mode.toUpperCase();
     
     if (cmdType == "MOTOR" || cmdType == "VIB" || cmdType == "VIBRATION") {
-        // モード名から振動パターンを決定
-        VibrationPattern pattern;
+        // モード切替時は、一旦ステートをリセット
+        patternStep = 0;
+        lastPatternTime = 0;
         
-        if (mode == "off" || mode == "") {
-            stopMotor();
-            return;
+        if (mode == "OFF" || mode == "") {
+            stopMotors();
         }
-        // 上方向 (Motor1が担当)
-        else if (mode == "up_weak") {
-            pattern = {64, 0, 0, true};  // 弱い連続振動
+        else if (mode == "STRONG") {
+            currentMotorMode = MOTOR_STRONG;
+            currentModeName = mode;
         }
-        else if (mode == "up") {
-            pattern = {150, 0, 0, true};  // 中程度の連続振動
+        else if (mode == "MEDIUM_STRONG") {
+            currentMotorMode = MOTOR_MEDIUM_STRONG;
+            currentModeName = mode;
         }
-        else if (mode == "up_strong") {
-            pattern = {255, 0, 0, true};  // 強い連続振動
+        else if (mode == "MEDIUM_WEAK") {
+            currentMotorMode = MOTOR_MEDIUM_WEAK;
+            currentModeName = mode;
         }
-        // 下方向 (Motor1も対応可能、バックアップ)
-        else if (mode == "down_weak") {
-            pattern = {48, 0, 0, true};
+        else if (mode == "WEAK") {
+            currentMotorMode = MOTOR_WEAK;
+            currentModeName = mode;
         }
-        else if (mode == "down") {
-            pattern = {120, 0, 0, true};
+        else if (mode == "HEARTBEAT") {
+            currentMotorMode = MOTOR_HEARTBEAT;
+            currentModeName = mode;
         }
-        else if (mode == "down_strong") {
-            pattern = {200, 0, 0, true};
+        else if (mode == "RUMBLE_FAST") {
+            currentMotorMode = MOTOR_RUMBLE_FAST;
+            currentModeName = mode;
         }
-        // 左方向 (Motor1が担当)
-        else if (mode == "left_weak") {
-            pattern = {64, 300, 200, false};  // パターン振動
-        }
-        else if (mode == "left") {
-            pattern = {150, 300, 200, false};
-        }
-        else if (mode == "left_strong") {
-            pattern = {255, 300, 200, false};
-        }
-        // 右方向 (Motor1バックアップ)
-        else if (mode == "right_weak") {
-            pattern = {64, 300, 200, false};
-        }
-        else if (mode == "right") {
-            pattern = {150, 300, 200, false};
-        }
-        else if (mode == "right_strong") {
-            pattern = {255, 300, 200, false};
-        }
-        // 特殊パターン
-        else if (mode == "heartbeat") {
-            pattern = {200, 150, 100, false};  // ドクドク
+        else if (mode == "RUMBLE_SLOW") {
+            currentMotorMode = MOTOR_RUMBLE_SLOW;
+            currentModeName = mode;
         }
         else {
             Serial.printf("Unknown mode: %s\n", mode.c_str());
             return;
         }
         
-        startPattern(pattern, mode);
+        Serial.printf("Motor1 mode set: %s\n", currentModeName.c_str());
     }
     else if (cmdType == "OFF" || cmdType == "STOP") {
-        stopMotor();
+        stopMotors();
     }
     else {
         Serial.printf("Unknown command: %s\n", cmdType.c_str());
     }
     
     sendStatus();
+}
+
+/**
+ * @brief モーター制御のメイン関数（MQTT版と同一ロジック）
+ */
+void handleMotors(unsigned long now) {
+    
+    switch (currentMotorMode) {
+        
+        case MOTOR_OFF:
+            setAllMotors(LOW);
+            break;
+            
+        case MOTOR_WEAK:
+            // 「振動弱はD8のモーターを動かす」
+            digitalWrite(MOTOR_PIN_D5, LOW);
+            digitalWrite(MOTOR_PIN_D6, LOW);
+            digitalWrite(MOTOR_PIN_D7, LOW);
+            digitalWrite(MOTOR_PIN_D8, HIGH);
+            digitalWrite(PIN_LED, HIGH);
+            break;
+            
+        case MOTOR_MEDIUM_WEAK:
+            // 「振動中弱はD7のモーターを動かす」
+            digitalWrite(MOTOR_PIN_D5, LOW);
+            digitalWrite(MOTOR_PIN_D6, LOW);
+            digitalWrite(MOTOR_PIN_D7, HIGH);
+            digitalWrite(MOTOR_PIN_D8, LOW);
+            digitalWrite(PIN_LED, HIGH);
+            break;
+            
+        case MOTOR_MEDIUM_STRONG:
+            // 「振動中強はD6とD7のモーターを動かす」
+            digitalWrite(MOTOR_PIN_D5, LOW);
+            digitalWrite(MOTOR_PIN_D6, HIGH);
+            digitalWrite(MOTOR_PIN_D7, HIGH);
+            digitalWrite(MOTOR_PIN_D8, LOW);
+            digitalWrite(PIN_LED, HIGH);
+            break;
+            
+        case MOTOR_STRONG:
+            // 「振動強は全部のモーターを回す」
+            setAllMotors(HIGH);
+            break;
+
+        // ----- ノンブロッキング・パターン -----
+        
+        case MOTOR_HEARTBEAT:
+            // 心拍 (ドッ..クン.......ドッ..クン...)
+            // ドッ = 中弱 (D7), クン = 強 (D5)
+            // ステップ0: (1.5秒待機) ドッ (中弱 D7)
+            if (patternStep == 0 && (now - lastPatternTime > 1500)) { 
+                setAllMotors(LOW);
+                digitalWrite(MOTOR_PIN_D7, HIGH);
+                digitalWrite(PIN_LED, HIGH);
+                lastPatternTime = now;
+                patternStep = 1;
+            }
+            // ステップ1: (200ms) OFF
+            else if (patternStep == 1 && (now - lastPatternTime > 200)) { 
+                setAllMotors(LOW);
+                lastPatternTime = now;
+                patternStep = 2;
+            }
+            // ステップ2: (100ms) クン (強 D5)
+            else if (patternStep == 2 && (now - lastPatternTime > 100)) { 
+                digitalWrite(MOTOR_PIN_D5, HIGH);
+                digitalWrite(PIN_LED, HIGH);
+                lastPatternTime = now;
+                patternStep = 3;
+            }
+            // ステップ3: (150ms) OFF
+            else if (patternStep == 3 && (now - lastPatternTime > 150)) { 
+                setAllMotors(LOW);
+                lastPatternTime = now;
+                patternStep = 0; // ループ
+            }
+            break;
+            
+        case MOTOR_RUMBLE_FAST:
+            // ドンドンドン (速)
+            // ステップ0: (0.15秒待機) ドン (全モーター)
+            if (patternStep == 0 && (now - lastPatternTime > 150)) {
+                setAllMotors(HIGH);
+                lastPatternTime = now;
+                patternStep = 1;
+            }
+            // ステップ1: (100ms) OFF
+            else if (patternStep == 1 && (now - lastPatternTime > 100)) {
+                setAllMotors(LOW);
+                lastPatternTime = now;
+                patternStep = 0; // ループ
+            }
+            break;
+            
+        case MOTOR_RUMBLE_SLOW:
+            // ドン...ドン... (遅)
+            // ステップ0: (0.3秒待機) ドン (全モーター)
+            if (patternStep == 0 && (now - lastPatternTime > 300)) {
+                setAllMotors(HIGH);
+                lastPatternTime = now;
+                patternStep = 1;
+            }
+            // ステップ1: (300ms) OFF
+            else if (patternStep == 1 && (now - lastPatternTime > 300)) {
+                setAllMotors(LOW);
+                lastPatternTime = now;
+                patternStep = 0; // ループ
+            }
+            break;
+    }
 }
 
 // === BLEコールバック ===
@@ -220,7 +306,7 @@ class ServerCallbacks : public BLEServerCallbacks {
         Serial.println("Device disconnected");
         
         // 安全のためモーター停止
-        stopMotor();
+        stopMotors();
     }
 };
 
@@ -242,18 +328,17 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
 void setup() {
     Serial.begin(115200);
     Serial.println("4D@HOME ActionDrive Motor1 starting...");
-    Serial.println("JSON_SPECIFICATION.md compliant (String commands)");
+    Serial.println("MQTT compatible - 4-pin digital control");
     
-    // GPIO設定
+    // GPIO設定（4ピン構成）
+    pinMode(MOTOR_PIN_D5, OUTPUT);
+    pinMode(MOTOR_PIN_D6, OUTPUT);
+    pinMode(MOTOR_PIN_D7, OUTPUT);
+    pinMode(MOTOR_PIN_D8, OUTPUT);
     pinMode(PIN_LED, OUTPUT);
-    digitalWrite(PIN_LED, LOW);
     
-    // PWM設定
-    ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
-    ledcAttachPin(PIN_MOTOR, PWM_CHANNEL);
-    
-    // 初期状態: モーター停止
-    stopMotor();
+    // 初期状態: 全OFF
+    setAllMotors(LOW);
     
     // BLE初期化
     String deviceName = getDeviceName();
@@ -292,10 +377,12 @@ void setup() {
     pAdvertising->addServiceUUID(SERVICE_UUID);
     pAdvertising->setScanResponse(true);
     pAdvertising->setMinPreferred(0x06);
-    pAdvertising->setMinPreferred(0x12);
+    pAdvertising->setMaxPreferred(0x12);
     BLEDevice::startAdvertising();
     
     Serial.println("BLE advertising started");
+    Serial.printf("Pins: D5=%d, D6=%d, D7=%d, D8=%d\n", 
+                  MOTOR_PIN_D5, MOTOR_PIN_D6, MOTOR_PIN_D7, MOTOR_PIN_D8);
     
     // 起動完了表示（LED点滅）
     for (int i = 0; i < 3; i++) {
@@ -309,31 +396,15 @@ void setup() {
 // === メインループ ===
 
 void loop() {
-    // パターン振動の処理
-    if (patternActive) {
-        unsigned long elapsed = millis() - patternStartTime;
-        
-        if (patternPhase) {
-            // ON期間
-            if (elapsed >= currentPattern.onTime) {
-                patternPhase = false;
-                patternStartTime = millis();
-                setMotor(0);
-            }
-        } else {
-            // OFF期間
-            if (elapsed >= currentPattern.offTime) {
-                patternPhase = true;
-                patternStartTime = millis();
-                setMotor(currentPattern.intensity);
-            }
-        }
-    }
+    unsigned long now = millis();
+    
+    // ノンブロッキング モーター制御
+    handleMotors(now);
     
     // 再接続処理
     if (!deviceConnected && oldDeviceConnected) {
         delay(500);
-        pServer->startAdvertising();
+        BLEDevice::startAdvertising();
         Serial.println("Advertising restarted");
         oldDeviceConnected = deviceConnected;
     }

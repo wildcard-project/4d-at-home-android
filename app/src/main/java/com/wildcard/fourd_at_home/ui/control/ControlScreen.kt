@@ -134,6 +134,9 @@ fun ControlScreen(
                 onMotor1Level = { viewModel.setMotor1Level(it) },
                 onMotor2Level = { viewModel.setMotor2Level(it) },
                 onBothMotorsLevel = { viewModel.setBothMotorsLevel(it) },
+                onMotor1Pattern = { viewModel.sendMotor1Pattern(it) },
+                onMotor2Pattern = { viewModel.sendMotor2Pattern(it) },
+                onBothMotorsPattern = { viewModel.sendBothMotorsPattern(it) },
                 onStopMotors = { viewModel.stopMotors() }
             )
         }
@@ -419,12 +422,14 @@ private fun ToggleButton(
 private fun SelectableButton(
     text: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     FilterChip(
         selected = isSelected,
         onClick = onClick,
-        label = { Text(text) },
+        label = { Text(text, style = MaterialTheme.typography.labelSmall) },
+        modifier = modifier,
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = NeonRed,
             selectedLabelColor = Color.White
@@ -487,6 +492,9 @@ private fun ActionDriveCard(
     onMotor1Level: (VibrationLevel) -> Unit,
     onMotor2Level: (VibrationLevel) -> Unit,
     onBothMotorsLevel: (VibrationLevel) -> Unit,
+    onMotor1Pattern: (VibrationPattern) -> Unit,
+    onMotor2Pattern: (VibrationPattern) -> Unit,
+    onBothMotorsPattern: (VibrationPattern) -> Unit,
     onStopMotors: () -> Unit
 ) {
     val anyMotorConnected = isMotor1Connected || isMotor2Connected
@@ -523,40 +531,26 @@ private fun ActionDriveCard(
 
                 // Motor1
                 if (isMotor1Connected) {
-                    EffectSectionHeader(
-                        icon = Icons.Default.Vibration,
+                    MotorControlSection(
                         label = "Motor 1 (背中)",
-                        color = Color(0xFF2196F3)
+                        color = Color(0xFF2196F3),
+                        currentLevel = motor1Level,
+                        onLevelChange = onMotor1Level,
+                        onPatternSelect = onMotor1Pattern
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        VibrationLevel.entries.forEach { level ->
-                            SelectableButton(
-                                text = level.displayName,
-                                isSelected = motor1Level == level,
-                                onClick = { onMotor1Level(level) }
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
 
                 // Motor2
                 if (isMotor2Connected) {
-                    EffectSectionHeader(
-                        icon = Icons.Default.Vibration,
+                    MotorControlSection(
                         label = "Motor 2 (お尻)",
-                        color = Color(0xFFFF9800)
+                        color = Color(0xFFFF9800),
+                        currentLevel = motor2Level,
+                        onLevelChange = onMotor2Level,
+                        onPatternSelect = onMotor2Pattern
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        VibrationLevel.entries.forEach { level ->
-                            SelectableButton(
-                                text = level.displayName,
-                                isSelected = motor2Level == level,
-                                onClick = { onMotor2Level(level) }
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
 
                 // 両モーター同時制御
@@ -564,20 +558,129 @@ private fun ActionDriveCard(
                     Text(
                         text = "両モーター同時",
                         style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    // 強度ボタン
+                    Text(
+                        text = "強度",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        VibrationLevel.basicLevels.forEach { level ->
+                            OutlinedButton(
+                                onClick = { onBothMotorsLevel(level) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(level.displayName, style = MaterialTheme.typography.labelSmall)
+                            }
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    // パターンボタン
+                    Text(
+                        text = "パターン",
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        VibrationLevel.entries.forEach { level ->
+                        VibrationPattern.entries.forEach { pattern ->
                             OutlinedButton(
-                                onClick = { onBothMotorsLevel(level) }
+                                onClick = { onBothMotorsPattern(pattern) }
                             ) {
-                                Text(level.displayName)
+                                Text("${pattern.icon} ${pattern.displayName}")
                             }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+/**
+ * 個別モーター制御セクション
+ */
+@Composable
+private fun MotorControlSection(
+    label: String,
+    color: Color,
+    currentLevel: VibrationLevel,
+    onLevelChange: (VibrationLevel) -> Unit,
+    onPatternSelect: (VibrationPattern) -> Unit
+) {
+    Column {
+        EffectSectionHeader(
+            icon = Icons.Default.Vibration,
+            label = label,
+            color = color
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // 強度選択
+        Text(
+            text = "強度",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            VibrationLevel.basicLevels.forEach { level ->
+                SelectableButton(
+                    text = level.displayName,
+                    isSelected = currentLevel == level,
+                    onClick = { onLevelChange(level) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // パターン選択
+        Text(
+            text = "パターン",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            VibrationPattern.entries.forEach { pattern ->
+                PatternButton(
+                    pattern = pattern,
+                    onClick = { onPatternSelect(pattern) }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * パターン選択ボタン
+ */
+@Composable
+private fun PatternButton(
+    pattern: VibrationPattern,
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        onClick = onClick,
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = when (pattern) {
+                VibrationPattern.HEARTBEAT -> Color(0xFFE91E63)
+                VibrationPattern.RUMBLE_FAST -> Color(0xFFFF9800)
+                VibrationPattern.RUMBLE_SLOW -> Color(0xFF2196F3)
+            }
+        )
+    ) {
+        Text("${pattern.icon} ${pattern.displayName}")
     }
 }

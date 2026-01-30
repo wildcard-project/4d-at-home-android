@@ -70,13 +70,28 @@ enum class MistMode(val displayName: String, val value: Int) {
 }
 
 /**
- * 振動モード
+ * 振動モード（MQTT版互換）
  */
-enum class VibrationLevel(val displayName: String, val intensityValue: Int) {
-    OFF("OFF", 0),
-    WEAK("弱", 64),
-    MEDIUM("中", 128),
-    STRONG("強", 255)
+enum class VibrationLevel(val displayName: String, val commandName: String) {
+    OFF("OFF", "OFF"),
+    WEAK("弱", "WEAK"),
+    MEDIUM_WEAK("中弱", "MEDIUM_WEAK"),
+    MEDIUM_STRONG("中強", "MEDIUM_STRONG"),
+    STRONG("強", "STRONG");
+    
+    companion object {
+        // 基本強度モードのみ（パターン除く）
+        val basicLevels = listOf(OFF, WEAK, MEDIUM_WEAK, MEDIUM_STRONG, STRONG)
+    }
+}
+
+/**
+ * 振動パターンモード（MQTT版互換）
+ */
+enum class VibrationPattern(val displayName: String, val commandName: String, val icon: String) {
+    HEARTBEAT("心拍", "HEARTBEAT", "❤️"),
+    RUMBLE_FAST("高速振動", "RUMBLE_FAST", "⚡"),
+    RUMBLE_SLOW("低速振動", "RUMBLE_SLOW", "🌊")
 }
 
 /**
@@ -265,7 +280,7 @@ class ControlViewModel @Inject constructor(
         )
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendMotor1Command(level.intensityValue)
+            val result = commandSender.sendMotor1Command(level.commandName)
             handleResult(result)
         }
     }
@@ -276,7 +291,7 @@ class ControlViewModel @Inject constructor(
         )
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendMotor2Command(level.intensityValue)
+            val result = commandSender.sendMotor2Command(level.commandName)
             handleResult(result)
         }
     }
@@ -290,7 +305,40 @@ class ControlViewModel @Inject constructor(
         )
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendBothMotorsCommand(level.intensityValue)
+            val result = commandSender.sendBothMotorsCommand(level.commandName)
+            handleResult(result)
+        }
+    }
+
+    /**
+     * パターンモードをMotor1に送信
+     */
+    fun sendMotor1Pattern(pattern: VibrationPattern) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendMotor1Command(pattern.commandName)
+            handleResult(result)
+        }
+    }
+
+    /**
+     * パターンモードをMotor2に送信
+     */
+    fun sendMotor2Pattern(pattern: VibrationPattern) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendMotor2Command(pattern.commandName)
+            handleResult(result)
+        }
+    }
+
+    /**
+     * パターンモードを両モーターに送信
+     */
+    fun sendBothMotorsPattern(pattern: VibrationPattern) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendBothMotorsCommand(pattern.commandName)
             handleResult(result)
         }
     }
