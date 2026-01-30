@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# 動画ファイル（著作権の問題があるため除外）
+app/src/main/assets/videos/
