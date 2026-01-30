@@ -79,12 +79,15 @@ enum class VibrationMode(val jsonMode: String, val target: MotorTarget, val inte
 }
 
 /**
- * フラッシュモード（JSON_SPECIFICATION.md準拠）
+ * フラッシュモード（4DHOME_STATION_CONTROL.ino準拠）
+ * effect: 0=点灯, 1=点滅, 2=呼吸
  */
 enum class FlashMode(val jsonMode: String, val ledEffect: Int) {
-    STEADY("steady", 0),        // 点灯
-    SLOW_BLINK("slow_blink", 1), // 遅い点滅
-    FAST_BLINK("fast_blink", 3); // 速い点滅
+    STEADY("steady", 0),         // 点灯
+    BLINK("blink", 1),           // 点滅
+    SLOW_BLINK("slow_blink", 1), // 点滅（互換性のため維持）
+    BREATHE("breathe", 2),       // 呼吸
+    FAST_BLINK("fast_blink", 1); // 点滅（互換性のため維持、実際は通常点滅）
     
     companion object {
         fun fromJsonMode(mode: String): FlashMode? = 
@@ -93,7 +96,8 @@ enum class FlashMode(val jsonMode: String, val ledEffect: Int) {
 }
 
 /**
- * カラーモード（JSON_SPECIFICATION.md準拠）
+ * カラーモード（4DHOME_STATION_CONTROL.ino準拠）
+ * RGBW LED対応（Wチャンネルは白のみ使用）
  */
 enum class ColorMode(val jsonMode: String, val ledColorId: Int, val r: Int, val g: Int, val b: Int) {
     PINK("pink", 0, 255, 20, 100),

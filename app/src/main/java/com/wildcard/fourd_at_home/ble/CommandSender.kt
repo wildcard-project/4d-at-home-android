@@ -50,11 +50,12 @@ class CommandSender @Inject constructor(
     }
 
     /**
-     * LEDを色IDで制御（JSON_SPECIFICATION.md準拠）
-     * @param colorId 0-11 (0=PINK, 1=RED, ..., 10=WHITE, 11=OFF)
-     * @param brightness 0-2 (0=弱, 1=中, 2=強)
-     * @param effect 0=点灯, 1=ゆっくり点滅, 2=速い点滅
-     * @param transition 0=即時, 1=フェード
+     * LEDを色IDで制御（4DHOME_STATION_CONTROL.ino準拠）
+     * @param colorId 0-11 (0=PINK, 1=RED, 2=ORANGE, 3=YELLOW, 4=YELLOW_GREEN,
+     *                      5=GREEN, 6=DARK_GREEN, 7=CYAN, 8=BLUE, 9=PURPLE, 10=WHITE, 11=OFF)
+     * @param brightness 0-2 (0=なし/OFF, 1=弱, 2=強)
+     * @param effect 0=点灯, 1=点滅, 2=呼吸
+     * @param transition 0=一瞬, 1=フェード
      */
     suspend fun sendLedColorCommand(
         colorId: Int, 

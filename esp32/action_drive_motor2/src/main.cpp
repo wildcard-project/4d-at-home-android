@@ -108,7 +108,7 @@ void sendStatus() {
         uint8_t status[4] = {
             0x02,  // Motor2識別子
             currentIntensity,
-            patternActive ? 1 : 0,
+            (uint8_t)(patternActive ? 1 : 0),
             0x00
         };
         pStatusChar->setValue(status, 4);
@@ -226,7 +226,8 @@ class ServerCallbacks : public BLEServerCallbacks {
 
 class CommandCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* pCharacteristic) {
-        String value = pCharacteristic->getValue();
+        std::string stdValue = pCharacteristic->getValue();
+        String value = String(stdValue.c_str());
         if (value.length() > 0) {
             Serial.printf("Received: %s\n", value.c_str());
             

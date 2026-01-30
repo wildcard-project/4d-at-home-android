@@ -17,18 +17,82 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
+ * LED色プリセット（4DHOME_STATION_CONTROL.ino準拠）
+ */
+enum class LedColorPreset(val displayName: String, val colorId: Int) {
+    PINK("ピンク", 0),
+    RED("赤", 1),
+    ORANGE("オレンジ", 2),
+    YELLOW("黄色", 3),
+    YELLOW_GREEN("黄緑", 4),
+    GREEN("緑", 5),
+    DARK_GREEN("深緑", 6),
+    CYAN("水色", 7),
+    BLUE("青", 8),
+    PURPLE("紫", 9),
+    WHITE("白", 10),
+    OFF("消灯", 11)
+}
+
+/**
+ * LED明るさ（4DHOME_STATION_CONTROL.ino準拠）
+ */
+enum class LedBrightnessLevel(val displayName: String, val value: Int) {
+    OFF("OFF", 0),
+    LOW("弱", 1),
+    HIGH("強", 2)
+}
+
+/**
+ * LEDエフェクト（4DHOME_STATION_CONTROL.ino準拠）
+ */
+enum class LedEffectMode(val displayName: String, val value: Int) {
+    STEADY("点灯", 0),
+    BLINK("点滅", 1),
+    BREATHE("呼吸", 2)
+}
+
+/**
+ * LEDトランジション（4DHOME_STATION_CONTROL.ino準拠）
+ */
+enum class LedTransitionMode(val displayName: String, val value: Int) {
+    INSTANT("一瞬", 0),
+    FADE("フェード", 1)
+}
+
+/**
+ * ミストモード（4DHOME_STATION_CONTROL.ino準拠）
+ */
+enum class MistMode(val displayName: String, val value: Int) {
+    OFF("OFF", 0),
+    SHOT("一瞬", 1),
+    CONTINUOUS("継続", 2)
+}
+
+/**
+ * 振動モード
+ */
+enum class VibrationLevel(val displayName: String, val intensityValue: Int) {
+    OFF("OFF", 0),
+    WEAK("弱", 64),
+    MEDIUM("中", 128),
+    STRONG("強", 255)
+}
+
+/**
  * エフェクト状態
  */
 data class EffectState(
-    val fanIntensity: Int = 0,
-    val waterIntensity: Int = 0,
-    val mistIntensity: Int = 0,
-    val ledR: Int = 0,
-    val ledG: Int = 0,
-    val ledB: Int = 0,
-    val ledBrightness: Int = 255,
-    val motor1Intensity: Int = 0,
-    val motor2Intensity: Int = 0
+    // EffectStation
+    val fanOn: Boolean = false,
+    val mistMode: MistMode = MistMode.OFF,
+    val ledColor: LedColorPreset = LedColorPreset.OFF,
+    val ledBrightness: LedBrightnessLevel = LedBrightnessLevel.OFF,
+    val ledEffect: LedEffectMode = LedEffectMode.STEADY,
+    val ledTransition: LedTransitionMode = LedTransitionMode.INSTANT,
+    // ActionDrive
+    val motor1Level: VibrationLevel = VibrationLevel.OFF,
+    val motor2Level: VibrationLevel = VibrationLevel.OFF
 )
 
 /**
@@ -85,16 +149,27 @@ class ControlViewModel @Inject constructor(
         }
     }
 
+    // ===============================
+    // EffectStation制御
+    // ===============================
+
     // === ファン制御 ===
-    
-    fun setFanIntensity(intensity: Int) {
+    fun toggleFan() {
+        val newState = !_uiState.value.effectState.fanOn
         _uiState.value = _uiState.value.copy(
-            effectState = _uiState.value.effectState.copy(fanIntensity = intensity)
+            effectState = _uiState.value.effectState.copy(fanOn = newState)
         )
-        sendFanCommand(intensity > 0)
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendFanCommand(newState)
+            handleResult(result)
+        }
     }
 
-    private fun sendFanCommand(on: Boolean) {
+    fun setFan(on: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            effectState = _uiState.value.effectState.copy(fanOn = on)
+        )
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
             val result = commandSender.sendFanCommand(on)
@@ -103,18 +178,7 @@ class ControlViewModel @Inject constructor(
     }
 
     // === 水噴射制御 ===
-    
-    fun setWaterIntensity(intensity: Int) {
-        _uiState.value = _uiState.value.copy(
-            effectState = _uiState.value.effectState.copy(waterIntensity = intensity)
-        )
-        // 水噴射はワンショット
-        if (intensity > 0) {
-            sendSplashCommand()
-        }
-    }
-
-    private fun sendSplashCommand() {
+    fun triggerSplash() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
             val result = commandSender.sendSplashCommand()
@@ -123,38 +187,42 @@ class ControlViewModel @Inject constructor(
     }
 
     // === ミスト制御 ===
-    
-    fun setMistIntensity(intensity: Int) {
+    fun setMistMode(mode: MistMode) {
         _uiState.value = _uiState.value.copy(
-            effectState = _uiState.value.effectState.copy(mistIntensity = intensity)
+            effectState = _uiState.value.effectState.copy(mistMode = mode)
         )
-        sendMistCommand(intensity)
-    }
-
-    private fun sendMistCommand(intensity: Int) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendMistCommand(intensity)
+            val result = commandSender.sendMistCommand(mode.value)
             handleResult(result)
         }
     }
 
     // === LED制御 ===
-    
-    fun setLedColor(r: Int, g: Int, b: Int) {
+    fun setLedColor(color: LedColorPreset) {
         _uiState.value = _uiState.value.copy(
-            effectState = _uiState.value.effectState.copy(
-                ledR = r,
-                ledG = g,
-                ledB = b
-            )
+            effectState = _uiState.value.effectState.copy(ledColor = color)
         )
         sendLedCommand()
     }
 
-    fun setLedBrightness(brightness: Int) {
+    fun setLedBrightness(brightness: LedBrightnessLevel) {
         _uiState.value = _uiState.value.copy(
             effectState = _uiState.value.effectState.copy(ledBrightness = brightness)
+        )
+        sendLedCommand()
+    }
+
+    fun setLedEffect(effect: LedEffectMode) {
+        _uiState.value = _uiState.value.copy(
+            effectState = _uiState.value.effectState.copy(ledEffect = effect)
+        )
+        sendLedCommand()
+    }
+
+    fun setLedTransition(transition: LedTransitionMode) {
+        _uiState.value = _uiState.value.copy(
+            effectState = _uiState.value.effectState.copy(ledTransition = transition)
         )
         sendLedCommand()
     }
@@ -163,62 +231,74 @@ class ControlViewModel @Inject constructor(
         val state = _uiState.value.effectState
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendLedCommand(
-                state.ledR,
-                state.ledG,
-                state.ledB,
-                state.ledBrightness
+            val result = commandSender.sendLedColorCommand(
+                colorId = state.ledColor.colorId,
+                brightness = state.ledBrightness.value,
+                effect = state.ledEffect.value,
+                transition = state.ledTransition.value
             )
             handleResult(result)
         }
     }
 
-    // === プリセットLEDカラー ===
-    
-    fun setPresetColor(preset: LedPreset) {
-        setLedColor(preset.r, preset.g, preset.b)
-    }
-
-    // === モーター制御 ===
-    
-    fun setMotor1Intensity(intensity: Int) {
-        _uiState.value = _uiState.value.copy(
-            effectState = _uiState.value.effectState.copy(motor1Intensity = intensity)
-        )
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendMotor1Command(intensity)
-            handleResult(result)
-        }
-    }
-
-    fun setMotor2Intensity(intensity: Int) {
-        _uiState.value = _uiState.value.copy(
-            effectState = _uiState.value.effectState.copy(motor2Intensity = intensity)
-        )
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendMotor2Command(intensity)
-            handleResult(result)
-        }
-    }
-
-    fun setBothMotorsIntensity(intensity: Int) {
+    fun ledOff() {
         _uiState.value = _uiState.value.copy(
             effectState = _uiState.value.effectState.copy(
-                motor1Intensity = intensity,
-                motor2Intensity = intensity
+                ledColor = LedColorPreset.OFF,
+                ledBrightness = LedBrightnessLevel.OFF
             )
         )
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSending = true)
-            val result = commandSender.sendBothMotorsCommand(intensity)
+            val result = commandSender.sendLedColorCommand(11, 0, 0, 0)
             handleResult(result)
         }
     }
 
-    // === 全停止 ===
-    
+    // ===============================
+    // ActionDrive制御
+    // ===============================
+
+    fun setMotor1Level(level: VibrationLevel) {
+        _uiState.value = _uiState.value.copy(
+            effectState = _uiState.value.effectState.copy(motor1Level = level)
+        )
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendMotor1Command(level.intensityValue)
+            handleResult(result)
+        }
+    }
+
+    fun setMotor2Level(level: VibrationLevel) {
+        _uiState.value = _uiState.value.copy(
+            effectState = _uiState.value.effectState.copy(motor2Level = level)
+        )
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendMotor2Command(level.intensityValue)
+            handleResult(result)
+        }
+    }
+
+    fun setBothMotorsLevel(level: VibrationLevel) {
+        _uiState.value = _uiState.value.copy(
+            effectState = _uiState.value.effectState.copy(
+                motor1Level = level,
+                motor2Level = level
+            )
+        )
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSending = true)
+            val result = commandSender.sendBothMotorsCommand(level.intensityValue)
+            handleResult(result)
+        }
+    }
+
+    // ===============================
+    // 全停止
+    // ===============================
+
     fun stopAllEffects() {
         _uiState.value = _uiState.value.copy(
             effectState = EffectState()
@@ -233,12 +313,10 @@ class ControlViewModel @Inject constructor(
     fun stopEffectStation() {
         _uiState.value = _uiState.value.copy(
             effectState = _uiState.value.effectState.copy(
-                fanIntensity = 0,
-                waterIntensity = 0,
-                mistIntensity = 0,
-                ledR = 0,
-                ledG = 0,
-                ledB = 0
+                fanOn = false,
+                mistMode = MistMode.OFF,
+                ledColor = LedColorPreset.OFF,
+                ledBrightness = LedBrightnessLevel.OFF
             )
         )
         viewModelScope.launch {
@@ -251,8 +329,8 @@ class ControlViewModel @Inject constructor(
     fun stopMotors() {
         _uiState.value = _uiState.value.copy(
             effectState = _uiState.value.effectState.copy(
-                motor1Intensity = 0,
-                motor2Intensity = 0
+                motor1Level = VibrationLevel.OFF,
+                motor2Level = VibrationLevel.OFF
             )
         )
         viewModelScope.launch {
@@ -261,6 +339,10 @@ class ControlViewModel @Inject constructor(
             handleResult(result)
         }
     }
+
+    // ===============================
+    // ユーティリティ
+    // ===============================
 
     private fun handleResult(result: Result<Unit>) {
         _uiState.value = _uiState.value.copy(
@@ -276,20 +358,4 @@ class ControlViewModel @Inject constructor(
     fun clearError() {
         _uiState.value = _uiState.value.copy(lastError = null)
     }
-}
-
-/**
- * LEDプリセットカラー
- */
-enum class LedPreset(val displayName: String, val r: Int, val g: Int, val b: Int) {
-    RED("レッド", 255, 0, 0),
-    GREEN("グリーン", 0, 255, 0),
-    BLUE("ブルー", 0, 0, 255),
-    YELLOW("イエロー", 255, 255, 0),
-    CYAN("シアン", 0, 255, 255),
-    MAGENTA("マゼンタ", 255, 0, 255),
-    WHITE("ホワイト", 255, 255, 255),
-    WARM_WHITE("暖白色", 255, 200, 150),
-    ORANGE("オレンジ", 255, 128, 0),
-    PURPLE("パープル", 128, 0, 255)
 }
