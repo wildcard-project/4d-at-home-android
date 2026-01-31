@@ -1,10 +1,14 @@
 package com.wildcard.fourd_at_home.ui.videoselect
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,7 +54,15 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -186,15 +198,48 @@ fun VideoSelectScreen(
                     
                     val isCenterPage = page == pagerState.currentPage
 
-                    CarouselCard(
-                        content = content,
-                        rotationY = rotationY,
-                        rotationZ = rotationZ,
-                        scale = scale,
-                        alpha = alpha,
-                        isCenterPage = isCenterPage,
-                        onClick = { onVideoSelected(content) }
-                    )
+                    if (isCenterPage) {
+                        // 中央カード：上スワイプジェスチャー + Hero遷移
+                        var dragOffset by remember { mutableStateOf(0f) }
+                        Box(
+                            modifier = Modifier
+                                .pointerInput(Unit) {
+                                    detectVerticalDragGestures(
+                                        onDragEnd = {
+                                            if (dragOffset < -100f) {
+                                                // 上スワイプでSettings画面へ
+                                                onVideoSelected(content)
+                                            }
+                                            dragOffset = 0f
+                                        },
+                                        onVerticalDrag = { _, dragAmount ->
+                                            dragOffset += dragAmount
+                                        }
+                                    )
+                                }
+                        ) {
+                            CarouselCard(
+                                content = content,
+                                rotationY = rotationY,
+                                rotationZ = rotationZ,
+                                scale = scale,
+                                alpha = alpha,
+                                isCenterPage = isCenterPage,
+                                onClick = { onVideoSelected(content) }
+                            )
+                        }
+                    } else {
+                        // 左右のカード：通常表示
+                        CarouselCard(
+                            content = content,
+                            rotationY = rotationY,
+                            rotationZ = rotationZ,
+                            scale = scale,
+                            alpha = alpha,
+                            isCenterPage = isCenterPage,
+                            onClick = { onVideoSelected(content) }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -212,6 +257,56 @@ val thumbnailMap = mapOf(
     "wild_speed_fire_boost" to "sample_thumbnail.png"
     // 他の動画IDとサムネを追加
 )
+
+@Composable
+fun AssetImage(
+    assetPath: String?,
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop
+) {
+    val context = LocalContext.current
+    val bitmap = remember(assetPath) {
+        if (assetPath.isNullOrBlank()) return@remember null
+        try {
+            context.assets.open(assetPath).use { stream ->
+                val bmp = BitmapFactory.decodeStream(stream)
+                bmp?.asImageBitmap()
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    if (bitmap != null) {
+        Image(
+            bitmap = bitmap,
+            contentDescription = null,
+            modifier = modifier,
+            contentScale = contentScale
+        )
+    } else {
+        // フォールバック表示（既存のプレースホルダー風）
+        Box(
+            modifier = modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF1A1A2E),
+                            Color(0xFF0F0F1E)
+                        )
+                    )
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.PlayArrow,
+                contentDescription = null,
+                modifier = Modifier.size(48.dp),
+                tint = Color.White.copy(alpha = 0.12f)
+            )
+        }
+    }
+}
 
 /**
  * カルーセルカード（縦長カード）
@@ -281,23 +376,30 @@ fun CarouselCard(
                     .fillMaxSize()
                     .clip(RoundedCornerShape(28.dp))
             ) {
-                // サムネイル（プレースホルダー）
-                Box(
+                // サムネイル（assets 内の画像を表示）
+                val context = LocalContext.current
+                val assetPath = remember(content.id) {
+                    val candidates = mutableListOf<String>()
+                    thumbnailMap[content.id]?.let { candidates.add(it) }
+                    candidates.addAll(listOf("${content.id}.jpeg", "${content.id}.jpg", "${content.id}.png"))
+
+                    candidates.firstOrNull { name ->
+                        try {
+                            context.assets.open(name).close()
+                            true
+                        } catch (e: Exception) {
+                            false
+                        }
+                    }
+                }
+
+                AssetImage(
+                    assetPath = assetPath,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color(0xFF1A1A2E),
-                                    Color(0xFF0F0F1E)
-                                )
-                            )
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // サムネイル読み込み処理は後で追加
-                    // AssetImage(path = thumbnailMap[content.id], ...)
-                }
+                        .clip(RoundedCornerShape(28.dp)),
+                    contentScale = ContentScale.Crop
+                )
 
                 // 下部グラデーションscrim
                 Box(

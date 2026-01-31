@@ -4,6 +4,16 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.ui.platform.LocalContext
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
@@ -30,6 +40,7 @@ import androidx.compose.material.icons.filled.BluetoothConnected
 import androidx.compose.material.icons.filled.BluetoothSearching
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SignalCellular4Bar
 import androidx.compose.material.icons.filled.SignalCellularAlt
@@ -39,25 +50,35 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wildcard.fourd_at_home.R
+import com.wildcard.fourd_at_home.domain.ContentLibrary
 import com.wildcard.fourd_at_home.ui.common.AppBackground
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wildcard.fourd_at_home.ble.BleConnection
@@ -75,6 +96,17 @@ import com.wildcard.fourd_at_home.ui.theme.StatusDisconnected
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+/**
+ * 動画ID → サムネイルリソースのマッピング（UIレイヤー固有）
+ */
+private val thumbnailMap = mapOf(
+    "wild_speed_fire_boost" to R.drawable.thumb_wild_speed,
+    "space_adventure" to R.drawable.thumb_space,
+    "ocean_depths" to R.drawable.thumb_ocean,
+    "mountain_storm" to R.drawable.thumb_mountain,
+    "city_chase" to R.drawable.thumb_city
+)
 
 @Composable
 fun SettingsScreen(
@@ -113,70 +145,108 @@ fun SettingsScreen(
     }
 
     AppBackground {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
-        ) {
-            // ヘッダー
-            Text(
-                text = "BLE デバイス設定",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground
+        val slideOffset = remember { Animatable(24f) }
+        val alphaValue = remember { Animatable(0f) }
+
+        LaunchedEffect(Unit) {
+            slideOffset.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(durationMillis = 400)
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // スキャンセクション
-            ScanSection(
-                scanState = uiState.scanState,
-                scannedDevices = uiState.scannedDevices,
-                connections = uiState.connections,
-                onStartScan = { viewModel.startScan() },
-                onStopScan = { viewModel.stopScan() },
-                onConnectDevice = { viewModel.connectDevice(it) },
-                onDisconnectDevice = { viewModel.disconnectDevice(it) }
+            alphaValue.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(durationMillis = 400)
             )
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
+        val hasConnections = uiState.connections.values.any { 
+            it.state == ConnectionState.CONNECTED 
+        }
 
-            // 接続済みデバイスセクション
-            ConnectedDevicesSection(
-                connections = uiState.connections,
-                onDisconnect = { viewModel.disconnectDevice(it) },
-                onDisconnectAll = { viewModel.disconnectAll() }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 「再生へ」ボタン（デバイス接続状態に応じて有効化）
-            if (videoId.isNotEmpty()) {
-                val hasConnections = uiState.connections.values.any { 
-                    it.state == ConnectionState.CONNECTED 
-                }
-                Button(
-                    onClick = onNavigateToPlayback,
-                    enabled = hasConnections,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
+        Scaffold(
+            containerColor = Color.Transparent,
+            floatingActionButton = {
+                if (videoId.isNotEmpty() && hasConnections) {
+                    FloatingActionButton(
+                        onClick = onNavigateToPlayback,
                         containerColor = NeonRed
-                    )
-                ) {
-                    Text(
-                        text = if (hasConnections) "再生へ" else "デバイスを接続してください",
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "再生へ",
+                            tint = Color.White
+                        )
+                    }
                 }
-                
-                Spacer(modifier = Modifier.height(16.dp))
             }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                // 上部：縮んだカード（固定）
+                ThumbnailCard(
+                    videoId = videoId,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp)
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                )
 
-            // コマンドログセクション
-            CommandLogSection(
-                commandLog = uiState.commandLog,
-                onClearLog = { viewModel.clearCommandLog() }
-            )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // 下部：通信/設定の内容（スクロール可能）
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp)
+                        .graphicsLayer {
+                            translationY = slideOffset.value
+                            alpha = alphaValue.value
+                        }
+                ) {
+                    // ヘッダー
+                    Text(
+                        text = "BLE デバイス設定",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // スキャンセクション
+                    ScanSection(
+                        scanState = uiState.scanState,
+                        scannedDevices = uiState.scannedDevices,
+                        connections = uiState.connections,
+                        onStartScan = { viewModel.startScan() },
+                        onStopScan = { viewModel.stopScan() },
+                        onConnectDevice = { viewModel.connectDevice(it) },
+                        onDisconnectDevice = { viewModel.disconnectDevice(it) }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // 接続済みデバイスセクション
+                    ConnectedDevicesSection(
+                        connections = uiState.connections,
+                        onDisconnect = { viewModel.disconnectDevice(it) },
+                        onDisconnectAll = { viewModel.disconnectAll() }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // コマンドログセクション
+                    CommandLogSection(
+                        commandLog = uiState.commandLog,
+                        onClearLog = { viewModel.clearCommandLog() }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
         }
     }
 }
@@ -700,4 +770,93 @@ private fun ErrorDialog(
             }
         }
     )
+}
+
+/**
+ * 上部サムネイルカード（横長）
+ * VideoSelectScreenからHero遷移で縮小されて表示
+ */
+@Composable
+private fun ThumbnailCard(
+    videoId: String,
+    modifier: Modifier = Modifier
+) {
+    val content = ContentLibrary.contents.find { it.id == videoId }
+    val thumbnailRes = thumbnailMap[videoId] ?: R.drawable.ic_launcher_foreground
+    val context = LocalContext.current
+
+    // assets 内の候補をチェックしてあれば優先表示
+    val assetName = remember(videoId) {
+        if (videoId.isBlank()) return@remember null
+        val candidates = listOf("$videoId.jpeg", "$videoId.jpg", "$videoId.png")
+        candidates.firstOrNull { name ->
+            try {
+                context.assets.open(name).close()
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
+    }
+
+    val bitmap = remember(assetName) {
+        if (assetName == null) return@remember null
+        try {
+            context.assets.open(assetName).use { stream ->
+                BitmapFactory.decodeStream(stream)?.asImageBitmap()
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+    ) {
+        // サムネイル画像（assets のものを優先）
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap,
+                contentDescription = content?.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            Image(
+                painter = painterResource(id = thumbnailRes),
+                contentDescription = content?.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        // グラデーションオーバーレイ
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.7f)
+                        )
+                    )
+                )
+        )
+
+        // タイトル表示（左下）
+        if (content != null) {
+            Text(
+                text = content.title,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.White,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp)
+            )
+        }
+    }
 }
