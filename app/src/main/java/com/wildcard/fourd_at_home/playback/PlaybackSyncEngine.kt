@@ -23,7 +23,11 @@ class PlaybackSyncEngine @Inject constructor(
 ) {
     companion object {
         private const val TAG = "PlaybackSyncEngine"
-        private const val LOOKAHEAD_MS = 50L      // 先読み時間
+        // 250ms間隔のイベントに対応するため、200ms先読み
+        // これによりBLE通信遅延(約50-100ms)を考慮して余裕を持って送信
+        private const val LOOKAHEAD_MS = 200L
+        // コマンド間の最小間隔（ESP32の処理時間を考慮）
+        private const val MIN_COMMAND_INTERVAL_MS = 20L
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -155,13 +159,15 @@ class PlaybackSyncEngine @Inject constructor(
     /**
      * 指定位置でのイベント処理
      * 
-     * 同じ時刻のイベントは以下の順序で処理する:
-     * 1. STOP - まず停止処理を行う
-     * 2. CAPTION - キャプション更新
-     * 3. START/SHOT - エフェクト開始
+     * 250msごとのイベント間隔に対応するため、以下の最適化を実施:
+     * 1. 同じ時刻のイベントは順序を保ちつつ効率的に処理
+     * 2. STOP→START最適化でBLE通信を削減
+     * 3. 異なるデバイスへのコマンドは並列送信
      * 
-     * さらに、同じエフェクトのSTOP→STARTがある場合は最適化し、
-     * STOPを送らずに直接新しいモードでSTARTを送る（BLE通信の効率化）
+     * 処理順序:
+     * 1. STOP - まず停止処理を行う
+     * 2. CAPTION - キャプション更新（BLE不要）
+     * 3. START/SHOT - エフェクト開始
      */
     private fun processEventsAtPosition(positionMs: Long) {
         val eventsToExecute = scheduledEvents.filter { scheduled ->
@@ -193,6 +199,8 @@ class PlaybackSyncEngine @Inject constructor(
                 // 同じエフェクトのSTOP→START最適化を検出
                 val optimizedEvents = optimizeStopStartEvents(sortedEvents)
                 
+                // バッチ処理: 同一時刻のイベントをまとめて処理
+                // CAPTIONは即座に処理（BLE不要）、他はexecuteEventで処理
                 optimizedEvents.forEach { (scheduled, skipStop) ->
                     scheduled.executed = true
                     if (!skipStop) {
@@ -200,6 +208,11 @@ class PlaybackSyncEngine @Inject constructor(
                     } else {
                         Log.d(TAG, "STOP最適化によりスキップ: ${scheduled.event.effect} @ ${scheduled.event.t}s")
                     }
+                }
+                
+                // 同一時刻のイベント処理後、最小間隔を空ける（ESP32の処理時間確保）
+                if (eventsAtTime.size > 1) {
+                    kotlinx.coroutines.delay(MIN_COMMAND_INTERVAL_MS)
                 }
             }
             
@@ -347,8 +360,8 @@ class PlaybackSyncEngine @Inject constructor(
                             commandSender.sendMotor2StringCommand(command)
                         }
                         MotorTarget.BOTH -> {
-                            commandSender.sendMotor1StringCommand(command)
-                            commandSender.sendMotor2StringCommand(command)
+                            // 並列送信で両モーターに同時にコマンドを送信
+                            commandSender.sendBothMotorsParallel(command)
                         }
                     }
                 }
@@ -392,8 +405,8 @@ class PlaybackSyncEngine @Inject constructor(
                             commandSender.sendMotor2StringCommand("OFF")
                         }
                         MotorTarget.BOTH -> {
-                            commandSender.sendMotor1StringCommand("OFF")
-                            commandSender.sendMotor2StringCommand("OFF")
+                            // 並列送信で両モーターを同時にOFF
+                            commandSender.sendBothMotorsParallel("OFF")
                         }
                     }
                 }

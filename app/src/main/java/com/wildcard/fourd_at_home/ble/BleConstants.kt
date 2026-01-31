@@ -25,7 +25,11 @@ object BleConstants {
     const val SCAN_TIMEOUT_MS = 15_000L
     const val CONNECTION_TIMEOUT_MS = 10_000L
     const val WRITE_TIMEOUT_MS = 5_000L
-    const val GATT_OPERATION_DELAY_MS = 100L
+    // BLE書き込み間の遅延（ESP32の処理時間を考慮）
+    // 250msイベント間隔に対応するため、複数デバイスへの送信が完了するよう調整
+    const val GATT_OPERATION_DELAY_MS = 30L
+    // 同一デバイスへの連続コマンド間隔
+    const val SAME_DEVICE_COMMAND_DELAY_MS = 20L
 
     // === 再接続設定 ===
     const val MAX_RECONNECT_ATTEMPTS = 3
