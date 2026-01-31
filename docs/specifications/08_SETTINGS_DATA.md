@@ -23,6 +23,23 @@
 
 4D@HOME Androidアプリでは、以下のデータを永続化します。
 
+```mermaid
+graph TB
+    subgraph App["📱 Android App"]
+        VM["ViewModel"]
+        Repo["SettingsRepository"]
+    end
+    
+    subgraph Storage["💾 Storage"]
+        DataStore["DataStore Preferences<br/>(Protocol Buffers)"]
+        Assets["Assets<br/>(JSON/MP4)"]
+    end
+    
+    VM <-->|"Flow<T> / suspend"| Repo
+    Repo <--> DataStore
+    Repo --> Assets
+```
+
 | データ種別 | 保存方式 | 用途 |
 |-----------|---------|------|
 | アプリ設定 | DataStore Preferences | ユーザー設定 |

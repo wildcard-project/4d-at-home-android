@@ -50,38 +50,30 @@
 
 ### 2.1 物理構成図
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Android端末                               │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │  4D@HOME App                                               │  │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │  │
-│  │  │ PlaybackScreen│ │ControlScreen│ │SettingsScreen│        │  │
-│  │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘        │  │
-│  │         │                │                │                │  │
-│  │  ┌──────┴────────────────┴────────────────┴──────┐        │  │
-│  │  │         PlaybackSyncEngine / CommandSender      │        │  │
-│  │  └───────────────────────┬───────────────────────┘        │  │
-│  │                          │                                 │  │
-│  │  ┌───────────────────────┴───────────────────────┐        │  │
-│  │  │           BLE Device Manager                    │        │  │
-│  │  └───────────────────────┬───────────────────────┘        │  │
-│  └──────────────────────────┼────────────────────────────────┘  │
-└─────────────────────────────┼────────────────────────────────────┘
-                              │ BLE (Bluetooth Low Energy)
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-┌───────────────┐    ┌───────────────┐    ┌───────────────┐
-│ EffectStation │    │ActionDrive M1 │    │ActionDrive M2 │
-│   (4D_ES_*)   │    │  (4D_AD1_*)   │    │  (4D_AD2_*)   │
-│               │    │               │    │               │
-│ ・ファン      │    │ ・振動モーター│    │ ・振動モーター│
-│ ・水噴射      │    │   (背中/前方) │    │   (お尻/後方) │
-│ ・ミスト      │    │               │    │               │
-│ ・LED (RGBW)  │    │               │    │               │
-└───────────────┘    └───────────────┘    └───────────────┘
-     ESP32               ESP32               ESP32
+```mermaid
+graph TB
+    subgraph Android["📱 Android端末"]
+        subgraph App["4D@HOME App"]
+            PlaybackScreen["🎬 PlaybackScreen"]
+            ControlScreen["🎮 ControlScreen"]
+            SettingsScreen["⚙️ SettingsScreen"]
+        end
+        SyncEngine["PlaybackSyncEngine / CommandSender"]
+        BleManager["BLE Device Manager"]
+        
+        PlaybackScreen --> SyncEngine
+        ControlScreen --> SyncEngine
+        SettingsScreen --> BleManager
+        SyncEngine --> BleManager
+    end
+    
+    BleManager -->|BLE| ES["🌀 EffectStation<br/>4D_ES_XXXX<br/>━━━━━━━━<br/>ファン・水噴射<br/>ミスト・LED"]
+    BleManager -->|BLE| M1["📳 ActionDrive M1<br/>4D_AD1_XXXX<br/>━━━━━━━━<br/>振動モーター<br/>(背中/前方)"]
+    BleManager -->|BLE| M2["📳 ActionDrive M2<br/>4D_AD2_XXXX<br/>━━━━━━━━<br/>振動モーター<br/>(お尻/後方)"]
+    
+    ES --- ESP1["ESP32"]
+    M1 --- ESP2["ESP32"]
+    M2 --- ESP3["ESP32"]
 ```
 
 ### 2.2 ソフトウェアアーキテクチャ
@@ -134,22 +126,28 @@ app/src/main/java/com/wildcard/fourd_at_home/
 
 ### 2.3 データフロー
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   動画再生   │────▶│  同期エンジン  │────▶│  コマンド送信 │
-│ (ExoPlayer) │     │ (SyncEngine) │     │(CommandSender)│
-└─────────────┘     └─────────────┘     └──────┬──────┘
-                           │                    │
-                           │                    ▼
-                    ┌──────┴──────┐     ┌─────────────┐
-                    │タイムラインJSON│     │  BLE Manager │
-                    │  (events[]) │     │  (GATT接続)  │
-                    └─────────────┘     └──────┬──────┘
-                                               │
-                                        ┌──────┴──────┐
-                                        │  ESP32×3台  │
-                                        │ (エフェクト) │
-                                        └─────────────┘
+```mermaid
+flowchart LR
+    subgraph Input["入力"]
+        Video["🎬 動画再生<br/>(ExoPlayer)"]
+        Timeline["📄 タイムラインJSON<br/>(events[])"]
+    end
+    
+    subgraph Processing["処理"]
+        Sync["🔄 同期エンジン<br/>(SyncEngine)"]
+        Cmd["📤 コマンド送信<br/>(CommandSender)"]
+        Ble["📶 BLE Manager<br/>(GATT接続)"]
+    end
+    
+    subgraph Output["出力"]
+        ESP["🎮 ESP32×3台<br/>(エフェクト)"]
+    end
+    
+    Video --> Sync
+    Timeline --> Sync
+    Sync --> Cmd
+    Cmd --> Ble
+    Ble --> ESP
 ```
 
 ---
@@ -208,8 +206,9 @@ app/src/main/java/com/wildcard/fourd_at_home/
 | 03 | [TIMELINE_FORMAT.md](03_TIMELINE_FORMAT.md) | タイムラインJSON仕様 |
 | 04 | [ESP32_EFFECT_STATION.md](04_ESP32_EFFECT_STATION.md) | EffectStation ファームウェア仕様 |
 | 05 | [ESP32_ACTION_DRIVE.md](05_ESP32_ACTION_DRIVE.md) | ActionDrive ファームウェア仕様 |
-| 06 | [UI_DESIGN.md](06_UI_DESIGN.md) | UI/UXデザイン仕様 |
-| 07 | [HARDWARE_SETUP.md](07_HARDWARE_SETUP.md) | ハードウェア構成・配線仕様 |
+| 06 | [SYSTEM_INTEGRATION.md](06_SYSTEM_INTEGRATION.md) | システム統合仕様 |
+| 07 | [UI_COMPONENTS.md](07_UI_COMPONENTS.md) | UIコンポーネント仕様 |
+| 08 | [SETTINGS_DATA.md](08_SETTINGS_DATA.md) | 設定データ仕様 |
 
 ---
 
@@ -265,20 +264,20 @@ pio device monitor --baud 115200
 
 | ファイル | 行数 | 説明 |
 |---------|------|------|
-| `BleConstants.kt` | 35行 | BLE UUID定数 |
-| `BleModels.kt` | 125行 | BLEデータモデル |
-| `BleScanner.kt` | 230行 | BLEスキャナー |
-| `BleDeviceManager.kt` | 545行 | BLE接続管理 |
-| `CommandSender.kt` | 220行 | コマンド送信 |
-| `TimelineModels.kt` | 150行 | タイムラインモデル |
-| `TimelineParser.kt` | 180行 | JSONパーサー |
-| `PlaybackSyncEngine.kt` | 446行 | 同期エンジン |
-| `SettingsRepository.kt` | 250行 | 設定永続化 |
+| `BleConstants.kt` | 38行 | BLE UUID定数 |
+| `BleModels.kt` | 129行 | BLEデータモデル |
+| `BleScanner.kt` | 235行 | BLEスキャナー |
+| `BleDeviceManager.kt` | 616行 | BLE接続管理 |
+| `CommandSender.kt` | 262行 | コマンド送信 |
+| `TimelineModels.kt` | 163行 | タイムラインモデル |
+| `TimelineParser.kt` | 170行 | JSONパーサー |
+| `PlaybackSyncEngine.kt` | 605行 | 同期エンジン |
+| `SettingsRepository.kt` | 220行 | 設定永続化 |
 
 ### ESP32ファームウェア
 
 | ファイル | 行数 | 説明 |
 |---------|------|------|
-| `effect_station/main.cpp` | 504行 | EffectStation |
-| `action_drive_motor1/main.cpp` | 418行 | Motor1 |
-| `action_drive_motor2/main.cpp` | 418行 | Motor2 |
+| `effect_station/main.cpp` | 391行 | EffectStation |
+| `action_drive_motor1/main.cpp` | 308行 | Motor1 |
+| `action_drive_motor2/main.cpp` | 308行 | Motor2 |

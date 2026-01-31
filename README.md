@@ -101,79 +101,61 @@ BLE（Bluetooth Low Energy）を使用してESP32デバイスと**直接通信**
 
 ### 物理構成図
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Android端末                               │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │  4D@HOME App                                               │  │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │  │
-│  │  │ PlaybackScreen│ │ControlScreen│ │SettingsScreen│        │  │
-│  │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘        │  │
-│  │         │                │                │                │  │
-│  │  ┌──────┴────────────────┴────────────────┴──────┐        │  │
-│  │  │         PlaybackSyncEngine / CommandSender      │        │  │
-│  │  └───────────────────────┬───────────────────────┘        │  │
-│  │                          │                                 │  │
-│  │  ┌───────────────────────┴───────────────────────┐        │  │
-│  │  │           BLE Device Manager                    │        │  │
-│  │  └───────────────────────┬───────────────────────┘        │  │
-│  └──────────────────────────┼────────────────────────────────┘  │
-└─────────────────────────────┼────────────────────────────────────┘
-                              │ BLE (Bluetooth Low Energy)
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-┌───────────────┐    ┌───────────────┐    ┌───────────────┐
-│ EffectStation │    │ActionDrive M1 │    │ActionDrive M2 │
-│   (4D_ES_*)   │    │  (4D_AD1_*)   │    │  (4D_AD2_*)   │
-│               │    │               │    │               │
-│ ・ファン      │    │ ・振動モーター│    │ ・振動モーター│
-│ ・水噴射      │    │   (背中/前方) │    │   (お尻/後方) │
-│ ・ミスト      │    │               │    │               │
-│ ・LED (RGBW)  │    │               │    │               │
-└───────────────┘    └───────────────┘    └───────────────┘
-     ESP32               ESP32               ESP32
+```mermaid
+graph TB
+    subgraph Android["📱 Android端末"]
+        subgraph App["4D@HOME App"]
+            PlaybackScreen["🎬 PlaybackScreen"]
+            ControlScreen["🎮 ControlScreen"]
+            SettingsScreen["⚙️ SettingsScreen"]
+        end
+        SyncEngine["PlaybackSyncEngine / CommandSender"]
+        BleManager["BLE Device Manager"]
+        
+        PlaybackScreen --> SyncEngine
+        ControlScreen --> SyncEngine
+        SettingsScreen --> BleManager
+        SyncEngine --> BleManager
+    end
+    
+    BleManager -->|BLE| ES["🌀 EffectStation<br/>4D_ES_XXXX<br/>━━━━━━━━<br/>ファン・水噴射<br/>ミスト・LED"]
+    BleManager -->|BLE| M1["📳 ActionDrive M1<br/>4D_AD1_XXXX<br/>━━━━━━━━<br/>振動モーター<br/>(背中/前方)"]
+    BleManager -->|BLE| M2["📳 ActionDrive M2<br/>4D_AD2_XXXX<br/>━━━━━━━━<br/>振動モーター<br/>(お尻/後方)"]
+    
+    ES --- ESP1["ESP32"]
+    M1 --- ESP2["ESP32"]
+    M2 --- ESP3["ESP32"]
 ```
 
 ### ソフトウェアアーキテクチャ
 
 **MVVM + Clean Architecture** を採用
 
+```mermaid
+graph TB
+    subgraph Presentation["📱 Presentation Layer"]
+        Composables["🎨 Composables<br/>(Screen UI)"]
+        ViewModels["📊 ViewModels<br/>(StateFlow/UiState)"]
+        Composables <--> ViewModels
+    end
+    
+    subgraph Domain["⚙️ Domain Layer"]
+        UseCases["🔧 Use Cases / Business Logic<br/>(PlaybackSyncEngine, CommandSender)"]
+    end
+    
+    subgraph Data["💾 Data Layer"]
+        BLE["📶 BLE Layer<br/>(Scanner, Manager)"]
+        Repository["📁 Repository<br/>(SettingsRepo)"]
+        LocalStorage["💿 Local Storage<br/>(DataStore)"]
+    end
+    
+    ViewModels --> UseCases
+    UseCases --> BLE
+    UseCases --> Repository
+    Repository --> LocalStorage
 ```
-app/src/main/java/com/wildcard/fourd_at_home/
-├── FourdAtHomeApplication.kt    # Hilt Application
-├── MainActivity.kt              # エントリーポイント
-│
-├── ble/                         # BLE通信レイヤー (Data Layer)
-│   ├── BleConstants.kt          # UUID/定数定義
-│   ├── BleModels.kt             # データモデル
-│   ├── BleScanner.kt            # デバイススキャン
-│   ├── BleDeviceManager.kt      # 接続管理
-│   └── CommandSender.kt         # コマンド送信
-│
-├── playback/                    # 再生同期レイヤー (Domain Layer)
-│   ├── TimelineModels.kt        # タイムラインモデル
-│   ├── TimelineParser.kt        # JSONパーサー
-│   └── PlaybackSyncEngine.kt    # 同期エンジン
-│
-├── data/                        # データ永続化 (Data Layer)
-│   └── SettingsRepository.kt    # DataStore設定
-│
-├── domain/                      # ドメインモデル
-│   └── Content.kt               # コンテンツモデル
-│
-├── di/                          # 依存性注入モジュール (Hilt)
-│   ├── BleModule.kt
-│   ├── DataModule.kt
-│   └── PlaybackModule.kt
-│
-└── ui/                          # Presentation Layer (Jetpack Compose)
-    ├── navigation/              # Navigation Rail
-    ├── playback/                # 再生画面
-    ├── control/                 # 制御画面
-    ├── settings/                # 設定画面
-    └── theme/                   # Material 3テーマ
-```
+
+### プロジェクト構造
 
 ---
 

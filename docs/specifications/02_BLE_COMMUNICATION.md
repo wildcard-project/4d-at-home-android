@@ -23,26 +23,45 @@
 
 ### 1.1 通信構成
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Android (Central)                         │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │               GATT Client                              │  │
-│  └───────────────────────────────────────────────────────┘  │
-└──────────────────────────┬───────────────────────────────────┘
-                           │ BLE Connection (GATT)
-        ┌──────────────────┼──────────────────┐
-        │                  │                  │
-        ▼                  ▼                  ▼
-┌───────────────┐  ┌───────────────┐  ┌───────────────┐
-│ EffectStation │  │ Motor1        │  │ Motor2        │
-│  (Peripheral) │  │  (Peripheral) │  │  (Peripheral) │
-│               │  │               │  │               │
-│ GATT Server   │  │ GATT Server   │  │ GATT Server   │
-│ ├─ Service    │  │ ├─ Service    │  │ ├─ Service    │
-│ │  ├─ Command │  │ │  ├─ Command │  │ │  ├─ Command │
-│ │  └─ Status  │  │ │  └─ Status  │  │ │  └─ Status  │
-└───────────────┘  └───────────────┘  └───────────────┘
+```mermaid
+graph TB
+    subgraph Android["📱 Android (Central)"]
+        GATT_Client["GATT Client"]
+    end
+    
+    GATT_Client -->|"BLE Connection"| ES
+    GATT_Client -->|"BLE Connection"| M1
+    GATT_Client -->|"BLE Connection"| M2
+    
+    subgraph ES["🌀 EffectStation (Peripheral)"]
+        ES_Server["GATT Server"]
+        ES_Service["Service: 4D580001"]
+        ES_Cmd["Command: 4D580002"]
+        ES_Sts["Status: 4D580003"]
+        ES_Server --> ES_Service
+        ES_Service --> ES_Cmd
+        ES_Service --> ES_Sts
+    end
+    
+    subgraph M1["📳 Motor1 (Peripheral)"]
+        M1_Server["GATT Server"]
+        M1_Service["Service: 4D580001"]
+        M1_Cmd["Command: 4D580002"]
+        M1_Sts["Status: 4D580003"]
+        M1_Server --> M1_Service
+        M1_Service --> M1_Cmd
+        M1_Service --> M1_Sts
+    end
+    
+    subgraph M2["📳 Motor2 (Peripheral)"]
+        M2_Server["GATT Server"]
+        M2_Service["Service: 4D580001"]
+        M2_Cmd["Command: 4D580002"]
+        M2_Sts["Status: 4D580003"]
+        M2_Server --> M2_Service
+        M2_Service --> M2_Cmd
+        M2_Service --> M2_Sts
+    end
 ```
 
 ### 1.2 通信特性
@@ -172,77 +191,50 @@ String getDeviceName() {
 
 ### 4.1 接続シーケンス図
 
-```
-Android (Central)              ESP32 (Peripheral)
-     │                              │
-     │──── Scan Request ──────────▶│
-     │◀─── Advertisement ──────────│ (4D_ES_XXXX)
-     │                              │
-     │──── Connect Request ───────▶│
-     │◀─── Connect Response ───────│
-     │                              │
-     │                        [STATE_CONNECTED]
-     │                              │
-     │──── Discover Services ─────▶│
-     │◀─── Services Discovered ────│
-     │                              │
-     │     [Service: 4D580001...]   │
-     │     ├─ Char: 4D580002 (Cmd)  │
-     │     └─ Char: 4D580003 (Sts)  │
-     │                              │
-     │──── Enable Notification ───▶│ (CCCD Write)
-     │◀─── Write Response ─────────│
-     │                              │
-     │                        [STATE_READY]
-     │                              │
-     │──── Write Command ─────────▶│ ("FAN,1")
-     │◀─── Write Response ─────────│
-     │                              │
-     │◀─── Status Notification ────│ ([0x01,0x00,...])
+```mermaid
+sequenceDiagram
+    participant Android as 📱 Android (Central)
+    participant ESP32 as 🔧 ESP32 (Peripheral)
+    
+    Android->>ESP32: Scan Request
+    ESP32-->>Android: Advertisement (4D_ES_XXXX)
+    
+    Android->>ESP32: Connect Request
+    ESP32-->>Android: Connect Response
+    Note over ESP32: STATE_CONNECTED
+    
+    Android->>ESP32: Discover Services
+    ESP32-->>Android: Services Discovered
+    Note over Android: Service: 4D580001<br/>├─ Char: 4D580002 (Cmd)<br/>└─ Char: 4D580003 (Sts)
+    
+    Android->>ESP32: Enable Notification (CCCD Write)
+    ESP32-->>Android: Write Response
+    Note over ESP32: STATE_READY
+    
+    Android->>ESP32: Write Command ("FAN,1")
+    ESP32-->>Android: Write Response
+    ESP32-->>Android: Status Notification ([0x01,0x00,...])
 ```
 
 ### 4.2 接続状態遷移
 
-```
-                    ┌─────────────────┐
-                    │  DISCONNECTED   │
-                    └────────┬────────┘
-                             │ connect()
-                             ▼
-                    ┌─────────────────┐
-                    │   CONNECTING    │
-                    └────────┬────────┘
-                             │ onConnectionStateChange(CONNECTED)
-                             ▼
-                    ┌─────────────────┐
-                    │    CONNECTED    │
-                    └────────┬────────┘
-                             │ discoverServices()
-                             ▼
-             ┌───────────────────────────────┐
-             │     DISCOVERING_SERVICES      │
-             └───────────────┬───────────────┘
-                             │ onServicesDiscovered()
-                             ▼
-                    ┌─────────────────┐
-              ┌────▶│      READY      │◀────┐
-              │     └────────┬────────┘     │
-              │              │              │
-              │   disconnect()│  再接続成功  │
-              │              ▼              │
-              │     ┌─────────────────┐     │
-              │     │  DISCONNECTING  │     │
-              │     └────────┬────────┘     │
-              │              │              │
-              │              ▼              │
-              │     ┌─────────────────┐     │
-              └─────│  DISCONNECTED   │─────┘
-                    └────────┬────────┘
-                             │ エラー発生
-                             ▼
-                    ┌─────────────────┐
-                    │      ERROR      │
-                    └─────────────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> DISCONNECTED
+    
+    DISCONNECTED --> CONNECTING: connect()
+    CONNECTING --> CONNECTED: onConnectionStateChange(CONNECTED)
+    CONNECTED --> DISCOVERING_SERVICES: discoverServices()
+    DISCOVERING_SERVICES --> READY: onServicesDiscovered()
+    
+    READY --> DISCONNECTING: disconnect()
+    DISCONNECTING --> DISCONNECTED
+    DISCONNECTED --> CONNECTING: 再接続
+    
+    CONNECTING --> ERROR: タイムアウト
+    CONNECTED --> ERROR: エラー発生
+    READY --> ERROR: 接続断
+    ERROR --> DISCONNECTED: リセット
 ```
 
 ### 4.3 接続状態Enum

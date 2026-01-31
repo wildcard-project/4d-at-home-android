@@ -37,12 +37,20 @@ ActionDriveは、振動モーターを制御するESP32ベースのデバイス�
 ### 1.3 振動強度
 
 | 強度 | 名称 | ピン出力パターン |
-|------|------|-----------------|
-| STRONG | 強 | 4ピン全ON |
-| MEDIUM_STRONG | 中強 | 3ピンON + 1ピンPWM |
-| MEDIUM_WEAK | 中弱 | 2ピンON + 2ピンOFF |
-| WEAK | 弱 | 1ピンON + 3ピンOFF |
+|------|------|------------------|
+| STRONG | 強 | D5+D6+D7+D8全てON |
+| MEDIUM_STRONG | 中強 | D6+D7のON |
+| MEDIUM_WEAK | 中弱 | D7のみON |
+| WEAK | 弱 | D8のみON |
 | OFF | 停止 | 全ピンOFF |
+
+### 1.4 パターン振動
+
+| パターン | 名称 | 説明 |
+|----------|------|------|
+| HEARTBEAT | 心拍 | ドッ..クン...のリズム |
+| RUMBLE_FAST | 高速振動 | 150ms ON/100ms OFF |
+| RUMBLE_SLOW | 低速振動 | 300ms ON/300ms OFF |
 
 ---
 
@@ -60,44 +68,98 @@ ActionDriveは、振動モーターを制御するESP32ベースのデバイス�
 
 ### 2.2 モーター接続
 
-```
-ESP32 DevKit
-├── GPIO 25 ─── MOSFETドライバ ─── モーターピン1
-├── GPIO 26 ─── MOSFETドライバ ─── モーターピン2
-├── GPIO 27 ─── MOSFETドライバ ─── モーターピン3
-└── GPIO 32 ─── MOSFETドライバ ─── モーターピン4
+```mermaid
+graph LR
+    subgraph ESP32["🔧 ESP32 DevKit"]
+        GPIO18["GPIO 18 (D5)"]
+        GPIO17["GPIO 17 (D6)"]
+        GPIO16["GPIO 16 (D7)"]
+        GPIO15["GPIO 15 (D8)"]
+        GPIO2["GPIO 2"]
+    end
+    
+    GPIO18 -->|"制御"| M1["🔧 MOSFET"]
+    M1 --> V1["📳 振動 強<br/>(STRONG)"]
+    
+    GPIO17 -->|"制御"| M2["🔧 MOSFET"]
+    M2 --> V2["📳 振動 中強<br/>(MEDIUM_STRONG)"]
+    
+    GPIO16 -->|"制御"| M3["🔧 MOSFET"]
+    M3 --> V3["📳 振動 中弱<br/>(MEDIUM_WEAK)"]
+    
+    GPIO15 -->|"制御"| M4["🔧 MOSFET"]
+    M4 --> V4["📳 振動 弱<br/>(WEAK)"]
+    
+    GPIO2 --> LED["💡 オンボードLED<br/>(状態表示)"]
 ```
 
 ### 2.3 回路構成
 
-```
-                    ┌───────────────────┐
-                    │     ESP32         │
-                    │                   │
-        ┌───────────┤ GPIO25 (PIN_1)    │
-        │           │                   │
-        │   ┌───────┤ GPIO26 (PIN_2)    │
-        │   │       │                   │
-        │   │   ┌───┤ GPIO27 (PIN_3)    │
-        │   │   │   │                   │
-        │   │   │ ┌─┤ GPIO32 (PIN_4)    │
-        │   │   │ │ │                   │
-        │   │   │ │ │          GND ────┬┘
-        │   │   │ │ │                  │
-        ▼   ▼   ▼ ▼                    ▼
-      ┌───┬───┬───┬───┐               GND
-      │ M │ M │ M │ M │
-      │ 1 │ 2 │ 3 │ 4 │  4ピンモーター
-      └───┴───┴───┴───┘
-           │
-           ▼
-        振動出力
+```mermaid
+graph TB
+    subgraph ESP32["🔧 ESP32"]
+        D5["GPIO18 (D5/強)"]
+        D6["GPIO17 (D6/中強)"]
+        D7["GPIO16 (D7/中弱)"]
+        D8["GPIO15 (D8/弱)"]
+        LED_PIN["GPIO2 (LED)"]
+    end
+    
+    subgraph Motors["📳 振動モーター"]
+        M_STRONG["強"]
+        M_MED_S["中強"]
+        M_MED_W["中弱"]
+        M_WEAK["弱"]
+    end
+    
+    D5 --> M_STRONG
+    D6 --> M_MED_S
+    D7 --> M_MED_W
+    D8 --> M_WEAK
+    LED_PIN --> LED["💡 LED"]
 ```
 
-### 2.4 PWM設定
+### 2.4 振動強度パターン
+
+```mermaid
+graph LR
+    subgraph STRONG["強: STRONG"]
+        S1["● D5"] 
+        S2["● D6"]
+        S3["● D7"]
+        S4["● D8"]
+    end
+    
+    subgraph MED_STRONG["中強: MEDIUM_STRONG"]
+        MS1["○ D5"]
+        MS2["● D6"]
+        MS3["● D7"]
+        MS4["○ D8"]
+    end
+    
+    subgraph MED_WEAK["中弱: MEDIUM_WEAK"]
+        MW1["○ D5"]
+        MW2["○ D6"]
+        MW3["● D7"]
+        MW4["○ D8"]
+    end
+    
+    subgraph WEAK["弱: WEAK"]
+        W1["○ D5"]
+        W2["○ D6"]
+        W3["○ D7"]
+        W4["● D8"]
+    end
+```
+
+**凡例**: ● = ON, ○ = OFF
+
+### 2.4 制御方式
 
 | 項目 | 値 |
 |------|-----|
+| 制御方式 | デジタルON/OFF（PWM不使用） |
+| LEDピン | GPIO 2（オンボード） |
 | PWMチャンネル | 4 (PIN_4用) |
 | PWM周波数 | 1000 Hz |
 | PWM解像度 | 8ビット (0-255) |
@@ -110,21 +172,17 @@ ESP32 DevKit
 ### 3.1 ピンアサイン
 
 ```cpp
-// ピン定義
-#define PIN_1    25   // モーターピン1
-#define PIN_2    26   // モーターピン2
-#define PIN_3    27   // モーターピン3
-#define PIN_4    32   // モーターピン4 (PWM対応)
+// ピン定義（MQTT版と同一）
+#define MOTOR_PIN_D5  18    // 振動 強 (STRONG)
+#define MOTOR_PIN_D6  17    // 振動 中強 (MEDIUM_STRONG)
+#define MOTOR_PIN_D7  16    // 振動 中弱 (MEDIUM_WEAK)
+#define MOTOR_PIN_D8  15    // 振動 弱 (WEAK)
+#define PIN_LED       2     // 状態表示LED (オンボード)
 ```
 
-### 3.2 PWM設定
+### 3.2 制御方式
 
-```cpp
-// PWM設定
-#define PWM_CHANNEL  4
-#define PWM_FREQ     1000
-#define PWM_RES      8
-```
+PWMは使用せず、全てデジタルON/OFF制御です。
 
 ---
 
@@ -278,15 +336,20 @@ void processStringCommand(const String& cmd) {
 
 | コマンド | 形式 | 説明 |
 |---------|------|------|
-| MOTOR,STRONG | `MOTOR,STRONG` | 最大振動 |
-| MOTOR,MEDIUM_STRONG | `MOTOR,MEDIUM_STRONG` | 中強振動 |
-| MOTOR,MEDIUM_WEAK | `MOTOR,MEDIUM_WEAK` | 中弱振動 |
-| MOTOR,WEAK | `MOTOR,WEAK` | 弱振動 |
+| MOTOR,STRONG | `MOTOR,STRONG` | 最大振動（全ピンON） |
+| MOTOR,MEDIUM_STRONG | `MOTOR,MEDIUM_STRONG` | 中強振動（D6+D7） |
+| MOTOR,MEDIUM_WEAK | `MOTOR,MEDIUM_WEAK` | 中弱振動（D7のみ） |
+| MOTOR,WEAK | `MOTOR,WEAK` | 弱振動（D8のみ） |
 | MOTOR,OFF | `MOTOR,OFF` | 停止 |
-| MOTOR,PATTERN_RUMBLE | `MOTOR,PATTERN_RUMBLE` | 地鳴りパターン |
-| MOTOR,PATTERN_PULSE | `MOTOR,PATTERN_PULSE` | パルスパターン |
-| MOTOR,PATTERN_WAVE | `MOTOR,PATTERN_WAVE` | 波パターン |
+| MOTOR,HEARTBEAT | `MOTOR,HEARTBEAT` | 心拍パターン |
+| MOTOR,RUMBLE_FAST | `MOTOR,RUMBLE_FAST` | 高速振動パターン |
+| MOTOR,RUMBLE_SLOW | `MOTOR,RUMBLE_SLOW` | 低速振動パターン |
 | OFF | `OFF` | 全停止 |
+| STOP | `STOP` | 全停止 |
+
+**互換性のため、以下のコマンドタイプも受け付けます**:
+- `VIB` - `MOTOR`と同等
+- `VIBRATION` - `MOTOR`と同等
 
 ---
 
@@ -296,102 +359,76 @@ void processStringCommand(const String& cmd) {
 
 ```cpp
 enum MotorMode {
-    MODE_OFF = 0,
-    MODE_WEAK = 1,
-    MODE_MEDIUM_WEAK = 2,
-    MODE_MEDIUM_STRONG = 3,
-    MODE_STRONG = 4
+    MOTOR_OFF,
+    MOTOR_WEAK,
+    MOTOR_MEDIUM_WEAK,
+    MOTOR_MEDIUM_STRONG,
+    MOTOR_STRONG,
+    MOTOR_HEARTBEAT,
+    MOTOR_RUMBLE_FAST,
+    MOTOR_RUMBLE_SLOW
 };
 
-MotorMode currentMode = MODE_OFF;
+MotorMode currentMotorMode = MOTOR_OFF;
 ```
 
 ### 6.2 STRONG (強)
 
 ```cpp
-void setMotorStrong() {
-    currentMode = MODE_STRONG;
-    stopPattern();
-    
-    // 全ピンON
-    digitalWrite(PIN_1, HIGH);
-    digitalWrite(PIN_2, HIGH);
-    digitalWrite(PIN_3, HIGH);
-    digitalWrite(PIN_4, HIGH);
-    
-    Serial.println("Motor: STRONG");
-}
+case MOTOR_STRONG:
+    // 「振動強は全部のモーターを回す」
+    digitalWrite(MOTOR_PIN_D5, HIGH);
+    digitalWrite(MOTOR_PIN_D6, HIGH);
+    digitalWrite(MOTOR_PIN_D7, HIGH);
+    digitalWrite(MOTOR_PIN_D8, HIGH);
+    break;
 ```
 
 ### 6.3 MEDIUM_STRONG (中強)
 
 ```cpp
-void setMotorMediumStrong() {
-    currentMode = MODE_MEDIUM_STRONG;
-    stopPattern();
-    
-    // 3ピンON + 1ピンPWM
-    digitalWrite(PIN_1, HIGH);
-    digitalWrite(PIN_2, HIGH);
-    digitalWrite(PIN_3, HIGH);
-    ledcWrite(PWM_CHANNEL, 150);  // 約60%
-    
-    Serial.println("Motor: MEDIUM_STRONG");
-}
+case MOTOR_MEDIUM_STRONG:
+    // 「振動中強はD6とD7のモーターを動かす」
+    digitalWrite(MOTOR_PIN_D5, LOW);
+    digitalWrite(MOTOR_PIN_D6, HIGH);
+    digitalWrite(MOTOR_PIN_D7, HIGH);
+    digitalWrite(MOTOR_PIN_D8, LOW);
+    break;
 ```
 
 ### 6.4 MEDIUM_WEAK (中弱)
 
 ```cpp
-void setMotorMediumWeak() {
-    currentMode = MODE_MEDIUM_WEAK;
-    stopPattern();
-    
-    // 2ピンON + 2ピンOFF
-    digitalWrite(PIN_1, HIGH);
-    digitalWrite(PIN_2, HIGH);
-    digitalWrite(PIN_3, LOW);
-    digitalWrite(PIN_4, LOW);
-    
-    Serial.println("Motor: MEDIUM_WEAK");
-}
+case MOTOR_MEDIUM_WEAK:
+    // 「振動中弱はD7のモーターを動かす」
+    digitalWrite(MOTOR_PIN_D5, LOW);
+    digitalWrite(MOTOR_PIN_D6, LOW);
+    digitalWrite(MOTOR_PIN_D7, HIGH);
+    digitalWrite(MOTOR_PIN_D8, LOW);
+    break;
 ```
 
 ### 6.5 WEAK (弱)
 
 ```cpp
-void setMotorWeak() {
-    currentMode = MODE_WEAK;
-    stopPattern();
-    
-    // 1ピンON + 3ピンOFF
-    digitalWrite(PIN_1, HIGH);
-    digitalWrite(PIN_2, LOW);
-    digitalWrite(PIN_3, LOW);
-    digitalWrite(PIN_4, LOW);
-    
-    Serial.println("Motor: WEAK");
-}
+case MOTOR_WEAK:
+    // 「振動弱はD8のモーターを動かす」
+    digitalWrite(MOTOR_PIN_D5, LOW);
+    digitalWrite(MOTOR_PIN_D6, LOW);
+    digitalWrite(MOTOR_PIN_D7, LOW);
+    digitalWrite(MOTOR_PIN_D8, HIGH);
+    break;
 ```
 
 ### 6.6 OFF (停止)
 
 ```cpp
-void setMotorOff() {
-    currentMode = MODE_OFF;
-    stopPattern();
-    allPinsOff();
-    
-    Serial.println("Motor: OFF");
-}
-
-void allPinsOff() {
-    digitalWrite(PIN_1, LOW);
-    digitalWrite(PIN_2, LOW);
-    digitalWrite(PIN_3, LOW);
-    digitalWrite(PIN_4, LOW);
-    ledcWrite(PWM_CHANNEL, 0);
-}
+case MOTOR_OFF:
+    digitalWrite(MOTOR_PIN_D5, LOW);
+    digitalWrite(MOTOR_PIN_D6, LOW);
+    digitalWrite(MOTOR_PIN_D7, LOW);
+    digitalWrite(MOTOR_PIN_D8, LOW);
+    break;
 ```
 
 ---
@@ -400,120 +437,88 @@ void allPinsOff() {
 
 ### 7.1 パターン定義
 
-```cpp
-enum PatternType {
-    PATTERN_NONE = 0,
-    PATTERN_RUMBLE = 1,   // 地鳴り (ランダム振動)
-    PATTERN_PULSE = 2,    // パルス (周期的ON/OFF)
-    PATTERN_WAVE = 3      // 波 (強弱変化)
-};
+ノンブロッキング実装で、1ループで他の処理をブロックしません。
 
-PatternType currentPattern = PATTERN_NONE;
-unsigned long patternStartTime = 0;
+```cpp
+// ノンブロッキング制御用タイマー
+unsigned long lastPatternTime = 0;
 int patternStep = 0;
 ```
 
-### 7.2 パターン開始/停止
+### 7.2 HEARTBEAT（心拍）パターン
+
+「ドッ..クン...」のリズムをノンブロッキングで実現します。
 
 ```cpp
-void startPattern(PatternType pattern) {
-    currentPattern = pattern;
-    patternStartTime = millis();
-    patternStep = 0;
-    Serial.printf("Pattern started: %d\n", pattern);
-}
-
-void stopPattern() {
-    currentPattern = PATTERN_NONE;
-    patternStep = 0;
-}
-```
-
-### 7.3 パターン更新
-
-```cpp
-void updatePattern() {
-    if (currentPattern == PATTERN_NONE) return;
-    
-    unsigned long elapsed = millis() - patternStartTime;
-    
-    switch (currentPattern) {
-        case PATTERN_RUMBLE:
-            updateRumble(elapsed);
-            break;
-        case PATTERN_PULSE:
-            updatePulse(elapsed);
-            break;
-        case PATTERN_WAVE:
-            updateWave(elapsed);
-            break;
-        default:
-            break;
+case MOTOR_HEARTBEAT:
+    // 心拍 (ドッ..クン.......ドッ..クン...)
+    // ドッ = 中弱 (D7), クン = 強 (D5)
+    // ステップ0: (1.5秒待機) ドッ (中弱 D7)
+    if (patternStep == 0 && (now - lastPatternTime > 1500)) { 
+        setAllMotors(LOW);
+        digitalWrite(MOTOR_PIN_D7, HIGH);
+        lastPatternTime = now;
+        patternStep = 1;
     }
-}
-```
-
-### 7.4 地鳴りパターン (RUMBLE)
-
-```cpp
-void updateRumble(unsigned long elapsed) {
-    // 50ms間隔でランダムな強度を設定
-    int step = elapsed / 50;
-    if (step != patternStep) {
-        patternStep = step;
-        
-        // ランダムに1-4ピンをON
-        int numPins = random(1, 5);
-        allPinsOff();
-        
-        for (int i = 0; i < numPins; i++) {
-            int pin = random(0, 4);
-            switch (pin) {
-                case 0: digitalWrite(PIN_1, HIGH); break;
-                case 1: digitalWrite(PIN_2, HIGH); break;
-                case 2: digitalWrite(PIN_3, HIGH); break;
-                case 3: digitalWrite(PIN_4, HIGH); break;
-            }
-        }
+    // ステップ1: (200ms) OFF
+    else if (patternStep == 1 && (now - lastPatternTime > 200)) { 
+        setAllMotors(LOW);
+        lastPatternTime = now;
+        patternStep = 2;
     }
-}
-```
-
-### 7.5 パルスパターン (PULSE)
-
-```cpp
-void updatePulse(unsigned long elapsed) {
-    // 200msでON/OFFを切り替え
-    bool on = ((elapsed / 200) % 2) == 0;
-    
-    if (on) {
-        digitalWrite(PIN_1, HIGH);
-        digitalWrite(PIN_2, HIGH);
-        digitalWrite(PIN_3, HIGH);
-        digitalWrite(PIN_4, HIGH);
-    } else {
-        allPinsOff();
+    // ステップ2: (100ms) クン (強 D5)
+    else if (patternStep == 2 && (now - lastPatternTime > 100)) { 
+        digitalWrite(MOTOR_PIN_D5, HIGH);
+        lastPatternTime = now;
+        patternStep = 3;
     }
-}
+    // ステップ3: (150ms) OFF
+    else if (patternStep == 3 && (now - lastPatternTime > 150)) { 
+        setAllMotors(LOW);
+        lastPatternTime = now;
+        patternStep = 0; // ループ
+    }
+    break;
 ```
 
-### 7.6 波パターン (WAVE)
+### 7.3 RUMBLE_FAST（高速振動）パターン
 
 ```cpp
-void updateWave(unsigned long elapsed) {
-    // サイン波で強度変化 (周期2秒)
-    float phase = (elapsed % 2000) / 2000.0f * 2 * PI;
-    float intensity = (sin(phase) + 1.0f) / 2.0f;
-    
-    // PWMで強度を表現
-    int pwmValue = (int)(intensity * 255);
-    
-    // 全ピンをPWM制御 (PIN_4のみ真のPWM、他はdigital)
-    digitalWrite(PIN_1, intensity > 0.25 ? HIGH : LOW);
-    digitalWrite(PIN_2, intensity > 0.5 ? HIGH : LOW);
-    digitalWrite(PIN_3, intensity > 0.75 ? HIGH : LOW);
-    ledcWrite(PWM_CHANNEL, pwmValue);
-}
+case MOTOR_RUMBLE_FAST:
+    // ドンドンドン (速)
+    // ステップ0: (0.15秒待機) ドン (全モーター)
+    if (patternStep == 0 && (now - lastPatternTime > 150)) {
+        setAllMotors(HIGH);
+        lastPatternTime = now;
+        patternStep = 1;
+    }
+    // ステップ1: (100ms) OFF
+    else if (patternStep == 1 && (now - lastPatternTime > 100)) {
+        setAllMotors(LOW);
+        lastPatternTime = now;
+        patternStep = 0; // ループ
+    }
+    break;
+```
+
+### 7.4 RUMBLE_SLOW（低速振動）パターン
+
+```cpp
+case MOTOR_RUMBLE_SLOW:
+    // ドン...ドン... (遅)
+    // ステップ0: (0.3秒待機) ドン (全モーター)
+    if (patternStep == 0 && (now - lastPatternTime > 300)) {
+        setAllMotors(HIGH);
+        lastPatternTime = now;
+        patternStep = 1;
+    }
+    // ステップ1: (300ms) OFF
+    else if (patternStep == 1 && (now - lastPatternTime > 300)) {
+        setAllMotors(LOW);
+        lastPatternTime = now;
+        patternStep = 0; // ループ
+    }
+    break;
 ```
 
 ---
@@ -526,9 +531,9 @@ void updateWave(unsigned long elapsed) {
 void sendStatus() {
     if (deviceConnected && pStatusChar != nullptr) {
         uint8_t status[4] = {
-            (uint8_t)currentMode,
-            (uint8_t)currentPattern,
-            0x00,
+            0x01,  // Motor1識別子 (Motor2の場合は0x02)
+            (uint8_t)currentMotorMode,
+            (uint8_t)(patternStep > 0 ? 1 : 0),
             0x00
         };
         pStatusChar->setValue(status, 4);
@@ -541,9 +546,9 @@ void sendStatus() {
 
 | バイト | 内容 | 値 |
 |--------|------|-----|
-| [0] | モード | 0=OFF, 1=WEAK, 2=MEDIUM_WEAK, 3=MEDIUM_STRONG, 4=STRONG |
-| [1] | パターン | 0=なし, 1=RUMBLE, 2=PULSE, 3=WAVE |
-| [2] | 予約 | 0x00 |
+| [0] | デバイス識別子 | 0x01=Motor1, 0x02=Motor2 |
+| [1] | モード | 0=OFF, 1=WEAK, 2=MEDIUM_WEAK, 3=MEDIUM_STRONG, 4=STRONG, 5=HEARTBEAT, 6=RUMBLE_FAST, 7=RUMBLE_SLOW |
+| [2] | パターン実行中 | 0=なし, 1=実行中 |
 | [3] | 予約 | 0x00 |
 
 ---
@@ -660,20 +665,20 @@ enum class DeviceType {
 | VibrationMode (Kotlin) | esp32Command | 説明 |
 |------------------------|--------------|------|
 | OFF | MOTOR,OFF | 停止 |
-| WEAK | MOTOR,WEAK | 弱振動 |
-| MEDIUM_WEAK | MOTOR,MEDIUM_WEAK | 中弱振動 |
-| MEDIUM_STRONG | MOTOR,MEDIUM_STRONG | 中強振動 |
-| STRONG | MOTOR,STRONG | 強振動 |
-| PATTERN_RUMBLE | MOTOR,PATTERN_RUMBLE | 地鳴り |
-| PATTERN_PULSE | MOTOR,PATTERN_PULSE | パルス |
-| PATTERN_WAVE | MOTOR,PATTERN_WAVE | 波 |
+| WEAK | MOTOR,WEAK | 弱振動 (D8のみ) |
+| MEDIUM_WEAK | MOTOR,MEDIUM_WEAK | 中弱振動 (D7のみ) |
+| MEDIUM_STRONG | MOTOR,MEDIUM_STRONG | 中強振動 (D6+D7) |
+| STRONG | MOTOR,STRONG | 強振動 (全ピン) |
+| HEARTBEAT | MOTOR,HEARTBEAT | 心拍パターン |
+| RUMBLE_FAST | MOTOR,RUMBLE_FAST | 高速振動 |
+| RUMBLE_SLOW | MOTOR,RUMBLE_SLOW | 低速振動 |
 
-### モードごとの電力消費 (目安)
+### モードごとのピン出力
 
-| モード | ピン出力 | 相対消費電力 |
-|--------|----------|-------------|
-| OFF | 0/4 | 0% |
-| WEAK | 1/4 | 25% |
-| MEDIUM_WEAK | 2/4 | 50% |
-| MEDIUM_STRONG | 3/4 + PWM | 75% |
-| STRONG | 4/4 | 100% |
+| モード | D5 (GPIO18) | D6 (GPIO17) | D7 (GPIO16) | D8 (GPIO15) |
+|--------|-------------|-------------|-------------|-------------|
+| OFF | LOW | LOW | LOW | LOW |
+| WEAK | LOW | LOW | LOW | HIGH |
+| MEDIUM_WEAK | LOW | LOW | HIGH | LOW |
+| MEDIUM_STRONG | LOW | HIGH | HIGH | LOW |
+| STRONG | HIGH | HIGH | HIGH | HIGH |

@@ -37,23 +37,33 @@
 
 ### 1.2 データフロー
 
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  timeline.json  │────▶│ TimelineParser  │────▶│   TimelineFile  │
-│  (ファイル)      │     │   (パース)       │     │   (データモデル) │
-└─────────────────┘     └─────────────────┘     └────────┬────────┘
-                                                         │
-                                                         ▼
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   ExoPlayer     │────▶│ PlaybackSync    │◀────│ ScheduledEvent  │
-│ (現在位置)       │     │    Engine       │     │   (実行予定)     │
-└─────────────────┘     └────────┬────────┘     └─────────────────┘
-                                 │
-                                 ▼
-                        ┌─────────────────┐
-                        │  CommandSender  │
-                        │  (BLE送信)       │
-                        └─────────────────┘
+```mermaid
+flowchart LR
+    subgraph Input["📁 入力"]
+        File["📄 timeline.json<br/>(ファイル)"]
+    end
+    
+    subgraph Parse["🔧 解析"]
+        Parser["TimelineParser<br/>(パース)"]
+        Model["TimelineFile<br/>(データモデル)"]
+    end
+    
+    subgraph Sync["⚡ 同期"]
+        Player["ExoPlayer<br/>(現在位置)"]
+        Engine["PlaybackSync<br/>Engine"]
+        Events["ScheduledEvent<br/>(実行予定)"]
+    end
+    
+    subgraph Output["📤 出力"]
+        Sender["CommandSender<br/>(BLE送信)"]
+    end
+    
+    File --> Parser
+    Parser --> Model
+    Model --> Engine
+    Player --> Engine
+    Events --> Engine
+    Engine --> Sender
 ```
 
 ---

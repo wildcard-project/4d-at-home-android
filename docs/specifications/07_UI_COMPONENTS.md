@@ -46,21 +46,22 @@
 
 本アプリはタブレット使用を想定し、**横画面（ランドスケープ）**を基本としています。
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  ┌────────┐                                             │
-│  │  Icon  │                                             │
-│  │ Play   │                                             │
-│  ├────────┤              Content Area                   │
-│  │  Icon  │                                             │
-│  │Control │        (Selected Screen Content)            │
-│  ├────────┤                                             │
-│  │  Icon  │                                             │
-│  │Settings│                                             │
-│  └────────┘                                             │
-│  Navigation                                             │
-│     Rail                                                │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+    subgraph Layout["📱 ランドスケープレイアウト"]
+        subgraph NavRail["🧭 NavigationRail"]
+            direction TB
+            PlayIcon["▶️ Play"]
+            ControlIcon["🎮 Control"]
+            SettingsIcon["⚙️ Settings"]
+        end
+        
+        subgraph Content["📄 Content Area"]
+            SelectedScreen["Selected Screen Content"]
+        end
+        
+        NavRail --> Content
+    end
 ```
 
 ### 2.2 レイアウト構成
@@ -148,28 +149,32 @@ class PlaybackViewModel : ViewModel() {
 
 ```kotlin
 data class PlaybackUiState(
-    // コンテンツ選択
-    val showContentSelector: Boolean = true,
-    val availableContents: List<Content> = emptyList(),
+    // コンテンツ状態
+    val availableContents: List<Content> = ContentLibrary.contents,
     val selectedContent: Content? = null,
+    
+    // ビデオ状態
+    val videoUri: Uri? = null,
+    val videoTitle: String = "",
+    val isVideoLoaded: Boolean = false,
+    
+    // タイムライン状態
+    val timelineState: PlaybackSyncState = PlaybackSyncState(),
     
     // 再生状態
     val isPlaying: Boolean = false,
-    val currentPositionMs: Long = 0,
-    val durationMs: Long = 0,
-    val playbackProgress: Float = 0f,
+    val currentPosition: Long = 0,
+    val duration: Long = 0,
+    val bufferedPosition: Long = 0,
     
     // 接続状態
     val isEffectStationConnected: Boolean = false,
     val isMotor1Connected: Boolean = false,
     val isMotor2Connected: Boolean = false,
     
-    // エフェクト表示
-    val activeEffects: Set<EffectType> = emptySet(),
-    val nextEvent: TimelineEvent? = null,
-    
-    // エラー
-    val error: String? = null
+    // その他
+    val error: String? = null,
+    val showContentSelector: Boolean = true
 )
 ```
 

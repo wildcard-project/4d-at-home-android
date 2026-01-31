@@ -88,32 +88,46 @@
 
 ### 2.2 データフロー概要
 
-```
-[Asset Files]     [User Settings]
-     │                   │
-     ▼                   ▼
-[TimelineParser]  [SettingsRepository]
-     │                   │
-     └─────────┬─────────┘
-               ▼
-      [PlaybackSyncEngine]
-               │
-               ├── ExoPlayer Position
-               │
-               ▼
-      [Timeline Events]
-               │
-               ▼
-      [CommandSender]
-               │
-               ▼
-      [BleDeviceManager]
-               │
-        BLE Commands
-               │
-     ┌─────────┼─────────┐
-     ▼         ▼         ▼
-  [4D_ES]  [4D_AD1]  [4D_AD2]
+```mermaid
+flowchart TB
+    subgraph Input["📁 入力"]
+        Assets["Asset Files"]
+        Settings["User Settings"]
+    end
+    
+    subgraph Parse["🔧 解析"]
+        Parser["TimelineParser"]
+        SettingsRepo["SettingsRepository"]
+    end
+    
+    subgraph Engine["⚙️ 同期エンジン"]
+        SyncEngine["PlaybackSyncEngine"]
+        ExoPosition["ExoPlayer Position"]
+        Events["Timeline Events"]
+    end
+    
+    subgraph Send["📤 送信"]
+        CmdSender["CommandSender"]
+        BleManager["BleDeviceManager"]
+    end
+    
+    subgraph Devices["🎮 デバイス"]
+        ES["4D_ES"]
+        AD1["4D_AD1"]
+        AD2["4D_AD2"]
+    end
+    
+    Assets --> Parser
+    Settings --> SettingsRepo
+    Parser --> SyncEngine
+    SettingsRepo --> SyncEngine
+    ExoPosition --> SyncEngine
+    SyncEngine --> Events
+    Events --> CmdSender
+    CmdSender --> BleManager
+    BleManager --> ES
+    BleManager --> AD1
+    BleManager --> AD2
 ```
 
 ---
@@ -122,95 +136,50 @@
 
 ### 3.1 BLEスキャン開始
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   UI Layer  │     │BleDeviceManager│   │  BleScanner │
-└──────┬──────┘     └──────┬──────┘     └──────┬──────┘
-       │                   │                   │
-       │ startScanning()   │                   │
-       │──────────────────>│                   │
-       │                   │                   │
-       │                   │ startScan(        │
-       │                   │   SERVICE_UUID)   │
-       │                   │──────────────────>│
-       │                   │                   │
-       │                   │                   │ BLE.startScan()
-       │                   │                   │─────────┐
-       │                   │                   │         │
-       │                   │                   │<────────┘
-       │                   │                   │
-       │                   │   Flow<ScannedDevice>
-       │                   │<──────────────────│
-       │                   │                   │
-       │  StateFlow<List>  │                   │
-       │<──────────────────│                   │
-       │                   │                   │
+```mermaid
+sequenceDiagram
+    participant UI as 📱 UI Layer
+    participant Manager as 📶 BleDeviceManager
+    participant Scanner as 🔍 BleScanner
+    
+    UI->>Manager: startScanning()
+    Manager->>Scanner: startScan(SERVICE_UUID)
+    Scanner->>Scanner: BLE.startScan()
+    Scanner-->>Manager: Flow<ScannedDevice>
+    Manager-->>UI: StateFlow<List>
 ```
 
 ### 3.2 デバイス接続
 
-```
-┌─────────────┐     ┌─────────────────┐     ┌──────────────┐
-│   UI Layer  │     │ BleDeviceManager│     │  GATT Server │
-└──────┬──────┘     └───────┬─────────┘     └──────┬───────┘
-       │                    │                      │
-       │ connect(address)   │                      │
-       │───────────────────>│                      │
-       │                    │                      │
-       │                    │ connectGatt()        │
-       │                    │─────────────────────>│
-       │                    │                      │
-       │                    │ onConnectionStateChange
-       │                    │<─────────────────────│
-       │                    │ (CONNECTED)          │
-       │                    │                      │
-       │                    │ discoverServices()   │
-       │                    │─────────────────────>│
-       │                    │                      │
-       │                    │ onServicesDiscovered │
-       │                    │<─────────────────────│
-       │                    │                      │
-       │                    │ Find SERVICE_UUID    │
-       │                    │ Find COMMAND_CHAR    │
-       │                    │ Find STATUS_CHAR     │
-       │                    │──────────┐           │
-       │                    │          │           │
-       │                    │<─────────┘           │
-       │                    │                      │
-       │                    │ enableNotification() │
-       │                    │─────────────────────>│
-       │                    │                      │
-       │ Flow<ConnectionState>                     │
-       │<───────────────────│                      │
-       │ (Connected)        │                      │
-       │                    │                      │
+```mermaid
+sequenceDiagram
+    participant UI as 📱 UI Layer
+    participant Manager as 📶 BleDeviceManager
+    participant GATT as 🔧 GATT Server
+    
+    UI->>Manager: connect(address)
+    Manager->>GATT: connectGatt()
+    GATT-->>Manager: onConnectionStateChange(CONNECTED)
+    Manager->>GATT: discoverServices()
+    GATT-->>Manager: onServicesDiscovered
+    Note over Manager: Find SERVICE_UUID<br/>Find COMMAND_CHAR<br/>Find STATUS_CHAR
+    Manager->>GATT: enableNotification()
+    Manager-->>UI: Flow<ConnectionState>(Connected)
 ```
 
 ### 3.3 接続状態遷移
 
-```
-                 ┌────────────────┐
-                 │  DISCONNECTED  │
-                 └───────┬────────┘
-                         │ connect()
-                         ▼
-                 ┌────────────────┐
-                 │   CONNECTING   │
-                 └───────┬────────┘
-                         │ onConnectionStateChange
-           ┌─────────────┼─────────────┐
-           │             │             │
-           ▼             ▼             ▼
-   ┌────────────┐ ┌────────────┐ ┌────────────┐
-   │  CONNECTED │ │   FAILED   │ │   TIMEOUT  │
-   └─────┬──────┘ └────────────┘ └────────────┘
-         │
-         │ onDisconnect / error
-         ▼
-┌────────────────────┐
-│    DISCONNECTED    │
-│  (auto-reconnect?) │
-└────────────────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> DISCONNECTED
+    DISCONNECTED --> CONNECTING: connect()
+    CONNECTING --> CONNECTED: onConnectionStateChange
+    CONNECTING --> FAILED: エラー
+    CONNECTING --> TIMEOUT: タイムアウト
+    CONNECTED --> DISCONNECTED: onDisconnect/error
+    FAILED --> DISCONNECTED
+    TIMEOUT --> DISCONNECTED
+    DISCONNECTED --> CONNECTING: auto-reconnect
 ```
 
 ---
@@ -219,80 +188,50 @@
 
 ### 4.1 再生開始シーケンス
 
-```
-┌──────────┐  ┌───────────────┐  ┌────────────────┐  ┌──────────────┐
-│ PlayScreen│  │PlaybackSyncEng│  │ TimelineParser │  │   ExoPlayer  │
-└─────┬────┘  └───────┬───────┘  └───────┬────────┘  └──────┬───────┘
-      │               │                  │                  │
-      │ loadContent() │                  │                  │
-      │──────────────>│                  │                  │
-      │               │                  │                  │
-      │               │ parseTimeline()  │                  │
-      │               │─────────────────>│                  │
-      │               │                  │                  │
-      │               │ Timeline         │                  │
-      │               │<─────────────────│                  │
-      │               │                  │                  │
-      │               │ setMediaItem()                      │
-      │               │────────────────────────────────────>│
-      │               │                                     │
-      │               │ prepare()                           │
-      │               │────────────────────────────────────>│
-      │               │                                     │
-      │ play()        │                                     │
-      │──────────────>│                                     │
-      │               │                                     │
-      │               │ play()                              │
-      │               │────────────────────────────────────>│
-      │               │                                     │
-      │               │ startSyncLoop()                     │
-      │               │────────────┐                        │
-      │               │            │                        │
-      │               │<───────────┘                        │
-      │               │                                     │
+```mermaid
+sequenceDiagram
+    participant Screen as 🎥 PlayScreen
+    participant Engine as ⚙️ PlaybackSyncEngine
+    participant Parser as 📄 TimelineParser
+    participant Player as ▶️ ExoPlayer
+    
+    Screen->>Engine: loadContent()
+    Engine->>Parser: parseTimeline()
+    Parser-->>Engine: Timeline
+    Engine->>Player: setMediaItem()
+    Engine->>Player: prepare()
+    Screen->>Engine: play()
+    Engine->>Player: play()
+    Engine->>Engine: startSyncLoop()
 ```
 
 ### 4.2 同期ループ
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│                    PlaybackSyncEngine                          │
-│                                                                │
-│    ┌──────────────────────────────────────────────────────┐   │
-│    │              Sync Loop (16ms位置更新)                    │   │
-│    │                                                       │   │
-│    │  while (isPlaying) {                                  │   │
-│    │      currentPosition = exoPlayer.currentPosition      │   │
-│    │      lookAheadTime = currentPosition + LOOKAHEAD_MS   │   │
-│    │                                                       │   │
-│    │      // 同時刻のイベントをグループ化                    │   │
-│    │      eventsByTime = events.groupBy { it.timestampMs } │   │
-│    │                                                       │   │
-│    │      for (event in timeline.events) {                 │   │
-│    │          if (event.time <= lookAheadTime &&           │   │
-│    │              !event.triggered) {                      │   │
-│    │              // STOP→START最適化を適用                  │   │
-│    │              optimizedEvents = optimizeStopStart()    │   │
-│    │              scheduleEvent(event)                     │   │
-│    │          }                                            │   │
-│    │      }                                                │   │
-│    │                                                       │   │
-│    │      // 同時刻のイベント処理後、最小間隔を空ける           │   │
-│    │      if (eventsAtTime.size > 1) {                     │   │
-│    │          delay(MIN_COMMAND_INTERVAL_MS)  // 20ms      │   │
-│    │      }                                                │   │
-│    │  }                                                    │   │
-│    └──────────────────────────────────────────────────────┘   │
-│                                                                │
-│    タイミング定数（250msイベント間隔に最適化）:                       │
-│    LOOKAHEAD_MS = 200           // 先読み時間                   │
-│    MIN_COMMAND_INTERVAL_MS = 20 // ESP32処理時間確保            │
-│                                                                │
-│    並列送信:                                                     │
-│    - 異なるデバイス（Motor1 + Motor2）へは並列送信                  │
-│    - 同一デバイスへは20ms間隔で順次送信                         │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph SyncLoop["🔄 Sync Loop (16ms位置更新)"]
+        Start["while (isPlaying)"] --> GetPos["currentPosition = exoPlayer.currentPosition"]
+        GetPos --> CalcLook["lookAheadTime = currentPosition + LOOKAHEAD_MS"]
+        CalcLook --> GroupEvents["eventsByTime = events.groupBy { it.timestampMs }"]
+        GroupEvents --> CheckEvent{"event.time <= lookAheadTime?"}
+        CheckEvent -->|"はい"| Optimize["optimizeStopStart()"]
+        Optimize --> Schedule["scheduleEvent(event)"]
+        Schedule --> CheckMulti{"eventsAtTime.size > 1?"}
+        CheckMulti -->|"はい"| Delay["delay(MIN_COMMAND_INTERVAL_MS) // 20ms"]
+        CheckMulti -->|"いいえ"| Start
+        Delay --> Start
+        CheckEvent -->|"いいえ"| Start
+    end
+    
+    subgraph Constants["⚙️ タイミング定数"]
+        C1["LOOKAHEAD_MS = 200"]
+        C2["MIN_COMMAND_INTERVAL_MS = 20"]
+    end
+    
+    subgraph Parallel["🔀 並列送信"]
+        P1["異なるデバイス → 並列送信"]
+        P2["同一デバイス → 20ms間隔で順次送信"]
+    end
 ```
 
 ### 4.3 イベントスケジューリング

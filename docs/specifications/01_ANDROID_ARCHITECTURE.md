@@ -24,30 +24,28 @@
 
 **MVVM + Clean Architecture** を採用
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Presentation Layer                        │
-│  ┌─────────────────┐  ┌─────────────────────────────────┐   │
-│  │   Composables   │◀─│        ViewModels                │   │
-│  │   (Screen UI)   │  │    (StateFlow/UiState)          │   │
-│  └─────────────────┘  └─────────────────────────────────┘   │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────┴──────────────────────────────┐
-│                      Domain Layer                            │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │              Use Cases / Business Logic              │    │
-│  │    (PlaybackSyncEngine, CommandSender)               │    │
-│  └─────────────────────────────────────────────────────┘    │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────┴──────────────────────────────┐
-│                       Data Layer                             │
-│  ┌───────────────┐  ┌───────────────┐  ┌────────────────┐   │
-│  │  BLE Layer    │  │  Repository   │  │ Local Storage  │   │
-│  │(Scanner,Mgr)  │  │(SettingsRepo) │  │  (DataStore)   │   │
-│  └───────────────┘  └───────────────┘  └────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph Presentation["📱 Presentation Layer"]
+        Composables["🎨 Composables<br/>(Screen UI)"]
+        ViewModels["📊 ViewModels<br/>(StateFlow/UiState)"]
+        Composables <--> ViewModels
+    end
+    
+    subgraph Domain["⚙️ Domain Layer"]
+        UseCases["🔧 Use Cases / Business Logic<br/>(PlaybackSyncEngine, CommandSender)"]
+    end
+    
+    subgraph Data["💾 Data Layer"]
+        BLE["📶 BLE Layer<br/>(Scanner, Manager)"]
+        Repository["📁 Repository<br/>(SettingsRepo)"]
+        LocalStorage["💿 Local Storage<br/>(DataStore)"]
+    end
+    
+    ViewModels --> UseCases
+    UseCases --> BLE
+    UseCases --> Repository
+    Repository --> LocalStorage
 ```
 
 ### 1.2 パッケージ構成
@@ -416,13 +414,32 @@ object PlaybackModule {
 **ViewModel状態**:
 ```kotlin
 data class PlaybackUiState(
+    // コンテンツ状態
+    val availableContents: List<Content> = ContentLibrary.contents,
+    val selectedContent: Content? = null,
+    
+    // ビデオ状態
+    val videoUri: Uri? = null,
+    val videoTitle: String = "",
+    val isVideoLoaded: Boolean = false,
+    
+    // タイムライン状態
+    val timelineState: PlaybackSyncState = PlaybackSyncState(),
+    
+    // 再生状態
     val isPlaying: Boolean = false,
-    val currentPositionMs: Long = 0,
-    val durationMs: Long = 0,
-    val timelineLoaded: Boolean = false,
-    val currentCaption: String = "",
-    val syncState: SyncState = SyncState.IDLE,
-    val connectedDeviceCount: Int = 0
+    val currentPosition: Long = 0,
+    val duration: Long = 0,
+    val bufferedPosition: Long = 0,
+    
+    // 接続状態
+    val isEffectStationConnected: Boolean = false,
+    val isMotor1Connected: Boolean = false,
+    val isMotor2Connected: Boolean = false,
+    
+    // その他
+    val error: String? = null,
+    val showContentSelector: Boolean = true
 )
 ```
 
@@ -439,11 +456,26 @@ data class PlaybackUiState(
 
 **ViewModel状態**:
 ```kotlin
+data class EffectState(
+    // EffectStation
+    val fanOn: Boolean = false,
+    val mistMode: MistMode = MistMode.OFF,
+    val ledColor: LedColorPreset = LedColorPreset.OFF,
+    val ledBrightness: LedBrightnessLevel = LedBrightnessLevel.OFF,
+    val ledEffect: LedEffectMode = LedEffectMode.STEADY,
+    val ledTransition: LedTransitionMode = LedTransitionMode.INSTANT,
+    // ActionDrive
+    val motor1Level: VibrationLevel = VibrationLevel.OFF,
+    val motor2Level: VibrationLevel = VibrationLevel.OFF
+)
+
 data class ControlUiState(
-    val connectedDevices: List<BleConnection> = emptyList(),
-    val commandLog: List<CommandLogEntry> = emptyList(),
-    val isLogPaused: Boolean = false,
-    val triggerMode: TriggerMode = TriggerMode.MOMENTARY
+    val effectState: EffectState = EffectState(),
+    val isEffectStationConnected: Boolean = false,
+    val isMotor1Connected: Boolean = false,
+    val isMotor2Connected: Boolean = false,
+    val lastError: String? = null,
+    val isSending: Boolean = false
 )
 ```
 
@@ -465,8 +497,10 @@ data class SettingsUiState(
     val scannedDevices: List<ScannedDevice> = emptyList(),
     val connections: Map<String, BleConnection> = emptyMap(),
     val commandLog: List<CommandLogEntry> = emptyList(),
+    val error: BleError? = null,
     val showPermissionDialog: Boolean = false,
-    val error: BleError? = null
+    val requiredPermissions: List<String> = emptyList(),
+    val bluetoothEnabled: Boolean = true
 )
 ```
 
@@ -635,6 +669,7 @@ android {
 <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 ```

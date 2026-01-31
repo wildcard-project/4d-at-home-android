@@ -60,38 +60,49 @@ EffectStationは、環境エフェクト（風、水、ミスト、LED）を制�
 
 ### 2.2 接続デバイス
 
-```
-ESP32 DevKit
-├── GPIO 25 ─── FAN制御リレー/MOSFET ─── DCファン
-├── GPIO 26 ─── SPLASH制御リレー ─── 水ポンプ/ソレノイド
-├── GPIO 27 ─── NeoPixel Data ─── RGBW LED
-└── GPIO 32 ─── NPNトランジスタ ─── ミスト基板
+```mermaid
+graph TB
+    subgraph ESP32["🔧 ESP32 DevKit"]
+        direction TB
+        PIN25["GPIO 25"]
+        PIN26["GPIO 26"]
+        PIN27["GPIO 27"]
+        PIN32["GPIO 32"]
+    end
+    
+    PIN25 -->|"制御"| R1["🔌 リレー/MOSFET"]
+    R1 --> FAN["🌀 DCファン"]
+    
+    PIN26 -->|"制御"| R2["🔌 リレー"]
+    R2 --> SPLASH["💧 水ポンプ/ソレノイド"]
+    
+    PIN27 -->|"データ"| LED["🌈 NeoPixel RGBW LED"]
+    
+    PIN32 -->|"制御"| R3["🔌 NPNトランジスタ"]
+    R3 --> MIST["🌫️ ミスト基板"]
 ```
 
 ### 2.3 回路構成
 
-```
-                    ┌───────────────────┐
-                    │     ESP32         │
-                    │                   │
-        ┌───────────┤ GPIO25 (FAN)      │
-        │           │                   │
-        │   ┌───────┤ GPIO26 (SPLASH)   │
-        │   │       │                   │
-        │   │   ┌───┤ GPIO27 (LED)      │
-        │   │   │   │                   │
-        │   │   │ ┌─┤ GPIO32 (MIST)     │
-        │   │   │ │ │                   │
-        │   │   │ │ │          GND ────┬┘
-        │   │   │ │ │                  │
-        │   │   │ │ │                  │
-        ▼   ▼   ▼ ▼                   ▼
-      ┌───┐ ┌───┐ ┌─────┐ ┌───┐      GND
-      │FAN│ │水 │ │LED  │ │ミ │
-      │   │ │ポ │ │Strip│ │ス │
-      │   │ │ン │ │     │ │ト │
-      │   │ │プ │ │RGBW │ │   │
-      └───┘ └───┘ └─────┘ └───┘
+```mermaid
+graph LR
+    subgraph ESP32["🔧 ESP32 DevKit"]
+        GPIO25["GPIO25<br/>(FAN)"]
+        GPIO26["GPIO26<br/>(SPLASH)"]
+        GPIO27["GPIO27<br/>(LED)"]
+        GPIO32["GPIO32<br/>(MIST)"]
+        GND["GND"]
+    end
+    
+    GPIO25 --> FAN["🌀 DCファン"]
+    GPIO26 --> SPLASH["💧 水ポンプ"]
+    GPIO27 --> LED["💡 LED Strip<br/>RGBW NeoPixel"]
+    GPIO32 --> MIST["🌫️ ミスト"]
+    
+    FAN --> GND
+    SPLASH --> GND
+    LED --> GND
+    MIST --> GND
 ```
 
 ---
