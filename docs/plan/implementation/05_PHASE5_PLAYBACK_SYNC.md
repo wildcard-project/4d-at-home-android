@@ -327,7 +327,7 @@ class VideoPlayer @Inject constructor(
 | `color` | `red` / `green` / `blue` / `yellow` / `cyan` / `purple` | EffectStation | 環境照明 |
 | `water` | `burst` | EffectStation | 水しぶき（shot専用） |
 | `wind` | `burst` | EffectStation | 風 |
-| `mist` | `burst` | EffectStation | ミスト（新規追加） |
+| `mist` | `burst` / `stream` | EffectStation | ミスト（burst:一瞬 / stream:継続） |
 
 ### 5.2.3 domain/model/Timeline.kt
 
@@ -623,9 +623,9 @@ class TimelineParser @Inject constructor(
             EffectType.VIBRATION -> VibrationMode.fromJsonMode(mode) != null
             EffectType.FLASH -> FlashMode.fromJsonMode(mode) != null
             EffectType.COLOR -> ColorMode.fromJsonMode(mode) != null
+            EffectType.MIST -> MistMode.fromJsonMode(mode) != null
             EffectType.WATER -> mode == "burst"
             EffectType.WIND -> mode == "burst"
-            EffectType.MIST -> mode == "burst"
         }
     }
     

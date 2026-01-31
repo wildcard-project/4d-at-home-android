@@ -517,7 +517,7 @@ app/src/main/assets/
 | type: "led" (effect:2) | flash | fast_blink |
 | type: "fan" | wind | burst |
 | type: "splash" | water | burst (shotアクション) |
-| type: "mist" | mist | burst (shotアクション) |
+| type: "mist" | mist | burst (shotアクション) / stream (start/stop) |
 | type: "vibration" (mode:4) | vibration | up_down_mid_strong |
 | type: "vibration" (mode:5) | vibration | heartbeat |
 

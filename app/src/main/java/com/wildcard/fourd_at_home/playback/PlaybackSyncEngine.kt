@@ -304,7 +304,12 @@ class PlaybackSyncEngine @Inject constructor(
             }
             
             EffectType.MIST -> {
-                commandSender.sendMistCommand(2)  // 継続モード
+                MistMode.fromJsonMode(mode)?.let { mistMode ->
+                    commandSender.sendMistCommand(mistMode.commandValue)
+                } ?: run {
+                    // フォールバック: 不明なモードは継続モード
+                    commandSender.sendMistCommand(2)
+                }
             }
             
             EffectType.COLOR -> {

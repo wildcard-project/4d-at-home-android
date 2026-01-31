@@ -291,11 +291,20 @@ enum class EventAction {
 
 ### 5.4 water/wind/mist モード
 
-| effect | mode | 説明 |
-|--------|------|------|
-| water | `burst` | 水噴射（ワンショット） |
-| wind | `burst` | ファンON |
-| mist | `burst` | ミスト噴射 |
+| effect | mode | ESP32コマンド | 説明 |
+|--------|------|--------------|------|
+| water | `burst` | `SPLASH` | 水噫射（ワンショット、shot専用） |
+| wind | `burst` | `FAN,1` | ファンON |
+| mist | `burst` | `MIST,1` | ミスト噫射（一瞬、自動OFF） |
+| mist | `stream` | `MIST,2` | ミスト噫射（継続、stopまで継続） |
+
+#### mistモード詳細
+
+| mode | JSON値 | MISTコマンド | 使用アクション | 説明 |
+|------|--------|---------------|----------------|------|
+| 一瞬 | `burst` | `MIST,1` | `shot` | 短時間噫射後自動停止 |
+| 継続 | `stream` | `MIST,2` | `start`/`stop` | stopイベントまで継続 |
+| 停止 | - | `MIST,0` | `stop` | ミスト停止 |
 
 ---
 

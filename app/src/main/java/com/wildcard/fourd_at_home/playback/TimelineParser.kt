@@ -148,7 +148,8 @@ class TimelineParser @Inject constructor(
             EffectType.VIBRATION -> VibrationMode.fromJsonMode(mode) != null
             EffectType.FLASH -> FlashMode.fromJsonMode(mode) != null
             EffectType.COLOR -> ColorMode.fromJsonMode(mode) != null
-            EffectType.WATER, EffectType.WIND, EffectType.MIST -> mode == "burst"
+            EffectType.MIST -> MistMode.fromJsonMode(mode) != null
+            EffectType.WATER, EffectType.WIND -> mode == "burst"
         }
     }
 
