@@ -1,6 +1,10 @@
 package com.wildcard.fourd_at_home.ble
 
 import android.util.Log
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,6 +15,8 @@ import javax.inject.Singleton
  * コマンド形式:
  * - EffectStation: "FAN,0/1", "LED,colorId,brightness,effect,transition", "SPLASH", "MIST,0/1/2"
  * - ActionDrive: "MOTOR,mode_name" (up_weak, down_strong, etc.)
+ * 
+ * 250msイベント間隔に対応するため、複数デバイスへの並列送信をサポート
  */
 @Singleton
 class CommandSender @Inject constructor(
@@ -18,6 +24,57 @@ class CommandSender @Inject constructor(
 ) {
     companion object {
         private const val TAG = "CommandSender"
+    }
+
+    /**
+     * 複数デバイスへのコマンドを並列送信
+     * 異なるデバイスへのBLE書き込みは並列で実行可能
+     * 
+     * @param commands デバイスタイプとコマンドのペアリスト
+     * @return 全ての送信結果
+     */
+    suspend fun sendCommandsParallel(
+        commands: List<Pair<DeviceType, String>>
+    ): Result<Unit> = coroutineScope {
+        if (commands.isEmpty()) return@coroutineScope Result.success(Unit)
+        
+        val jobs = commands.mapNotNull { (deviceType, command) ->
+            val device = deviceManager.getDeviceByType(deviceType)
+            if (device != null) {
+                async {
+                    Log.d(TAG, "並列送信[$deviceType]: $command")
+                    deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
+                }
+            } else {
+                Log.w(TAG, "$deviceType が接続されていません")
+                null
+            }
+        }
+        
+        if (jobs.isEmpty()) {
+            return@coroutineScope Result.failure(Exception("送信可能なデバイスがありません"))
+        }
+        
+        val results = jobs.awaitAll()
+        
+        if (results.all { it.isSuccess }) {
+            Result.success(Unit)
+        } else {
+            val failures = results.count { it.isFailure }
+            Result.failure(Exception("$failures/${results.size} 件のコマンド送信に失敗"))
+        }
+    }
+
+    /**
+     * 両方のモーターに同じコマンドを並列送信
+     * @param mode モーターモード
+     */
+    suspend fun sendBothMotorsParallel(mode: String): Result<Unit> {
+        val commands = listOf(
+            DeviceType.ACTION_DRIVE_1 to "MOTOR,$mode",
+            DeviceType.ACTION_DRIVE_2 to "MOTOR,$mode"
+        )
+        return sendCommandsParallel(commands)
     }
 
     // ===============================
@@ -107,19 +164,30 @@ class CommandSender @Inject constructor(
     }
 
     /**
-     * EffectStationの全エフェクトをOFF
+     * EffectStationの全エフェクトをOFF（並列送信版）
      */
-    suspend fun sendEffectStationAllOff(): Result<Unit> {
-        val results = mutableListOf<Result<Unit>>()
-        results.add(sendFanCommand(false))
-        results.add(sendMistCommand(0))
-        results.add(sendLedColorCommand(11, 0, 0, 0))  // LED OFF
-        
-        return if (results.all { it.isSuccess }) {
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception("EffectStation全停止の一部が失敗しました"))
+    suspend fun sendEffectStationAllOff(): Result<Unit> = coroutineScope {
+        val device = deviceManager.getDeviceByType(DeviceType.EFFECT_STATION)
+        if (device == null) {
+            return@coroutineScope Result.failure(Exception("EffectStationが接続されていません"))
         }
+        
+        // 同一デバイスへの順次送信（適切な間隔を空けて）
+        val commands = listOf(
+            "FAN,0",
+            "MIST,0",
+            "LED,11,0,0,0"
+        )
+        
+        var success = true
+        for (command in commands) {
+            val result = deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
+            if (result.isFailure) success = false
+            delay(BleConstants.SAME_DEVICE_COMMAND_DELAY_MS)
+        }
+        
+        if (success) Result.success(Unit)
+        else Result.failure(Exception("EffectStation全停止の一部が失敗しました"))
     }
 
     /**
@@ -173,32 +241,18 @@ class CommandSender @Inject constructor(
     }
 
     /**
-     * 両方のモーターを制御（MQTT版互換）
+     * 両方のモーターを制御（並列送信版）
      * @param mode OFF, WEAK, MEDIUM_WEAK, MEDIUM_STRONG, STRONG, HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW
      */
     suspend fun sendBothMotorsCommand(mode: String): Result<Unit> {
-        val result1 = sendMotor1Command(mode)
-        val result2 = sendMotor2Command(mode)
-        
-        return if (result1.isSuccess && result2.isSuccess) {
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception("モーターコマンド送信に一部失敗しました"))
-        }
+        return sendBothMotorsParallel(mode)
     }
 
     /**
-     * 全モーターをOFF
+     * 全モーターをOFF（並列送信版）
      */
     suspend fun sendAllMotorsOff(): Result<Unit> {
-        val result1 = sendMotor1StringCommand("OFF")
-        val result2 = sendMotor2StringCommand("OFF")
-        
-        return if (result1.isSuccess && result2.isSuccess) {
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception("モーター停止に一部失敗しました"))
-        }
+        return sendBothMotorsParallel("OFF")
     }
 
     /**
@@ -232,27 +286,31 @@ class CommandSender @Inject constructor(
     // ===============================
 
     /**
-     * 全デバイスの全エフェクトをOFF
+     * 全デバイスの全エフェクトをOFF（並列送信版）
      */
-    suspend fun sendAllDevicesOff(): Result<Unit> {
-        val results = mutableListOf<Result<Unit>>()
+    suspend fun sendAllDevicesOff(): Result<Unit> = coroutineScope {
+        val jobs = mutableListOf<kotlinx.coroutines.Deferred<Result<Unit>>>()
 
         // EffectStation
         if (deviceManager.getDeviceByType(DeviceType.EFFECT_STATION) != null) {
-            results.add(sendEffectStationAllOff())
+            jobs.add(async { sendEffectStationAllOff() })
         }
 
-        // ActionDrive
+        // ActionDrive（両モーター並列）
         if (deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_1) != null ||
             deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_2) != null
         ) {
-            results.add(sendAllMotorsOff())
+            jobs.add(async { sendAllMotorsOff() })
         }
 
-        return if (results.all { it.isSuccess }) {
+        if (jobs.isEmpty()) {
+            return@coroutineScope Result.failure(Exception("接続されているデバイスがありません"))
+        }
+
+        val results = jobs.awaitAll()
+        
+        if (results.all { it.isSuccess }) {
             Result.success(Unit)
-        } else if (results.isEmpty()) {
-            Result.failure(Exception("接続されているデバイスがありません"))
         } else {
             Result.failure(Exception("一部のデバイスでエフェクト停止に失敗しました"))
         }
