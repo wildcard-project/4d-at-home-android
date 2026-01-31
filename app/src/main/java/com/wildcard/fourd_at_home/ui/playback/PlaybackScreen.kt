@@ -1,7 +1,6 @@
 package com.wildcard.fourd_at_home.ui.playback
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -17,22 +16,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Air
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.FastRewind
-import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.filled.Timeline
-import androidx.compose.material.icons.filled.Vibration
-import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -44,7 +36,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Snackbar
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -60,310 +51,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.ui.PlayerView
-import com.wildcard.fourd_at_home.domain.Content
-import com.wildcard.fourd_at_home.domain.EffectType
+import com.wildcard.fourd_at_home.ui.common.AppBackground
 import com.wildcard.fourd_at_home.ui.theme.NeonRed
 import com.wildcard.fourd_at_home.ui.theme.StatusConnected
 import com.wildcard.fourd_at_home.ui.theme.StatusDisconnected
 
 @Composable
 fun PlaybackScreen(
+    videoId: String,
     viewModel: PlaybackViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (uiState.showContentSelector) {
-            // コンテンツ選択画面
-            ContentSelectorScreen(
-                contents = uiState.availableContents,
-                onContentSelected = { content ->
-                    viewModel.loadContent(content)
-                },
-                isEffectStationConnected = uiState.isEffectStationConnected,
-                isMotor1Connected = uiState.isMotor1Connected,
-                isMotor2Connected = uiState.isMotor2Connected
-            )
-        } else {
+    // videoIdに基づいてコンテンツを自動ロード
+    if (uiState.selectedContent == null && videoId.isNotEmpty()) {
+        viewModel.loadContentById(videoId)
+    }
+
+    AppBackground {
+        Box(modifier = Modifier.fillMaxSize()) {
             // 再生画面
             PlaybackContentScreen(
                 viewModel = viewModel,
-                uiState = uiState,
-                onBack = { viewModel.showContentSelector() }
+                uiState = uiState
             )
-        }
 
-        // エラー表示
-        uiState.error?.let { error ->
-            Snackbar(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp),
-                action = {
-                    TextButton(onClick = { viewModel.clearError() }) {
-                        Text("OK")
+            // エラー表示
+            uiState.error?.let { error ->
+                Snackbar(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp),
+                    action = {
+                        TextButton(onClick = { viewModel.clearError() }) {
+                            Text("OK")
+                        }
                     }
-                }
-            ) {
-                Text(error)
-            }
-        }
-    }
-}
-
-/**
- * コンテンツ選択画面
- */
-@Composable
-private fun ContentSelectorScreen(
-    contents: List<Content>,
-    onContentSelected: (Content) -> Unit,
-    isEffectStationConnected: Boolean,
-    isMotor1Connected: Boolean,
-    isMotor2Connected: Boolean
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // ヘッダー
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "4DX@HOME",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "コンテンツを選択してください",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            // 接続状態
-            ConnectionStatusBadge(
-                effectStationConnected = isEffectStationConnected,
-                motor1Connected = isMotor1Connected,
-                motor2Connected = isMotor2Connected
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // コンテンツリスト
-        if (contents.isEmpty()) {
-            // コンテンツがない場合
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "内蔵コンテンツがありません",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 16.dp)
-            ) {
-                items(contents) { content ->
-                    ContentCard(
-                        content = content,
-                        onClick = { onContentSelected(content) }
-                    )
+                    Text(error)
                 }
             }
         }
-    }
-}
-
-/**
- * 接続状態バッジ
- */
-@Composable
-private fun ConnectionStatusBadge(
-    effectStationConnected: Boolean,
-    motor1Connected: Boolean,
-    motor2Connected: Boolean
-) {
-    val motorsConnected = listOf(motor1Connected, motor2Connected).count { it }
-    val allConnected = effectStationConnected && motorsConnected == 2
-    val color = when {
-        allConnected -> StatusConnected
-        effectStationConnected || motorsConnected > 0 -> Color(0xFFFFA500) // Orange
-        else -> Color.Gray
-    }
-
-    Surface(
-        color = color.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .clip(CircleShape)
-                    .background(color)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = when {
-                    allConnected -> "全デバイス接続済"
-                    effectStationConnected -> "ES接続中 (Motor: $motorsConnected/2)"
-                    motorsConnected > 0 -> "Motor: $motorsConnected/2 (ES未接続)"
-                    else -> "未接続"
-                },
-                color = color,
-                style = MaterialTheme.typography.labelMedium
-            )
-        }
-    }
-}
-
-/**
- * コンテンツカード
- */
-@Composable
-private fun ContentCard(
-    content: Content,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // サムネイル代わりのアイコン
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(NeonRed.copy(alpha = 0.2f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                    tint = NeonRed
-                )
-            }
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            // 情報
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = content.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = content.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // エフェクトタグ
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    content.effectTypes.forEach { type ->
-                        EffectTag(type)
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            // 再生ボタン
-            Button(
-                onClick = onClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = NeonRed
-                ),
-                shape = CircleShape,
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier.size(48.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "再生",
-                    tint = Color.White
-                )
-            }
-        }
-    }
-}
-
-/**
- * エフェクトタグ
- */
-@Composable
-private fun EffectTag(type: EffectType) {
-    val (color, icon) = when (type) {
-        EffectType.FAN -> StatusConnected to Icons.Default.Air
-        EffectType.SPLASH -> Color(0xFF00BCD4) to Icons.Default.WaterDrop
-        EffectType.MIST -> Color(0xFF00BCD4) to Icons.Default.WaterDrop
-        EffectType.LED -> Color(0xFFFFA500) to Icons.Default.Lightbulb
-        EffectType.VIBRATION -> Color(0xFF9C27B0) to Icons.Default.Vibration
-    }
-
-    Surface(
-        color = color.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(4.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = type.name,
-            modifier = Modifier
-                .padding(4.dp)
-                .size(16.dp),
-            tint = color
-        )
     }
 }
 
@@ -373,8 +101,7 @@ private fun EffectTag(type: EffectType) {
 @Composable
 private fun PlaybackContentScreen(
     viewModel: PlaybackViewModel,
-    uiState: PlaybackUiState,
-    onBack: () -> Unit
+    uiState: PlaybackUiState
 ) {
     val scrollState = rememberScrollState()
     
@@ -389,12 +116,6 @@ private fun PlaybackContentScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "戻る"
-                )
-            }
             
             Spacer(modifier = Modifier.width(8.dp))
             

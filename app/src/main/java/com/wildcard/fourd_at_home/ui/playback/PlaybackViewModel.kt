@@ -59,8 +59,7 @@ data class PlaybackUiState(
     val isMotor2Connected: Boolean = false,
     
     // その他
-    val error: String? = null,
-    val showContentSelector: Boolean = true
+    val error: String? = null
 )
 
 /**
@@ -252,7 +251,6 @@ class PlaybackViewModel @Inject constructor(
                     selectedContent = content,
                     videoUri = videoUri,
                     videoTitle = content.title,
-                    showContentSelector = false,
                     error = null
                 )
                 
@@ -280,17 +278,18 @@ class PlaybackViewModel @Inject constructor(
     }
 
     /**
-     * コンテンツ選択画面を表示
+     * IDでコンテンツを読み込む
      */
-    fun showContentSelector() {
-        _uiState.value = _uiState.value.copy(showContentSelector = true)
-    }
-
-    /**
-     * コンテンツ選択画面を非表示
-     */
-    fun hideContentSelector() {
-        _uiState.value = _uiState.value.copy(showContentSelector = false)
+    fun loadContentById(videoId: String) {
+        val content = ContentLibrary.contents.find { it.id == videoId }
+        if (content != null) {
+            loadContent(content)
+        } else {
+            Log.e(TAG, "コンテンツが見つかりません: $videoId")
+            _uiState.value = _uiState.value.copy(
+                error = "コンテンツが見つかりません"
+            )
+        }
     }
 
     /**

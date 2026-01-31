@@ -6,6 +6,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,6 +58,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wildcard.fourd_at_home.ui.common.AppBackground
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wildcard.fourd_at_home.ble.BleConnection
 import com.wildcard.fourd_at_home.ble.CommandDirection
@@ -75,6 +78,8 @@ import java.util.Locale
 
 @Composable
 fun SettingsScreen(
+    videoId: String = "",
+    onNavigateToPlayback: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -107,47 +112,72 @@ fun SettingsScreen(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // ヘッダー
-        Text(
-            text = "BLE デバイス設定",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+    AppBackground {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+            // ヘッダー
+            Text(
+                text = "BLE デバイス設定",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // スキャンセクション
-        ScanSection(
-            scanState = uiState.scanState,
-            scannedDevices = uiState.scannedDevices,
-            connections = uiState.connections,
-            onStartScan = { viewModel.startScan() },
-            onStopScan = { viewModel.stopScan() },
-            onConnectDevice = { viewModel.connectDevice(it) },
-            onDisconnectDevice = { viewModel.disconnectDevice(it) }
-        )
+            // スキャンセクション
+            ScanSection(
+                scanState = uiState.scanState,
+                scannedDevices = uiState.scannedDevices,
+                connections = uiState.connections,
+                onStartScan = { viewModel.startScan() },
+                onStopScan = { viewModel.stopScan() },
+                onConnectDevice = { viewModel.connectDevice(it) },
+                onDisconnectDevice = { viewModel.disconnectDevice(it) }
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // 接続済みデバイスセクション
-        ConnectedDevicesSection(
-            connections = uiState.connections,
-            onDisconnect = { viewModel.disconnectDevice(it) },
-            onDisconnectAll = { viewModel.disconnectAll() }
-        )
+            // 接続済みデバイスセクション
+            ConnectedDevicesSection(
+                connections = uiState.connections,
+                onDisconnect = { viewModel.disconnectDevice(it) },
+                onDisconnectAll = { viewModel.disconnectAll() }
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // コマンドログセクション
-        CommandLogSection(
-            commandLog = uiState.commandLog,
-            onClearLog = { viewModel.clearCommandLog() }
-        )
+            // 「再生へ」ボタン（デバイス接続状態に応じて有効化）
+            if (videoId.isNotEmpty()) {
+                val hasConnections = uiState.connections.values.any { 
+                    it.state == ConnectionState.CONNECTED 
+                }
+                Button(
+                    onClick = onNavigateToPlayback,
+                    enabled = hasConnections,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = NeonRed
+                    )
+                ) {
+                    Text(
+                        text = if (hasConnections) "再生へ" else "デバイスを接続してください",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            // コマンドログセクション
+            CommandLogSection(
+                commandLog = uiState.commandLog,
+                onClearLog = { viewModel.clearCommandLog() }
+            )
+        }
     }
 }
 
