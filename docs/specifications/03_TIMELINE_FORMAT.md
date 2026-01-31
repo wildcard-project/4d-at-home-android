@@ -289,7 +289,43 @@ enum class EventAction {
 | 白 | `white` | 10 | Wチャンネル |
 | 消灯 | `off` | 11 | (0, 0, 0) |
 
-### 5.4 water/wind/mist モード
+### 5.4 LED優先度制御（color/flash）
+
+EffectStationには1つのLED（GPIO 27）しかないため、`color`と`flash`が同時に指定された場合の優先度制御が必要です。
+
+#### 優先度ルール
+
+| 状況 | 動作 |
+|------|------|
+| `color` START中に `flash` START | **flash抑制**: colorを維持 |
+| `color` START中に `flash` STOP | **flash抑制**: colorを維持 |
+| `color` STOP後に `flash` 処理 | flashが正常に動作 |
+
+#### タイムライン例
+
+```
+時間軸: ──────────────────────────────────────────▶
+         
+color:   ───[START:orange]═══════════[STOP]───────
+flash:        [START:steady]──(抑制)──[STOP]
+                     ↑                   ↑
+              コマンド送信されない   コマンド送信されない
+```
+
+#### 実装詳細
+
+`PlaybackSyncEngine`内で`isColorActive`フラグにより管理：
+
+```kotlin
+// colorがアクティブな間はflashを抑制
+private var isColorActive = false
+
+// COLOR START時: isColorActive = true
+// COLOR STOP時: isColorActive = false
+// FLASH START/STOP時: isColorActiveがtrueならスキップ
+```
+
+### 5.5 water/wind/mist モード
 
 | effect | mode | ESP32コマンド | 説明 |
 |--------|------|--------------|------|

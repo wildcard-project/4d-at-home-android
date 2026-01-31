@@ -489,6 +489,37 @@ void updateLED() {
 }
 ```
 
+### 7.5 Android側のLED優先度制御
+
+EffectStationには1つのLED（GPIO 27）しかないため、Androidアプリ側で`color`と`flash`の優先度制御を行っています。
+
+#### 優先度ルール
+
+- **colorエフェクトはflashエフェクトより優先される**
+- `color`がアクティブな間は、`flash`のSTART/STOPコマンドはESP32に送信されない
+- これにより、色付きLED表示中にフラッシュで上書きされることを防止
+
+#### 処理フロー
+
+```
+Android PlaybackSyncEngine:
+┌─────────────────────────────────────────────┐
+│  isColorActive = false                       │
+│                                              │
+│  COLOR START → isColorActive = true         │
+│              → LED,colorId,2,0,0 送信       │
+│                                              │
+│  FLASH START → isColorActive確認            │
+│              → true なら送信スキップ         │
+│              → false なら LED,10,2,... 送信 │
+│                                              │
+│  COLOR STOP → isColorActive = false         │
+│             → LED,11,0,0,0 送信（消灯）     │
+└─────────────────────────────────────────────┘
+```
+
+**注意**: ESP32側では優先度制御を行わず、受信したコマンドをそのまま実行します。優先度制御はすべてAndroidアプリ側で行われます。
+
 ---
 
 ## 8. ステータス通知

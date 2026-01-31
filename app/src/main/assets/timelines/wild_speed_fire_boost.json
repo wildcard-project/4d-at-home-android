@@ -1,3290 +1,3290 @@
 {
   "events": [
     {
-      "t": 0.9221,
+      "t": 0.9315,
       "action": "caption",
       "text": "車を運転しながら、男が無線機に向かって「急げ！」と叫ぶ。その表情には焦りと緊迫感が滲み出ており、一刻を争う事態であることが伝わってくる。"
     },
     {
-      "t": 0.9221,
+      "t": 0.9315,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 2.7664,
+      "t": 2.7944,
       "action": "caption",
       "text": "緊迫した表情のまま、男は叫び続ける。背景が高速で流れており、車がかなりのスピードで走行中であることがわかる。"
     },
     {
-      "t": 2.7664,
+      "t": 2.7944,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 2.7664,
+      "t": 2.7944,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 4.3801,
+      "t": 4.4245,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 4.3801,
+      "t": 4.4245,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 4.6106,
+      "t": 4.6573,
       "action": "caption",
       "text": "カメラは暗い車内に切り替わり、手が素早くシフトレバーを操作する瞬間を捉える。さらなる加速を意図した、力強いギアチェンジだ。"
     },
     {
-      "t": 5.0717,
+      "t": 5.1231,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 5.0717,
+      "t": 5.1231,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 5.0717,
+      "t": 5.1231,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 5.3022,
+      "t": 5.3559,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 5.3022,
+      "t": 5.3559,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 5.3022,
+      "t": 5.3559,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 5.5327,
+      "t": 5.5888,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 5.5327,
+      "t": 5.5888,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 9.9128,
+      "t": 10.0132,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 10.6044,
+      "t": 10.7118,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 11.0654,
+      "t": 11.1776,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 11.0654,
+      "t": 11.1776,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 11.296,
+      "t": 11.4104,
       "action": "caption",
       "text": "ギアチェンジ直後、足がアクセルペダルを床まで深く踏み込む。エンジンが唸りを上げ、車が猛然と加速していく様子が伝わる。"
     },
     {
-      "t": 11.5265,
+      "t": 11.6433,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 11.5265,
+      "t": 11.6433,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 11.5265,
+      "t": 11.6433,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 11.757,
+      "t": 11.8762,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 11.757,
+      "t": 11.8762,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 11.757,
+      "t": 11.8762,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 11.757,
+      "t": 11.8762,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 11.9875,
+      "t": 12.109,
       "action": "caption",
       "text": "場面は一転し、イタリア・ローマの壮大な空撮映像が広がる。歴史的なコロッセオを中心に、緑豊かな都市の全景が映し出される。"
     },
     {
-      "t": 11.9875,
+      "t": 12.109,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 11.9875,
+      "t": 12.109,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 11.9875,
+      "t": 12.109,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 11.9875,
+      "t": 12.109,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 12.2181,
+      "t": 12.3419,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 12.2181,
+      "t": 12.3419,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 12.4486,
+      "t": 12.5748,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 12.9097,
+      "t": 13.0405,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 12.9097,
+      "t": 13.0405,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 14.9844,
+      "t": 15.1363,
       "action": "caption",
       "text": "カメラはゆっくりと前進し、古代ローマの象徴であるコロッセオに近づいていく。穏やかな日差しが、美しい街並みを照らしている。"
     },
     {
-      "t": 14.9844,
+      "t": 15.1363,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 14.9844,
+      "t": 15.1363,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 16.1371,
+      "t": 16.3006,
       "action": "caption",
       "text": "雄大なローマの景色が続く。カメラが滑るように移動することで、まるで空を飛んでいるかのような浮遊感が生まれる。"
     },
     {
-      "t": 16.1371,
+      "t": 16.3006,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 22.5919,
+      "t": 22.8209,
       "action": "caption",
       "text": "コロッセオが画面中央に大きく映し出され、その存在感を際立たせる。空からの視点が、都市の広がりと歴史の深さを物語る。"
     },
     {
-      "t": 22.5919,
+      "t": 22.8209,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 22.8224,
+      "t": 23.0537,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 23.053,
+      "t": 23.2866,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 23.053,
+      "t": 23.2866,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 23.053,
+      "t": 23.2866,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 23.053,
+      "t": 23.2866,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 23.514,
+      "t": 23.7523,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 23.514,
+      "t": 23.7523,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 23.9751,
+      "t": 24.2181,
       "action": "caption",
       "text": "カメラはさらにコロッセオに接近し、その巨大な建築物のディテールが見え始める。周囲の緑とのコントラストが美しい。"
     },
     {
-      "t": 23.9751,
+      "t": 24.2181,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 23.9751,
+      "t": 24.2181,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 23.9751,
+      "t": 24.2181,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 23.9751,
+      "t": 24.2181,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 24.2056,
+      "t": 24.4509,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 24.2056,
+      "t": 24.4509,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 24.4361,
+      "t": 24.6838,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 24.4361,
+      "t": 24.6838,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 24.6667,
+      "t": 24.9167,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 24.6667,
+      "t": 24.9167,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 24.8972,
+      "t": 25.1495,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 24.8972,
+      "t": 25.1495,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 25.1277,
+      "t": 25.3824,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 25.1277,
+      "t": 25.3824,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 25.1277,
+      "t": 25.3824,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 25.3583,
+      "t": 25.6153,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 25.3583,
+      "t": 25.6153,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 25.3583,
+      "t": 25.6153,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 25.5888,
+      "t": 25.8481,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 25.5888,
+      "t": 25.8481,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 25.5888,
+      "t": 25.8481,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 25.8193,
+      "t": 26.081,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 25.8193,
+      "t": 26.081,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 26.2804,
+      "t": 26.5467,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 26.2804,
+      "t": 26.5467,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 26.5109,
+      "t": 26.7796,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 26.5109,
+      "t": 26.7796,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 26.7414,
+      "t": 27.0125,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 26.7414,
+      "t": 27.0125,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 27.2025,
+      "t": 27.4782,
       "action": "caption",
       "text": "コロッセオのすぐそばを通り過ぎるようにカメラが移動する。歴史的な建造物と現代の都市が融合した風景が広がる。"
     },
     {
-      "t": 27.2025,
+      "t": 27.4782,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 27.2025,
+      "t": 27.4782,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 27.2025,
+      "t": 27.4782,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 27.433,
+      "t": 27.7111,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 27.433,
+      "t": 27.7111,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 27.6636,
+      "t": 27.9439,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "caption",
       "text": "カメラはコロッセオから離れ、ローマ市街の上空をさらに進んでいく。無数の建物が広がり、都市の活気が感じられる。"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "shot",
       "effect": "mist",
       "mode": "burst"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 28.1246,
+      "t": 28.4097,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 28.3551,
+      "t": 28.6425,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 28.3551,
+      "t": 28.6425,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 29.5078,
+      "t": 29.8069,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 29.5078,
+      "t": 29.8069,
       "action": "start",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 29.7383,
+      "t": 30.0397,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 29.7383,
+      "t": 30.0397,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "stop",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 29.9688,
+      "t": 30.2726,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 30.1994,
+      "t": 30.5055,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 30.1994,
+      "t": 30.5055,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 30.6604,
+      "t": 30.9712,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 30.891,
+      "t": 31.204,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 30.891,
+      "t": 31.204,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 30.891,
+      "t": 31.204,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 31.1215,
+      "t": 31.4369,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 31.1215,
+      "t": 31.4369,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 31.352,
+      "t": 31.6698,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 31.352,
+      "t": 31.6698,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 31.352,
+      "t": 31.6698,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 31.352,
+      "t": 31.6698,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 31.352,
+      "t": 31.6698,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 31.5826,
+      "t": 31.9026,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 32.0436,
+      "t": 32.3684,
       "action": "caption",
       "text": "広大なローマの街並みを映しながら、カメラはゆっくりとパンしていく。静かで壮大なオープニングシーンが終わろうとしている。"
     },
     {
-      "t": 32.0436,
+      "t": 32.3684,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 32.0436,
+      "t": 32.3684,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 32.0436,
+      "t": 32.3684,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 32.5047,
+      "t": 32.8341,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 32.5047,
+      "t": 32.8341,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 32.5047,
+      "t": 32.8341,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 32.7352,
+      "t": 33.067,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 32.7352,
+      "t": 33.067,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 33.1963,
+      "t": 33.5327,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 33.1963,
+      "t": 33.5327,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 33.4268,
+      "t": 33.7656,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 33.4268,
+      "t": 33.7656,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 33.6573,
+      "t": 33.9984,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 34.5794,
+      "t": 34.9299,
       "action": "caption",
       "text": "再び地上へ。木漏れ日が差す道を、金色のスーパーカーとオレンジ色のクラシックカーが猛スピードで並走している。"
     },
     {
-      "t": 35.271,
+      "t": 35.6285,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 35.5016,
+      "t": 35.8614,
       "action": "caption",
       "text": "カメラが低く構えられ、地面スレスレの視点から2台の車を追う。疾走感が強調され、激しいカーチェイスの始まりを予感させる。"
     },
     {
-      "t": 35.5016,
+      "t": 35.8614,
       "action": "shot",
       "effect": "water",
       "mode": "burst"
     },
     {
-      "t": 35.5016,
+      "t": 35.8614,
       "action": "start",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 35.5016,
+      "t": 35.8614,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 35.5016,
+      "t": 35.8614,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 35.7321,
+      "t": 36.0942,
       "action": "stop",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 35.7321,
+      "t": 36.0942,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 35.7321,
+      "t": 36.0942,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 35.9626,
+      "t": 36.3271,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 35.9626,
+      "t": 36.3271,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 36.1931,
+      "t": 36.56,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 36.1931,
+      "t": 36.56,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 36.1931,
+      "t": 36.56,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 36.4237,
+      "t": 36.7928,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 36.6542,
+      "t": 37.0257,
       "action": "caption",
       "text": "背景が激しくブレる中、2台の車がデッドヒートを繰り広げる。タイヤの音とエンジン音が聞こえてきそうなほどの臨場感だ。"
     },
     {
-      "t": 38.0374,
+      "t": 38.4229,
       "action": "caption",
       "text": "オレンジ色の車が金色の車を追い抜こうとする。互いに譲らない、熾烈な競争が続いている。"
     },
     {
-      "t": 38.0374,
+      "t": 38.4229,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 38.4984,
+      "t": 38.8886,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 39.8816,
+      "t": 40.2858,
       "action": "caption",
       "text": "黒いマッスルカーがローマの街角を疾走する。重厚な車体が地面を揺らしながら、力強く駆け抜けていく。"
     },
     {
-      "t": 39.8816,
+      "t": 40.2858,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 39.8816,
+      "t": 40.2858,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 39.8816,
+      "t": 40.2858,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 41.7259,
+      "t": 42.1488,
       "action": "caption",
       "text": "カメラがマッスルカーの動きを追い、そのスピード感を捉える。背景の歴史的な建物との対比が印象的だ。"
     },
     {
-      "t": 44.2617,
+      "t": 44.7103,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 44.4922,
+      "t": 44.9431,
       "action": "caption",
       "text": "歩道を一台のバイクが猛スピードで走行してくる。さらに、前方の段差を利用して、バイクが勢いよく宙を舞う。"
     },
     {
-      "t": 44.4922,
+      "t": 44.9431,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 44.7227,
+      "t": 45.176,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 44.7227,
+      "t": 45.176,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 45.1838,
+      "t": 45.6417,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 45.1838,
+      "t": 45.6417,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 45.4143,
+      "t": 45.8746,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 45.4143,
+      "t": 45.8746,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 45.4143,
+      "t": 45.8746,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 45.4143,
+      "t": 45.8746,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 45.6449,
+      "t": 46.1075,
       "action": "caption",
       "text": "バイクがジャンプし、空中で一瞬静止する。歩行者たちが驚いて見守る中、大胆不敵なスタントが繰り広げられる。"
     },
     {
-      "t": 45.6449,
+      "t": 46.1075,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 45.6449,
+      "t": 46.1075,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 45.6449,
+      "t": 46.1075,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 46.1059,
+      "t": 46.5732,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 46.1059,
+      "t": 46.5732,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 46.3364,
+      "t": 46.8061,
       "action": "caption",
       "text": "ジャンプしたバイクが着地し、再び歩道を走り出す。危険を顧みない走りが、街に混乱を巻き起こしている。"
     },
     {
-      "t": 46.3364,
+      "t": 46.8061,
       "action": "shot",
       "effect": "water",
       "mode": "burst"
     },
     {
-      "t": 46.3364,
+      "t": 46.8061,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 46.567,
+      "t": 47.0389,
       "action": "caption",
       "text": "バイクは歩行者の間をすり抜けながら、目的地へと向かう。その走りは、何らかの緊急事態を示唆している。"
     },
     {
-      "t": 46.567,
+      "t": 47.0389,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 46.567,
+      "t": 47.0389,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 46.567,
+      "t": 47.0389,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 46.567,
+      "t": 47.0389,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 46.7975,
+      "t": 47.2718,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 47.028,
+      "t": 47.5047,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 49.3333,
+      "t": 49.8333,
       "action": "caption",
       "text": "金色のスーパーカーの運転席。男が呆れたような、うんざりした表情で前方を睨んでいる。字幕には「ローマンのド派手な車のせいで」と表示されている。"
     },
     {
-      "t": 49.3333,
+      "t": 49.8333,
       "action": "start",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 49.3333,
+      "t": 49.8333,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 52.3302,
+      "t": 52.8606,
       "action": "stop",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 52.3302,
+      "t": 52.8606,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 53.0218,
+      "t": 53.5592,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 53.4829,
+      "t": 54.0249,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 53.7134,
+      "t": 54.2578,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 54.405,
+      "t": 54.9564,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 54.6355,
+      "t": 55.1893,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 54.6355,
+      "t": 55.1893,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 54.866,
+      "t": 55.4221,
       "action": "caption",
       "text": "男はハンドルを握りながら、不満げに唇を歪める。彼の派手な車が、何かトラブルを引き起こしているようだ。"
     },
     {
-      "t": 54.866,
+      "t": 55.4221,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 55.0966,
+      "t": 55.655,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 55.0966,
+      "t": 55.655,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 55.0966,
+      "t": 55.655,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 55.3271,
+      "t": 55.8879,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 55.3271,
+      "t": 55.8879,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 57.6324,
+      "t": 58.2165,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 59.9377,
+      "t": 60.5452,
       "action": "caption",
       "text": "彼の視線の先には、仲間たちの車がいるのだろうか。チーム内のコミュニケーションに、少し不協和音が生じている様子がうかがえる。"
     },
     {
-      "t": 59.9377,
+      "t": 60.5452,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 59.9377,
+      "t": 60.5452,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 59.9377,
+      "t": 60.5452,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 59.9377,
+      "t": 60.5452,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 59.9377,
+      "t": 60.5452,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 60.1682,
+      "t": 60.778,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 60.1682,
+      "t": 60.778,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 60.1682,
+      "t": 60.778,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 60.1682,
+      "t": 60.778,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 60.3988,
+      "t": 61.0109,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 60.3988,
+      "t": 61.0109,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 60.8598,
+      "t": 61.4766,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 60.8598,
+      "t": 61.4766,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 60.8598,
+      "t": 61.4766,
       "action": "start",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 60.8598,
+      "t": 61.4766,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 61.0903,
+      "t": 61.7095,
       "action": "stop",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 61.0903,
+      "t": 61.7095,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 61.3209,
+      "t": 61.9424,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 61.3209,
+      "t": 61.9424,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 61.3209,
+      "t": 61.9424,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 61.3209,
+      "t": 61.9424,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 61.5514,
+      "t": 62.1752,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 61.5514,
+      "t": 62.1752,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 61.5514,
+      "t": 62.1752,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 61.5514,
+      "t": 62.1752,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 61.7819,
+      "t": 62.4081,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 61.7819,
+      "t": 62.4081,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 61.7819,
+      "t": 62.4081,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 62.0125,
+      "t": 62.641,
       "action": "caption",
       "text": "場面はオレンジ色のクラシックカーの車内に移る。運転している男が、無線機で冷静に何かを伝えている。"
     },
     {
-      "t": 62.0125,
+      "t": 62.641,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 62.0125,
+      "t": 62.641,
       "action": "start",
       "effect": "flash",
       "mode": "breathe"
     },
     {
-      "t": 65.0093,
+      "t": 65.6682,
       "action": "start",
       "effect": "vibration",
       "mode": "heartbeat"
     },
     {
-      "t": 69.6199,
+      "t": 70.3255,
       "action": "caption",
       "text": "男は「遅れてる」と無線で報告する。彼の落ち着いた口調とは裏腹に、状況は切迫しているようだ。"
     },
     {
-      "t": 71.6947,
+      "t": 72.4213,
       "action": "stop",
       "effect": "flash",
       "mode": "breathe"
     },
     {
-      "t": 71.6947,
+      "t": 72.4213,
       "action": "stop",
       "effect": "vibration",
       "mode": "heartbeat"
     },
     {
-      "t": 76.0748,
+      "t": 76.8458,
       "action": "start",
       "effect": "color",
       "mode": "blue"
     },
     {
-      "t": 76.0748,
+      "t": 76.8458,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 76.0748,
+      "t": 76.8458,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 76.0748,
+      "t": 76.8458,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 76.3053,
+      "t": 77.0787,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 76.3053,
+      "t": 77.0787,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 76.5358,
+      "t": 77.3115,
       "action": "stop",
       "effect": "color",
       "mode": "blue"
     },
     {
-      "t": 76.5358,
+      "t": 77.3115,
       "action": "start",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 76.7664,
+      "t": 77.5444,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 76.7664,
+      "t": 77.5444,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 76.7664,
+      "t": 77.5444,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 76.7664,
+      "t": 77.5444,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 76.9969,
+      "t": 77.7773,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 76.9969,
+      "t": 77.7773,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 77.2274,
+      "t": 78.0101,
       "action": "stop",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 77.2274,
+      "t": 78.0101,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 77.2274,
+      "t": 78.0101,
       "action": "start",
       "effect": "color",
       "mode": "blue"
     },
     {
-      "t": 77.2274,
+      "t": 78.0101,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 77.4579,
+      "t": 78.243,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 77.4579,
+      "t": 78.243,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 77.4579,
+      "t": 78.243,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 77.6885,
+      "t": 78.4759,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 77.919,
+      "t": 78.7087,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 78.1495,
+      "t": 78.9416,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 78.3801,
+      "t": 79.1745,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 78.6106,
+      "t": 79.4073,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 78.6106,
+      "t": 79.4073,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 78.6106,
+      "t": 79.4073,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 78.8411,
+      "t": 79.6402,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 78.8411,
+      "t": 79.6402,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 78.8411,
+      "t": 79.6402,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 79.0717,
+      "t": 79.8731,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 79.0717,
+      "t": 79.8731,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 79.3022,
+      "t": 80.1059,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 79.5327,
+      "t": 80.3388,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 79.7632,
+      "t": 80.5717,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 79.7632,
+      "t": 80.5717,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 79.9938,
+      "t": 80.8045,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 79.9938,
+      "t": 80.8045,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 80.6854,
+      "t": 81.5031,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 80.6854,
+      "t": 81.5031,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 80.9159,
+      "t": 81.736,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 80.9159,
+      "t": 81.736,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 80.9159,
+      "t": 81.736,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 81.1464,
+      "t": 81.9688,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 81.6075,
+      "t": 82.4346,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 81.6075,
+      "t": 82.4346,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 81.838,
+      "t": 82.6674,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 82.0685,
+      "t": 82.9003,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 82.5296,
+      "t": 83.366,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 82.5296,
+      "t": 83.366,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 82.7601,
+      "t": 83.5989,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 82.7601,
+      "t": 83.5989,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 82.9907,
+      "t": 83.8318,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 82.9907,
+      "t": 83.8318,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 82.9907,
+      "t": 83.8318,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 83.4517,
+      "t": 84.2975,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 83.4517,
+      "t": 84.2975,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 83.4517,
+      "t": 84.2975,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 83.6822,
+      "t": 84.5304,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 83.6822,
+      "t": 84.5304,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 83.6822,
+      "t": 84.5304,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 83.9128,
+      "t": 84.7632,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 83.9128,
+      "t": 84.7632,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 84.1433,
+      "t": 84.9961,
       "action": "caption",
       "text": "彼はハンドルをしっかりと握り、前方を注意深く見つめる。冷静沈着な彼の様子が、チームの頼れる存在であることを示している。"
     },
     {
-      "t": 84.3738,
+      "t": 85.229,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 84.8349,
+      "t": 85.6947,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 85.0654,
+      "t": 85.9276,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 85.0654,
+      "t": 85.9276,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 85.0654,
+      "t": 85.9276,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 85.296,
+      "t": 86.1604,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 85.296,
+      "t": 86.1604,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 85.5265,
+      "t": 86.3933,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 85.5265,
+      "t": 86.3933,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 85.757,
+      "t": 86.6262,
       "action": "stop",
       "effect": "color",
       "mode": "blue"
     },
     {
-      "t": 85.757,
+      "t": 86.6262,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 85.757,
+      "t": 86.6262,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 85.757,
+      "t": 86.6262,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 85.757,
+      "t": 86.6262,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 90.3676,
+      "t": 91.2835,
       "action": "start",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 90.3676,
+      "t": 91.2835,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 90.3676,
+      "t": 91.2835,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 90.5981,
+      "t": 91.5164,
       "action": "caption",
       "text": "彼の視線は鋭く、状況を的確に判断しようとしている。高速で流れる背景が、レースの激しさを物語る。"
     },
     {
-      "t": 90.5981,
+      "t": 91.5164,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 91.0592,
+      "t": 91.9821,
       "action": "stop",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 91.0592,
+      "t": 91.9821,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 91.0592,
+      "t": 91.9821,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 91.0592,
+      "t": 91.9821,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 91.9813,
+      "t": 92.9136,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 92.4424,
+      "t": 93.3793,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 92.4424,
+      "t": 93.3793,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 92.6729,
+      "t": 93.6121,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 92.9034,
+      "t": 93.845,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 93.134,
+      "t": 94.0779,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 93.134,
+      "t": 94.0779,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 93.134,
+      "t": 94.0779,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 93.3645,
+      "t": 94.3107,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 93.3645,
+      "t": 94.3107,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 93.3645,
+      "t": 94.3107,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 93.595,
+      "t": 94.5436,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 93.595,
+      "t": 94.5436,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 93.8255,
+      "t": 94.7765,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 93.8255,
+      "t": 94.7765,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 93.8255,
+      "t": 94.7765,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 94.0561,
+      "t": 95.0093,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 94.0561,
+      "t": 95.0093,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 94.2866,
+      "t": 95.2422,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 94.2866,
+      "t": 95.2422,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 94.7477,
+      "t": 95.7079,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 94.9782,
+      "t": 95.9408,
       "action": "shot",
       "effect": "water",
       "mode": "burst"
     },
     {
-      "t": 95.4393,
+      "t": 96.4065,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 97.7445,
+      "t": 98.7352,
       "action": "start",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 97.7445,
+      "t": 98.7352,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 98.4361,
+      "t": 99.4338,
       "action": "stop",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 98.4361,
+      "t": 99.4338,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 98.6667,
+      "t": 99.6667,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 98.8972,
+      "t": 99.8995,
       "action": "start",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 98.8972,
+      "t": 99.8995,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 98.8972,
+      "t": 99.8995,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 99.1277,
+      "t": 100.1324,
       "action": "stop",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 99.1277,
+      "t": 100.1324,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 99.1277,
+      "t": 100.1324,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 99.1277,
+      "t": 100.1324,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 99.1277,
+      "t": 100.1324,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 99.3583,
+      "t": 100.3653,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 99.3583,
+      "t": 100.3653,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 99.3583,
+      "t": 100.3653,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 99.3583,
+      "t": 100.3653,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 99.3583,
+      "t": 100.3653,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 100.5109,
+      "t": 101.5296,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 100.5109,
+      "t": 101.5296,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 100.5109,
+      "t": 101.5296,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 101.433,
+      "t": 102.4611,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 101.6636,
+      "t": 102.6939,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 101.6636,
+      "t": 102.6939,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 101.6636,
+      "t": 102.6939,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 102.8162,
+      "t": 103.8583,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 102.8162,
+      "t": 103.8583,
       "action": "start",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 102.8162,
+      "t": 103.8583,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 102.8162,
+      "t": 103.8583,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 103.0467,
+      "t": 104.0911,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 104.891,
+      "t": 105.954,
       "action": "stop",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 104.891,
+      "t": 105.954,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 104.891,
+      "t": 105.954,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 104.891,
+      "t": 105.954,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 106.2741,
+      "t": 107.3512,
       "action": "start",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 106.2741,
+      "t": 107.3512,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 106.9657,
+      "t": 108.0498,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 106.9657,
+      "t": 108.0498,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 107.1963,
+      "t": 108.2827,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 107.4268,
+      "t": 108.5156,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 107.4268,
+      "t": 108.5156,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 107.6573,
+      "t": 108.7484,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 107.6573,
+      "t": 108.7484,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 107.6573,
+      "t": 108.7484,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 108.1184,
+      "t": 109.2142,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 108.3489,
+      "t": 109.447,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 108.3489,
+      "t": 109.447,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 108.3489,
+      "t": 109.447,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 108.5794,
+      "t": 109.6799,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 108.5794,
+      "t": 109.6799,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 108.5794,
+      "t": 109.6799,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 109.0405,
+      "t": 110.1456,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 109.271,
+      "t": 110.3785,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 109.271,
+      "t": 110.3785,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 109.5016,
+      "t": 110.6114,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 109.5016,
+      "t": 110.6114,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 109.5016,
+      "t": 110.6114,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 109.5016,
+      "t": 110.6114,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 109.7321,
+      "t": 110.8442,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 109.7321,
+      "t": 110.8442,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 110.1931,
+      "t": 111.31,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 110.1931,
+      "t": 111.31,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 110.6542,
+      "t": 111.7757,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 110.6542,
+      "t": 111.7757,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 110.8847,
+      "t": 112.0086,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 110.8847,
+      "t": 112.0086,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 111.1153,
+      "t": 112.2414,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 111.1153,
+      "t": 112.2414,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 111.1153,
+      "t": 112.2414,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 111.3458,
+      "t": 112.4743,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 114.5732,
+      "t": 115.7344,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 114.5732,
+      "t": 115.7344,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 115.0343,
+      "t": 116.2002,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 115.0343,
+      "t": 116.2002,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 115.0343,
+      "t": 116.2002,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 115.0343,
+      "t": 116.2002,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 115.2648,
+      "t": 116.433,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 115.2648,
+      "t": 116.433,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 115.4953,
+      "t": 116.6659,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 115.7259,
+      "t": 116.8988,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 115.9564,
+      "t": 117.1316,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 115.9564,
+      "t": 117.1316,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 116.1869,
+      "t": 117.3645,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 116.1869,
+      "t": 117.3645,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 116.1869,
+      "t": 117.3645,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 116.4174,
+      "t": 117.5974,
       "action": "stop",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 116.4174,
+      "t": 117.5974,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 116.4174,
+      "t": 117.5974,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 119.8754,
+      "t": 121.0903,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 120.1059,
+      "t": 121.3232,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 120.1059,
+      "t": 121.3232,
       "action": "start",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 120.1059,
+      "t": 121.3232,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 120.1059,
+      "t": 121.3232,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 120.3364,
+      "t": 121.5561,
       "action": "stop",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 120.3364,
+      "t": 121.5561,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 120.3364,
+      "t": 121.5561,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 120.567,
+      "t": 121.7889,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 120.567,
+      "t": 121.7889,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 120.567,
+      "t": 121.7889,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 120.567,
+      "t": 121.7889,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 120.567,
+      "t": 121.7889,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 120.7975,
+      "t": 122.0218,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 120.7975,
+      "t": 122.0218,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 120.7975,
+      "t": 122.0218,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 121.028,
+      "t": 122.2547,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 121.028,
+      "t": 122.2547,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 121.4891,
+      "t": 122.7204,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 121.4891,
+      "t": 122.7204,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 121.4891,
+      "t": 122.7204,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 121.4891,
+      "t": 122.7204,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 121.4891,
+      "t": 122.7204,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 121.4891,
+      "t": 122.7204,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 122.8723,
+      "t": 124.1176,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 125.6386,
+      "t": 126.912,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 125.6386,
+      "t": 126.912,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 125.6386,
+      "t": 126.912,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 125.6386,
+      "t": 126.912,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 125.8692,
+      "t": 127.1449,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 125.8692,
+      "t": 127.1449,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 125.8692,
+      "t": 127.1449,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 126.3302,
+      "t": 127.6106,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 126.5607,
+      "t": 127.8435,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 126.5607,
+      "t": 127.8435,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 126.5607,
+      "t": 127.8435,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 127.2523,
+      "t": 128.5421,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 127.7134,
+      "t": 129.0078,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 127.9439,
+      "t": 129.2407,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 127.9439,
+      "t": 129.2407,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 128.1745,
+      "t": 129.4735,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 128.1745,
+      "t": 129.4735,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 128.1745,
+      "t": 129.4735,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 128.1745,
+      "t": 129.4735,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 128.1745,
+      "t": 129.4735,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 128.405,
+      "t": 129.7064,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 133.0156,
+      "t": 134.3637,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 133.0156,
+      "t": 134.3637,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 134.1682,
+      "t": 135.528,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 134.1682,
+      "t": 135.528,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 134.6293,
+      "t": 135.9938,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 134.6293,
+      "t": 135.9938,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 134.8598,
+      "t": 136.2266,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 134.8598,
+      "t": 136.2266,
       "action": "start",
       "effect": "flash",
       "mode": "steady"
     },
     {
-      "t": 134.8598,
+      "t": 136.2266,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 135.0903,
+      "t": 136.4595,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 135.3209,
+      "t": 136.6924,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 135.3209,
+      "t": 136.6924,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 135.3209,
+      "t": 136.6924,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 135.3209,
+      "t": 136.6924,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 135.5514,
+      "t": 136.9252,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 135.5514,
+      "t": 136.9252,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 135.5514,
+      "t": 136.9252,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 135.5514,
+      "t": 136.9252,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 135.7819,
+      "t": 137.1581,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 135.7819,
+      "t": 137.1581,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 136.0125,
+      "t": 137.391,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 136.0125,
+      "t": 137.391,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 136.243,
+      "t": 137.6238,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 136.243,
+      "t": 137.6238,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 136.4735,
+      "t": 137.8567,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 136.4735,
+      "t": 137.8567,
       "action": "start",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 136.704,
+      "t": 138.0896,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 136.704,
+      "t": 138.0896,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 137.1651,
+      "t": 138.5553,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 137.1651,
+      "t": 138.5553,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 137.1651,
+      "t": 138.5553,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 137.1651,
+      "t": 138.5553,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 137.8567,
+      "t": 139.2539,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 137.8567,
+      "t": 139.2539,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 138.0872,
+      "t": 139.4868,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 138.0872,
+      "t": 139.4868,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 138.7788,
+      "t": 140.1854,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 138.7788,
+      "t": 140.1854,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 139.4704,
+      "t": 140.884,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 139.4704,
+      "t": 140.884,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 139.7009,
+      "t": 141.1168,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 139.7009,
+      "t": 141.1168,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 139.9315,
+      "t": 141.3497,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 139.9315,
+      "t": 141.3497,
       "action": "start",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 141.5452,
+      "t": 142.9798,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 141.5452,
+      "t": 142.9798,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 142.2368,
+      "t": 143.6783,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 142.2368,
+      "t": 143.6783,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 142.4673,
+      "t": 143.9112,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 142.4673,
+      "t": 143.9112,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 143.3894,
+      "t": 144.8427,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_strong"
     },
     {
-      "t": 143.3894,
+      "t": 144.8427,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 143.6199,
+      "t": 145.0755,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 143.6199,
+      "t": 145.0755,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 144.081,
+      "t": 145.5413,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_weak"
     },
     {
-      "t": 144.081,
+      "t": 145.5413,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 145.0031,
+      "t": 146.4727,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 145.0031,
+      "t": 146.4727,
       "action": "start",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 145.6947,
+      "t": 147.1713,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 145.6947,
+      "t": 147.1713,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_weak"
     },
     {
-      "t": 145.6947,
+      "t": 147.1713,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 147.5389,
+      "t": 149.0343,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 148.0,
+      "t": 149.5,
       "action": "stop",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 148.0,
+      "t": 149.5,
       "action": "stop",
       "effect": "flash",
       "mode": "steady"

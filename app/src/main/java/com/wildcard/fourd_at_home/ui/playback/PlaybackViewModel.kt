@@ -124,6 +124,7 @@ class PlaybackViewModel @Inject constructor(
                 syncEngine.start()
                 startPositionUpdates()
             } else {
+                Log.d(TAG, "一時停止 - 全エフェクト停止コマンドを送信")
                 syncEngine.pause()
                 stopPositionUpdates()
             }
@@ -316,17 +317,22 @@ class PlaybackViewModel @Inject constructor(
      * 一時停止
      */
     fun pause() {
+        Log.d(TAG, "pause() 呼び出し - 一時停止処理を実行")
         exoPlayer?.pause()
+        // ExoPlayerのpause()により、onIsPlayingChanged(false)が呼ばれ、
+        // そこでsyncEngine.pause()と全エフェクト停止が実行される
     }
 
     /**
      * 停止
      */
     fun stop() {
+        Log.d(TAG, "stop() 呼び出し - 停止処理を実行")
         exoPlayer?.let { player ->
             player.pause()
             player.seekTo(0)
         }
+        // syncEngine.stop()内でsendAllDevicesOff()が呼ばれる
         syncEngine.stop()
     }
 
