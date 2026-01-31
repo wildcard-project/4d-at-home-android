@@ -225,7 +225,7 @@ app/src/main/java/com/wildcard/fourd_at_home/
 | **カラーLED** | EffectStation | RGBW NeoPixel | 12色（ピンク, 赤, オレンジ, 黄, 黄緑, 緑, 深緑, シアン, 青, 紫, 白, 消灯） |
 | **水噴射** | EffectStation | ワンショット | burst |
 | **ファン（風）** | EffectStation | ON/OFF | burst |
-| **ミスト** | EffectStation | トグル | burst |
+| **ミスト** | EffectStation | トグル | burst (一瞬), stream (継続) |
 
 ---
 

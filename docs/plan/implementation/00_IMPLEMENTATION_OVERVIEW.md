@@ -404,7 +404,7 @@ enum class DeviceType {
 | `color` | `red` / `green` / `blue` / `yellow` / `cyan` / `purple` | EffectStation LED | 環境照明 |
 | `water` | `burst` | EffectStation SPLASH | 水しぶき（shot専用） |
 | `wind` | `burst` | EffectStation FAN | 風 |
-| `mist` | `burst` | EffectStation MIST | ミスト（新規追加） |
+| `mist` | `burst` / `stream` | EffectStation MIST | ミスト（burst:一瞬 / stream:継続） |
 
 ---
 

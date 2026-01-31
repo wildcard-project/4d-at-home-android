@@ -125,6 +125,21 @@ enum class ColorMode(val jsonMode: String, val ledColorId: Int, val r: Int, val 
 }
 
 /**
+ * ミストモード（ESP32 MIST制御対応）
+ * ESP32コマンド: "MIST,0" (OFF), "MIST,1" (一瞬/burst), "MIST,2" (継続/stream)
+ */
+enum class MistMode(val jsonMode: String, val commandValue: Int, val description: String) {
+    BURST("burst", 1, "一瞬噴射（自動OFF）"),
+    STREAM("stream", 2, "継続噴射"),
+    OFF("off", 0, "停止");
+    
+    companion object {
+        fun fromJsonMode(mode: String): MistMode? = 
+            entries.find { it.jsonMode == mode }
+    }
+}
+
+/**
  * モーター対象
  */
 enum class MotorTarget {
