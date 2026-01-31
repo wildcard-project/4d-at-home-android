@@ -73,7 +73,14 @@ fun AppNavigation() {
             )
         ) { backStackEntry ->
             val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
-            PlaybackScreen(videoId = videoId)
+            PlaybackScreen(
+                videoId = videoId,
+                onNavigateToVideoSelect = {
+                    navController.navigate(Screen.VideoSelect.route) {
+                        popUpTo(Screen.VideoSelect.route) { inclusive = false }
+                    }
+                }
+            )
         }
     }
 }

@@ -33,7 +33,7 @@ object ContentLibrary {
             id = "wild_speed_fire_boost",
             title = "ワイルドスピード ファイヤーブースト",
             description = "ローマを舞台にした迫力のカーアクション！風・振動・LEDエフェクトで臨場感を体験",
-            videoAssetPath = "videos/wild_speed_fire_boost.mp4",
+            videoAssetPath = "wild_speed_fire_boost.mp4",
             timelineAssetPath = "timelines/wild_speed_fire_boost.json",
             durationMs = 180000, // 約3分（仮）
             effectTypes = listOf(

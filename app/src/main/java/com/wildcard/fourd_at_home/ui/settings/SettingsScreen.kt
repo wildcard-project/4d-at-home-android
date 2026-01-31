@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -164,59 +165,49 @@ fun SettingsScreen(
         }
 
         Scaffold(
-            containerColor = Color.Transparent,
-            floatingActionButton = {
-                if (videoId.isNotEmpty() && hasConnections) {
-                    FloatingActionButton(
-                        onClick = onNavigateToPlayback,
-                        containerColor = NeonRed
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "再生へ",
-                            tint = Color.White
-                        )
-                    }
-                }
-            }
+            containerColor = Color.Transparent
+            // ★ bottomBar削除（下部固定再生ボタンを削除）
         ) { paddingValues ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    .graphicsLayer {
+                        translationY = slideOffset.value
+                        alpha = alphaValue.value
+                    }
             ) {
-                // 上部：縮んだカード（固定）
-                ThumbnailCard(
-                    videoId = videoId,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(240.dp)
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                )
+                // 上部：サムネイルカード
+                item {
+                    ThumbnailCard(
+                        videoId = videoId,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp)
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-                // 下部：通信/設定の内容（スクロール可能）
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp)
-                        .graphicsLayer {
-                            translationY = slideOffset.value
-                            alpha = alphaValue.value
-                        }
-                ) {
-                    // ヘッダー
+                // ヘッダー
+                item {
                     Text(
                         text = "BLE デバイス設定",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
+                }
 
+                item {
                     Spacer(modifier = Modifier.height(16.dp))
+                }
 
-                    // スキャンセクション
+                // スキャンセクション
+                item {
                     ScanSection(
                         scanState = uiState.scanState,
                         scannedDevices = uiState.scannedDevices,
@@ -224,27 +215,95 @@ fun SettingsScreen(
                         onStartScan = { viewModel.startScan() },
                         onStopScan = { viewModel.stopScan() },
                         onConnectDevice = { viewModel.connectDevice(it) },
-                        onDisconnectDevice = { viewModel.disconnectDevice(it) }
+                        onDisconnectDevice = { viewModel.disconnectDevice(it) },
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
+                }
 
+                item {
                     Spacer(modifier = Modifier.height(16.dp))
+                }
 
-                    // 接続済みデバイスセクション
+                // 接続済みデバイスセクション
+                item {
                     ConnectedDevicesSection(
                         connections = uiState.connections,
                         onDisconnect = { viewModel.disconnectDevice(it) },
-                        onDisconnectAll = { viewModel.disconnectAll() }
+                        onDisconnectAll = { viewModel.disconnectAll() },
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
+                }
 
+                item {
                     Spacer(modifier = Modifier.height(16.dp))
+                }
 
-                    // コマンドログセクション
+                // コマンドログセクション
+                item {
                     CommandLogSection(
                         commandLog = uiState.commandLog,
-                        onClearLog = { viewModel.clearCommandLog() }
+                        onClearLog = { viewModel.clearCommandLog() },
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
+                }
 
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+
+                // 再生ボタン
+                if (videoId.isNotEmpty()) {
+                    item {
+                        Button(
+                            onClick = onNavigateToPlayback,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .height(56.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (hasConnections) StatusConnected else Color.Gray
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.PlayArrow,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "再生",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                }
+
+                // 制御セクションヘッダー
+                item {
+                    Text(
+                        text = "制御",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+
+                item {
                     Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // 制御セクション統合
+                item {
+                    com.wildcard.fourd_at_home.ui.control.ControlScreen()
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
@@ -259,10 +318,11 @@ private fun ScanSection(
     onStartScan: () -> Unit,
     onStopScan: () -> Unit,
     onConnectDevice: (ScannedDevice) -> Unit,
-    onDisconnectDevice: (String) -> Unit
+    onDisconnectDevice: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -474,14 +534,15 @@ private fun SignalStrengthIndicator(signalStrength: SignalStrength) {
 private fun ConnectedDevicesSection(
     connections: Map<String, BleConnection>,
     onDisconnect: (String) -> Unit,
-    onDisconnectAll: () -> Unit
+    onDisconnectAll: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val connectedDevices = connections.values.filter { 
         it.state == ConnectionState.READY 
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -578,14 +639,15 @@ private fun ConnectedDeviceItem(
 }
 
 @Composable
-private fun ColumnScope.CommandLogSection(
+private fun CommandLogSection(
     commandLog: List<CommandLogEntry>,
-    onClearLog: () -> Unit
+    onClearLog: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .weight(1f),
+            .height(300.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -624,8 +686,12 @@ private fun ColumnScope.CommandLogSection(
                     )
                 }
             } else {
-                LazyColumn {
-                    items(commandLog.reversed()) { entry ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    commandLog.reversed().forEach { entry ->
                         CommandLogItem(entry = entry)
                         HorizontalDivider(
                             color = MaterialTheme.colorScheme.outlineVariant,

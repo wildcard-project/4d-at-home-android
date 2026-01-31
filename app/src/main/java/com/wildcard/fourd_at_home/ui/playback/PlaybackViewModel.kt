@@ -14,6 +14,7 @@ import com.wildcard.fourd_at_home.ble.ConnectionState
 import com.wildcard.fourd_at_home.ble.DeviceType
 import com.wildcard.fourd_at_home.domain.Content
 import com.wildcard.fourd_at_home.domain.ContentLibrary
+import com.wildcard.fourd_at_home.playback.CurrentCaption
 import com.wildcard.fourd_at_home.playback.PlaybackSyncEngine
 import com.wildcard.fourd_at_home.playback.PlaybackSyncState
 import com.wildcard.fourd_at_home.playback.TimelineFile
@@ -46,6 +47,9 @@ data class PlaybackUiState(
     
     // タイムライン状態
     val timelineState: PlaybackSyncState = PlaybackSyncState(),
+    
+    // ★ Caption表示
+    val currentCaption: CurrentCaption = CurrentCaption(),
     
     // 再生状態
     val isPlaying: Boolean = false,
@@ -171,6 +175,13 @@ class PlaybackViewModel @Inject constructor(
         viewModelScope.launch {
             syncEngine.state.collect { syncState ->
                 _uiState.value = _uiState.value.copy(timelineState = syncState)
+            }
+        }
+        
+        // ★ currentCaptionの監視
+        viewModelScope.launch {
+            syncEngine.currentCaption.collect { caption ->
+                _uiState.value = _uiState.value.copy(currentCaption = caption)
             }
         }
     }

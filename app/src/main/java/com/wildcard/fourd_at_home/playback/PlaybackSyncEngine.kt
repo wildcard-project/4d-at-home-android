@@ -562,6 +562,11 @@ class PlaybackSyncEngine @Inject constructor(
             
             activeEffects.clear()
             activeEffects.putAll(currentActiveEffects)
+            
+            // UIに反映
+            _state.value = _state.value.copy(
+                activeEffects = currentActiveEffects.keys.map { it.substringBefore(':') }.distinct()
+            )
         }
     }
 
@@ -600,5 +605,6 @@ data class PlaybackSyncState(
     val title: String = "",
     val totalDuration: Long = 0,
     val totalEvents: Int = 0,
-    val currentEventIndex: Int = 0
+    val currentEventIndex: Int = 0,
+    val activeEffects: List<String> = emptyList()
 )
