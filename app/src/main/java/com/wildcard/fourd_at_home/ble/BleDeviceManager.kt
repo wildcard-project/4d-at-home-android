@@ -24,7 +24,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -66,6 +69,16 @@ class BleDeviceManager @Inject constructor(
 
     // 再接続ジョブ
     private val reconnectJobs = mutableMapOf<String, Job>()
+    
+    // デバイスごとの書き込みMutex（同一デバイスへの書き込みを直列化）
+    private val writeMutexMap = ConcurrentHashMap<String, Mutex>()
+    
+    // 書き込み完了待ち用のコールバック
+    private val writeCallbacks = ConcurrentHashMap<String, kotlin.coroutines.Continuation<Result<Unit>>>()
+    
+    private fun getWriteMutex(address: String): Mutex {
+        return writeMutexMap.getOrPut(address) { Mutex() }
+    }
 
     /**
      * デバイスに接続
@@ -225,6 +238,42 @@ class BleDeviceManager @Inject constructor(
                         handleStatusNotification(address, device.deviceType, characteristic.value)
                     }
                 }
+                
+                // 書き込み完了コールバック
+                override fun onCharacteristicWrite(
+                    gatt: BluetoothGatt,
+                    characteristic: BluetoothGattCharacteristic,
+                    status: Int
+                ) {
+                    Log.d(TAG, "onCharacteristicWrite: address=$address, status=$status")
+                    val callback = writeCallbacks.remove(address)
+                    if (callback != null) {
+                        if (status == BluetoothGatt.GATT_SUCCESS) {
+                            Log.d(TAG, "コマンド送信完了: address=$address")
+                            addCommandLog(
+                                address = address,
+                                deviceType = device.deviceType,
+                                command = "WRITE_SUCCESS",
+                                direction = CommandDirection.TX,
+                                status = CommandStatus.SUCCESS
+                            )
+                            callback.resume(Result.success(Unit))
+                        } else {
+                            Log.e(TAG, "コマンド送信完了（エラー）: address=$address, status=$status")
+                            addCommandLog(
+                                address = address,
+                                deviceType = device.deviceType,
+                                command = "WRITE_FAILED",
+                                direction = CommandDirection.TX,
+                                status = CommandStatus.FAILED,
+                                errorMessage = "GATT status: $status"
+                            )
+                            callback.resume(Result.failure(
+                                Exception("書き込み失敗 (GATT status: $status)")
+                            ))
+                        }
+                    }
+                }
             }
 
             try {
@@ -302,6 +351,8 @@ class BleDeviceManager @Inject constructor(
         gattConnections.remove(address)
         commandCharacteristics.remove(address)
         statusCharacteristics.remove(address)
+        writeMutexMap.remove(address)
+        writeCallbacks.remove(address)
         
         _connections.value = _connections.value.toMutableMap().apply {
             remove(address)
@@ -322,6 +373,7 @@ class BleDeviceManager @Inject constructor(
 
     /**
      * コマンドを送信
+     * 同一デバイスへの書き込みはMutexで直列化され、書き込み完了を待つ
      */
     suspend fun sendCommand(address: String, command: ByteArray): Result<Unit> {
         val gatt = gattConnections[address]
@@ -336,25 +388,33 @@ class BleDeviceManager @Inject constructor(
             return Result.failure(Exception("デバイスが準備できていません"))
         }
 
-        return try {
-            withTimeout(BleConstants.WRITE_TIMEOUT_MS) {
-                writeCharacteristic(gatt, characteristic, command, address, connection.deviceType)
+        // 同一デバイスへの書き込みを直列化
+        val mutex = getWriteMutex(address)
+        
+        return mutex.withLock {
+            try {
+                withTimeout(BleConstants.WRITE_TIMEOUT_MS) {
+                    writeCharacteristicAndWait(gatt, characteristic, command, address, connection.deviceType)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "コマンド送信失敗: ${e.message}", e)
+                addCommandLog(
+                    address = address,
+                    deviceType = connection.deviceType,
+                    command = command.toHexString(),
+                    direction = CommandDirection.TX,
+                    status = CommandStatus.FAILED,
+                    errorMessage = e.message
+                )
+                Result.failure(e)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "コマンド送信失敗: ${e.message}", e)
-            addCommandLog(
-                address = address,
-                deviceType = connection.deviceType,
-                command = command.toHexString(),
-                direction = CommandDirection.TX,
-                status = CommandStatus.FAILED,
-                errorMessage = e.message
-            )
-            Result.failure(e)
         }
     }
 
-    private suspend fun writeCharacteristic(
+    /**
+     * 書き込みを行い、onCharacteristicWriteコールバックを待つ
+     */
+    private suspend fun writeCharacteristicAndWait(
         gatt: BluetoothGatt,
         characteristic: BluetoothGattCharacteristic,
         value: ByteArray,
@@ -362,6 +422,9 @@ class BleDeviceManager @Inject constructor(
         deviceType: DeviceType
     ): Result<Unit> = suspendCancellableCoroutine { continuation ->
         try {
+            // コールバック登録
+            writeCallbacks[address] = continuation
+            
             val writeResult = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 gatt.writeCharacteristic(
                     characteristic,
@@ -375,21 +438,29 @@ class BleDeviceManager @Inject constructor(
                 gatt.writeCharacteristic(characteristic)
             }
 
-            if (writeResult) {
-                Log.d(TAG, "コマンド送信成功: ${value.toHexString()}")
+            if (!writeResult) {
+                // 書き込みリクエストが拒否された場合
+                writeCallbacks.remove(address)
+                Log.e(TAG, "コマンド送信失敗（BLEスタックビジー）: ${value.toHexString()}")
                 addCommandLog(
                     address = address,
                     deviceType = deviceType,
                     command = value.toHexString(),
                     direction = CommandDirection.TX,
-                    status = CommandStatus.SUCCESS
+                    status = CommandStatus.FAILED,
+                    errorMessage = "BLEスタックビジー"
                 )
-                continuation.resume(Result.success(Unit))
+                continuation.resume(Result.failure(Exception("コマンド送信に失敗しました（BLEスタックビジー）")))
             } else {
-                Log.e(TAG, "コマンド送信失敗")
-                continuation.resume(Result.failure(Exception("コマンド送信に失敗しました")))
+                Log.d(TAG, "コマンド送信リクエスト成功: ${value.toHexString()}")
+                // onCharacteristicWriteコールバックで continuation.resume() される
+            }
+            
+            continuation.invokeOnCancellation {
+                writeCallbacks.remove(address)
             }
         } catch (e: SecurityException) {
+            writeCallbacks.remove(address)
             Log.e(TAG, "コマンド送信失敗 (権限エラー)", e)
             continuation.resume(Result.failure(e))
         }

@@ -259,25 +259,38 @@
 │                    PlaybackSyncEngine                          │
 │                                                                │
 │    ┌──────────────────────────────────────────────────────┐   │
-│    │                  Sync Loop (50ms)                     │   │
+│    │              Sync Loop (16ms位置更新)                    │   │
 │    │                                                       │   │
 │    │  while (isPlaying) {                                  │   │
 │    │      currentPosition = exoPlayer.currentPosition      │   │
 │    │      lookAheadTime = currentPosition + LOOKAHEAD_MS   │   │
 │    │                                                       │   │
+│    │      // 同時刻のイベントをグループ化                    │   │
+│    │      eventsByTime = events.groupBy { it.timestampMs } │   │
+│    │                                                       │   │
 │    │      for (event in timeline.events) {                 │   │
 │    │          if (event.time <= lookAheadTime &&           │   │
 │    │              !event.triggered) {                      │   │
+│    │              // STOP→START最適化を適用                  │   │
+│    │              optimizedEvents = optimizeStopStart()    │   │
 │    │              scheduleEvent(event)                     │   │
 │    │          }                                            │   │
 │    │      }                                                │   │
 │    │                                                       │   │
-│    │      delay(SYNC_INTERVAL_MS)  // 50ms                 │   │
+│    │      // 同時刻のイベント処理後、最小間隔を空ける           │   │
+│    │      if (eventsAtTime.size > 1) {                     │   │
+│    │          delay(MIN_COMMAND_INTERVAL_MS)  // 20ms      │   │
+│    │      }                                                │   │
 │    │  }                                                    │   │
 │    └──────────────────────────────────────────────────────┘   │
 │                                                                │
-│    LOOKAHEAD_MS = 50  // 先読み時間                            │
-│    SYNC_INTERVAL_MS = 50  // 同期間隔                          │
+│    タイミング定数（250msイベント間隔に最適化）:                       │
+│    LOOKAHEAD_MS = 200           // 先読み時間                   │
+│    MIN_COMMAND_INTERVAL_MS = 20 // ESP32処理時間確保            │
+│                                                                │
+│    並列送信:                                                     │
+│    - 異なるデバイス（Motor1 + Motor2）へは並列送信                  │
+│    - 同一デバイスへは20ms間隔で順次送信                         │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
 ```

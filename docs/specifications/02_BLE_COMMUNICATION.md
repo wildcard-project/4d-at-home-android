@@ -545,7 +545,10 @@ object BleConstants {
     const val SCAN_TIMEOUT_MS = 15_000L        // スキャンタイムアウト
     const val CONNECTION_TIMEOUT_MS = 10_000L   // 接続タイムアウト
     const val WRITE_TIMEOUT_MS = 5_000L         // 書き込みタイムアウト
-    const val GATT_OPERATION_DELAY_MS = 100L    // GATT操作間ディレイ
+    
+    // BLE操作間隔設定（250msイベント間隔に最適化）
+    const val GATT_OPERATION_DELAY_MS = 30L         // 異なるデバイス間の操作間隔
+    const val SAME_DEVICE_COMMAND_DELAY_MS = 20L    // 同一デバイスへの連続コマンド間隔
 
     // 再接続設定
     const val MAX_RECONNECT_ATTEMPTS = 3        // 最大再接続試行回数
@@ -553,7 +556,28 @@ object BleConstants {
 }
 ```
 
-### 8.2 タイムアウト処理
+### 8.2 並列送信のタイミング
+
+250ms間隔のイベントに対応するため、異なるデバイスへのコマンドは並列送信を行います。
+
+```
+並列送信のタイミング：
+
+  イベント間隔: 250ms
+  │
+  │── 先読み時間: 200ms ───────┬─── 処理余裕: 50ms+
+  │                            │
+  │  並列送信（異なるデバイス）:      │
+  │  ├─ Motor1 ──→ 30ms       ├─── 合計: ~50ms
+  │  └─ Motor2 ──→ 30ms       │
+  │                            │
+  │  同一デバイス順次送信:         │
+  │  FAN ──→ 20ms ──→ LED      ├─── 合計: ~60ms
+  │                            │
+  └───────────────────────────┴─── 残余率: ~140ms
+```
+
+### 8.3 タイムアウト処理
 
 ```kotlin
 suspend fun connect(device: ScannedDevice): Result<Unit> {

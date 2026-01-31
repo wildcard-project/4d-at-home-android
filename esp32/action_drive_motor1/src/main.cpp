@@ -10,9 +10,9 @@
  *       HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW, OFF
  * 
  * ピン構成（MQTT版と同一）:
- * - GPIO 14 (D5): 振動 強 (STRONG)
- * - GPIO 12 (D6): 振動 中強 (MEDIUM_STRONG)
- * - GPIO 13 (D7): 振動 中強/中弱 (MEDIUM_STRONG/MEDIUM_WEAK)
+ * - GPIO 18 (D5): 振動 強 (STRONG)
+ * - GPIO 17 (D6): 振動 中強 (MEDIUM_STRONG)
+ * - GPIO 16 (D7): 振動 中強/中弱 (MEDIUM_STRONG/MEDIUM_WEAK)
  * - GPIO 15 (D8): 振動 弱 (WEAK)
  */
 
@@ -23,9 +23,9 @@
 #include <BLE2902.h>
 
 // === ピン定義（MQTT版と同一）===
-#define MOTOR_PIN_D5  14    // 振動 強 (STRONG)
-#define MOTOR_PIN_D6  12    // 振動 中強 (MEDIUM_STRONG)
-#define MOTOR_PIN_D7  13    // 振動 中強/中弱 (MEDIUM_STRONG/MEDIUM_WEAK)
+#define MOTOR_PIN_D5  18    // 振動 強 (STRONG)
+#define MOTOR_PIN_D6  17    // 振動 中強 (MEDIUM_STRONG)
+#define MOTOR_PIN_D7  16    // 振動 中強/中弱 (MEDIUM_STRONG/MEDIUM_WEAK)
 #define MOTOR_PIN_D8  15    // 振動 弱 (WEAK)
 #define PIN_LED       2     // 状態表示LED (オンボード)
 
