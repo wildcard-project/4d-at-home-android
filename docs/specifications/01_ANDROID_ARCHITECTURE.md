@@ -167,8 +167,9 @@ val screens = listOf(
 class PlaybackSyncEngine @Inject constructor(
     private val commandSender: CommandSender
 ) {
-    // 定数
-    private const val LOOKAHEAD_MS = 50L  // 先読み時間
+    // 定数（250msイベント間隔に最適化）
+    private const val LOOKAHEAD_MS = 200L           // 先読み時間
+    private const val MIN_COMMAND_INTERVAL_MS = 20L // ESP32処理時間確保
     
     // 状態
     private val _state = MutableStateFlow(PlaybackSyncState())
@@ -193,8 +194,9 @@ class PlaybackSyncEngine @Inject constructor(
 **同期処理フロー**:
 1. タイムラインJSONをロード
 2. ExoPlayerから再生位置を受け取る（`updatePosition`）
-3. 現在位置 + 50ms先までのイベントを抽出
-4. 各イベントに対応するコマンドをBLE送信
+3. 現在位置 + 200ms先までのイベントを抽出
+4. STOP→START最適化を適用してBLE通信を削減
+5. 異なるデバイスへは並列送信、同一デバイスへは20ms間隔で送信
 
 #### CommandSender
 
@@ -203,6 +205,10 @@ class PlaybackSyncEngine @Inject constructor(
 class CommandSender @Inject constructor(
     private val deviceManager: BleDeviceManager
 ) {
+    // 並列送信メソッド（250msイベント間隔対応）
+    suspend fun sendCommandsParallel(commands: List<Pair<DeviceType, String>>): Result<Unit>
+    suspend fun sendBothMotorsParallel(mode: String): Result<Unit>
+    
     // EffectStation コマンド
     suspend fun sendFanCommand(on: Boolean): Result<Unit>
     suspend fun sendSplashCommand(): Result<Unit>

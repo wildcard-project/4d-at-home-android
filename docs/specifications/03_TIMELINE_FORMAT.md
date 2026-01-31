@@ -550,7 +550,12 @@ class PlaybackSyncEngine @Inject constructor(
     private val commandSender: CommandSender
 ) {
     companion object {
-        private const val LOOKAHEAD_MS = 50L  // 先読み時間
+        private const val TAG = "PlaybackSyncEngine"
+        // 250ms間隔のイベントに対応するため、200ms先読み
+        // これによりBLE通信遅延(約50-100ms)を考慮して余裕を持って送信
+        private const val LOOKAHEAD_MS = 200L
+        // コマンド間の最小間隔（ESP32の処理時間を考慮）
+        private const val MIN_COMMAND_INTERVAL_MS = 20L
     }
     
     private var timeline: TimelineFile? = null
@@ -571,8 +576,9 @@ class PlaybackSyncEngine @Inject constructor(
    └─ isPlaying = true
 
 3. updatePosition(positionMs) - ExoPlayerから呼び出し
-   ├─ 現在位置 + 50ms までのイベントを抽出
+   ├─ 現在位置 + 200ms までのイベントを抽出
    ├─ 未実行イベントをフィルタ
+   ├─ STOP→START最適化を適用
    └─ executeEvent() を呼び出し
 
 4. executeEvent(event) - イベント実行
@@ -622,8 +628,8 @@ private suspend fun executeEffectStart(effect: EffectType, mode: String) {
                     MotorTarget.MOTOR_2 -> 
                         commandSender.sendMotor2StringCommand(command)
                     MotorTarget.BOTH -> {
-                        commandSender.sendMotor1StringCommand(command)
-                        commandSender.sendMotor2StringCommand(command)
+                        // 並列送信で両モーターに同時にコマンドを送信
+                        commandSender.sendBothMotorsParallel(command)
                     }
                 }
             }
@@ -633,7 +639,21 @@ private suspend fun executeEffectStart(effect: EffectType, mode: String) {
 }
 ```
 
-### 8.4 シーク処理
+### 8.4 STOP→START最適化
+
+同じ時刻に同じエフェクトのSTOPとSTARTがある場合、STOPをスキップしてBLE通信を削減します。
+
+```kotlin
+/**
+ * 同じ時刻で同じエフェクトのSTOP→STARTがある場合、STOPをスキップする最適化
+ * これによりBLE通信回数を減らし、デバイス側でのタイミング問題を回避する
+ */
+private fun optimizeStopStartEvents(
+    sortedEvents: List<ScheduledEvent>
+): List<Pair<ScheduledEvent, Boolean>>
+```
+
+### 8.5 シーク処理
 
 ```kotlin
 fun onSeek(positionMs: Long) {
