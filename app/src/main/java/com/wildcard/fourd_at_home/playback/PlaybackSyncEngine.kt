@@ -39,6 +39,10 @@ class PlaybackSyncEngine @Inject constructor(
     // 現在アクティブなエフェクト状態を追跡
     private val activeEffects = mutableMapOf<String, TimelineEventData>()
     
+    // colorエフェクトがアクティブかどうかを追跡
+    // colorがアクティブな間はflashを抑制する（同一LEDのため）
+    private var isColorActive = false
+    
     private val _state = MutableStateFlow(PlaybackSyncState())
     val state: StateFlow<PlaybackSyncState> = _state.asStateFlow()
 
@@ -70,6 +74,7 @@ class PlaybackSyncEngine @Inject constructor(
         )
         
         activeEffects.clear()
+        isColorActive = false
     }
 
     /**
@@ -93,8 +98,14 @@ class PlaybackSyncEngine @Inject constructor(
         _state.value = _state.value.copy(isPlaying = false)
         
         // 一時停止時に全エフェクト停止
+        Log.d(TAG, "一時停止 - 全デバイスに停止コマンド送信")
         scope.launch {
-            commandSender.sendAllDevicesOff()
+            val result = commandSender.sendAllDevicesOff()
+            if (result.isSuccess) {
+                Log.d(TAG, "全エフェクト停止コマンド送信成功")
+            } else {
+                Log.e(TAG, "全エフェクト停止コマンド送信失敗: ${result.exceptionOrNull()?.message}")
+            }
         }
     }
 
@@ -108,13 +119,20 @@ class PlaybackSyncEngine @Inject constructor(
         syncJob = null
         
         // 全エフェクト停止
+        Log.d(TAG, "停止 - 全デバイスに停止コマンド送信")
         scope.launch {
-            commandSender.sendAllDevicesOff()
+            val result = commandSender.sendAllDevicesOff()
+            if (result.isSuccess) {
+                Log.d(TAG, "全エフェクト停止コマンド送信成功")
+            } else {
+                Log.e(TAG, "全エフェクト停止コマンド送信失敗: ${result.exceptionOrNull()?.message}")
+            }
         }
         
         // 状態リセット
         resetEvents()
         activeEffects.clear()
+        isColorActive = false
         _currentPositionMs.value = 0
         _currentCaption.value = CurrentCaption()
         _state.value = _state.value.copy(
@@ -326,6 +344,8 @@ class PlaybackSyncEngine @Inject constructor(
             }
             
             EffectType.COLOR -> {
+                // colorアクティブフラグをセット（flashよりcolorを優先）
+                isColorActive = true
                 ColorMode.fromJsonMode(mode)?.let { colorMode ->
                     commandSender.sendLedColorCommand(
                         colorId = colorMode.ledColorId,
@@ -337,6 +357,11 @@ class PlaybackSyncEngine @Inject constructor(
             }
             
             EffectType.FLASH -> {
+                // colorがアクティブな間はflashを抑制（同一LEDのため）
+                if (isColorActive) {
+                    Log.d(TAG, "FLASH抑制: colorがアクティブ中 @ mode=$mode")
+                    return
+                }
                 FlashMode.fromJsonMode(mode)?.let { flashMode ->
                     // 白色で点滅
                     commandSender.sendLedColorCommand(
@@ -386,7 +411,23 @@ class PlaybackSyncEngine @Inject constructor(
                 commandSender.sendMistCommand(0)  // OFF
             }
             
-            EffectType.COLOR, EffectType.FLASH -> {
+            EffectType.COLOR -> {
+                // colorアクティブフラグをリセット
+                isColorActive = false
+                commandSender.sendLedColorCommand(
+                    colorId = 11,  // 消灯
+                    brightness = 0,
+                    effect = 0,
+                    transition = 0
+                )
+            }
+            
+            EffectType.FLASH -> {
+                // colorがアクティブな間はflashの停止も抑制（LEDはcolorの制御下）
+                if (isColorActive) {
+                    Log.d(TAG, "FLASH STOP抑制: colorがアクティブ中 @ mode=$mode")
+                    return
+                }
                 commandSender.sendLedColorCommand(
                     colorId = 11,  // 消灯
                     brightness = 0,
@@ -447,6 +488,7 @@ class PlaybackSyncEngine @Inject constructor(
             // まず全てOFF
             commandSender.sendAllDevicesOff()
             activeEffects.clear()
+            isColorActive = false
             
             // 現在位置までのstart/stop/shotイベントを再生
             val eventsUpToNow = scheduledEvents
@@ -503,8 +545,14 @@ class PlaybackSyncEngine @Inject constructor(
                 }
             }
             
-            // アクティブなエフェクトを適用
-            currentActiveEffects.values.forEach { event ->
+            // isColorActiveを復元（colorがアクティブかどうかを判定）
+            isColorActive = currentActiveEffects.keys.any { it.startsWith("COLOR:") }
+            
+            // アクティブなエフェクトを適用（colorを先に適用してisColorActiveを正しく設定）
+            val sortedEffects = currentActiveEffects.values.sortedBy { event ->
+                if (event.effect == EffectType.COLOR) 0 else 1
+            }
+            sortedEffects.forEach { event ->
                 event.effect?.let { effect ->
                     event.mode?.let { mode ->
                         executeEffectStart(effect, mode)
