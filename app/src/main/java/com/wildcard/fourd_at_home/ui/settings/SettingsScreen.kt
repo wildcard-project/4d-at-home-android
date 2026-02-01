@@ -1,0 +1,928 @@
+package com.wildcard.fourd_at_home.ui.settings
+
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.ui.platform.LocalContext
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bluetooth
+import androidx.compose.material.icons.filled.BluetoothConnected
+import androidx.compose.material.icons.filled.BluetoothSearching
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.SignalCellular4Bar
+import androidx.compose.material.icons.filled.SignalCellularAlt
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.wildcard.fourd_at_home.R
+import com.wildcard.fourd_at_home.domain.ContentLibrary
+import com.wildcard.fourd_at_home.ui.common.AppBackground
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.wildcard.fourd_at_home.ble.BleConnection
+import com.wildcard.fourd_at_home.ble.CommandDirection
+import com.wildcard.fourd_at_home.ble.CommandLogEntry
+import com.wildcard.fourd_at_home.ble.CommandStatus
+import com.wildcard.fourd_at_home.ble.ConnectionState
+import com.wildcard.fourd_at_home.ble.DeviceType
+import com.wildcard.fourd_at_home.ble.ScanState
+import com.wildcard.fourd_at_home.ble.ScannedDevice
+import com.wildcard.fourd_at_home.ble.SignalStrength
+import com.wildcard.fourd_at_home.ui.theme.NeonRed
+import com.wildcard.fourd_at_home.ui.theme.StatusConnected
+import com.wildcard.fourd_at_home.ui.theme.StatusDisconnected
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+/**
+ * 動画ID → サムネイルリソースのマッピング（UIレイヤー固有）
+ */
+private val thumbnailMap = mapOf(
+    "wild_speed_fire_boost" to R.drawable.thumb_wild_speed,
+    "space_adventure" to R.drawable.thumb_space,
+    "ocean_depths" to R.drawable.thumb_ocean,
+    "mountain_storm" to R.drawable.thumb_mountain,
+    "city_chase" to R.drawable.thumb_city
+)
+
+@Composable
+fun SettingsScreen(
+    videoId: String = "",
+    onNavigateToPlayback: () -> Unit = {},
+    viewModel: SettingsViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    // 権限リクエストランチャー
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.values.all { it }
+        if (allGranted) {
+            viewModel.onPermissionsGranted()
+        }
+    }
+
+    // 権限ダイアログ
+    if (uiState.showPermissionDialog) {
+        PermissionDialog(
+            onDismiss = { viewModel.dismissPermissionDialog() },
+            onRequestPermission = {
+                permissionLauncher.launch(viewModel.getRequiredPermissions().toTypedArray())
+            }
+        )
+    }
+
+    // エラーダイアログ
+    uiState.error?.let { error ->
+        ErrorDialog(
+            message = error.message,
+            onDismiss = { viewModel.clearError() }
+        )
+    }
+
+    AppBackground {
+        val slideOffset = remember { Animatable(24f) }
+        val alphaValue = remember { Animatable(0f) }
+
+        LaunchedEffect(Unit) {
+            slideOffset.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(durationMillis = 400)
+            )
+            alphaValue.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(durationMillis = 400)
+            )
+        }
+
+        val hasConnections = uiState.connections.values.any { 
+            it.state == ConnectionState.CONNECTED 
+        }
+
+        Scaffold(
+            containerColor = Color.Transparent
+            // ★ bottomBar削除（下部固定再生ボタンを削除）
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .graphicsLayer {
+                        translationY = slideOffset.value
+                        alpha = alphaValue.value
+                    }
+            ) {
+                // 上部：サムネイルカード
+                item {
+                    ThumbnailCard(
+                        videoId = videoId,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp)
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // ヘッダー
+                item {
+                    Text(
+                        text = "BLE デバイス設定",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // スキャンセクション
+                item {
+                    ScanSection(
+                        scanState = uiState.scanState,
+                        scannedDevices = uiState.scannedDevices,
+                        connections = uiState.connections,
+                        onStartScan = { viewModel.startScan() },
+                        onStopScan = { viewModel.stopScan() },
+                        onConnectDevice = { viewModel.connectDevice(it) },
+                        onDisconnectDevice = { viewModel.disconnectDevice(it) },
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // 接続済みデバイスセクション
+                item {
+                    ConnectedDevicesSection(
+                        connections = uiState.connections,
+                        onDisconnect = { viewModel.disconnectDevice(it) },
+                        onDisconnectAll = { viewModel.disconnectAll() },
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // コマンドログセクション
+                item {
+                    CommandLogSection(
+                        commandLog = uiState.commandLog,
+                        onClearLog = { viewModel.clearCommandLog() },
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+
+                // 再生ボタン
+                if (videoId.isNotEmpty()) {
+                    item {
+                        Button(
+                            onClick = onNavigateToPlayback,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .height(56.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (hasConnections) StatusConnected else Color.Gray
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.PlayArrow,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "再生",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                }
+
+                // 制御セクションヘッダー
+                item {
+                    Text(
+                        text = "制御",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // 制御セクション統合
+                item {
+                    com.wildcard.fourd_at_home.ui.control.ControlScreen()
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScanSection(
+    scanState: ScanState,
+    scannedDevices: List<ScannedDevice>,
+    connections: Map<String, BleConnection>,
+    onStartScan: () -> Unit,
+    onStopScan: () -> Unit,
+    onConnectDevice: (ScannedDevice) -> Unit,
+    onDisconnectDevice: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = when (scanState) {
+                            ScanState.SCANNING -> Icons.Default.BluetoothSearching
+                            else -> Icons.Default.Bluetooth
+                        },
+                        contentDescription = null,
+                        tint = NeonRed
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "デバイススキャン",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+
+                when (scanState) {
+                    ScanState.SCANNING -> {
+                        OutlinedButton(onClick = onStopScan) {
+                            Text("停止")
+                        }
+                    }
+                    else -> {
+                        Button(
+                            onClick = onStartScan,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = NeonRed
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("スキャン")
+                        }
+                    }
+                }
+            }
+
+            if (scanState == ScanState.SCANNING) {
+                Spacer(modifier = Modifier.height(8.dp))
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = NeonRed
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (scannedDevices.isEmpty() && scanState != ScanState.SCANNING) {
+                Text(
+                    text = "デバイスが見つかりません。スキャンを開始してください。",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            } else {
+                scannedDevices.forEach { device ->
+                    val connection = connections[device.address]
+                    ScannedDeviceItem(
+                        device = device,
+                        connectionState = connection?.state,
+                        onConnect = { onConnectDevice(device) },
+                        onDisconnect = { onDisconnectDevice(device.address) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScannedDeviceItem(
+    device: ScannedDevice,
+    connectionState: ConnectionState?,
+    onConnect: () -> Unit,
+    onDisconnect: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
+            ) {
+                // デバイスタイプアイコン
+                DeviceTypeIndicator(deviceType = device.deviceType)
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column {
+                    Text(
+                        text = device.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        SignalStrengthIndicator(signalStrength = device.signalStrength)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "${device.rssi} dBm",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+
+            // 接続/切断ボタン
+            when (connectionState) {
+                ConnectionState.READY -> {
+                    OutlinedButton(onClick = onDisconnect) {
+                        Text("切断")
+                    }
+                }
+                ConnectionState.CONNECTING, ConnectionState.DISCOVERING_SERVICES -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = NeonRed,
+                        strokeWidth = 2.dp
+                    )
+                }
+                else -> {
+                    Button(
+                        onClick = onConnect,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = NeonRed
+                        )
+                    ) {
+                        Text("接続")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DeviceTypeIndicator(deviceType: DeviceType) {
+    val (color, letter) = when (deviceType) {
+        DeviceType.EFFECT_STATION -> StatusConnected to "ES"
+        DeviceType.ACTION_DRIVE_1 -> Color(0xFF2196F3) to "M1"
+        DeviceType.ACTION_DRIVE_2 -> Color(0xFFFF9800) to "M2"
+        DeviceType.UNKNOWN -> MaterialTheme.colorScheme.outline to "?"
+    }
+
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .background(color.copy(alpha = 0.2f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = letter,
+            style = MaterialTheme.typography.labelMedium,
+            color = color,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun SignalStrengthIndicator(signalStrength: SignalStrength) {
+    val color = when (signalStrength) {
+        SignalStrength.EXCELLENT -> StatusConnected
+        SignalStrength.GOOD -> StatusConnected
+        SignalStrength.FAIR -> Color(0xFFFF9800)
+        SignalStrength.WEAK -> StatusDisconnected
+    }
+
+    Icon(
+        imageVector = when (signalStrength) {
+            SignalStrength.EXCELLENT, SignalStrength.GOOD -> Icons.Default.SignalCellular4Bar
+            else -> Icons.Default.SignalCellularAlt
+        },
+        contentDescription = signalStrength.displayName,
+        modifier = Modifier.size(16.dp),
+        tint = color
+    )
+}
+
+@Composable
+private fun ConnectedDevicesSection(
+    connections: Map<String, BleConnection>,
+    onDisconnect: (String) -> Unit,
+    onDisconnectAll: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val connectedDevices = connections.values.filter { 
+        it.state == ConnectionState.READY 
+    }
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.BluetoothConnected,
+                        contentDescription = null,
+                        tint = StatusConnected
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "接続済み (${connectedDevices.size})",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+
+                if (connectedDevices.isNotEmpty()) {
+                    TextButton(onClick = onDisconnectAll) {
+                        Text("全て切断", color = StatusDisconnected)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (connectedDevices.isEmpty()) {
+                Text(
+                    text = "接続されているデバイスはありません",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            } else {
+                connectedDevices.forEach { connection ->
+                    ConnectedDeviceItem(
+                        connection = connection,
+                        onDisconnect = { onDisconnect(connection.address) }
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConnectedDeviceItem(
+    connection: BleConnection,
+    onDisconnect: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)
+        ) {
+            DeviceTypeIndicator(deviceType = connection.deviceType)
+            Spacer(modifier = Modifier.width(12.dp))
+            Column {
+                Text(
+                    text = connection.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = connection.deviceType.displayName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        IconButton(onClick = onDisconnect) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = "切断",
+                tint = StatusDisconnected
+            )
+        }
+    }
+}
+
+@Composable
+private fun CommandLogSection(
+    commandLog: List<CommandLogEntry>,
+    onClearLog: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(300.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "コマンドログ",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                if (commandLog.isNotEmpty()) {
+                    TextButton(onClick = onClearLog) {
+                        Text("クリア")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (commandLog.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "ログはありません",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    commandLog.reversed().forEach { entry ->
+                        CommandLogItem(entry = entry)
+                        HorizontalDivider(
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                            thickness = 0.5.dp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CommandLogItem(entry: CommandLogEntry) {
+    val timeFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 方向インジケータ
+        Text(
+            text = when (entry.direction) {
+                CommandDirection.TX -> "→"
+                CommandDirection.RX -> "←"
+            },
+            style = MaterialTheme.typography.bodyMedium,
+            color = when (entry.direction) {
+                CommandDirection.TX -> NeonRed
+                CommandDirection.RX -> StatusConnected
+            },
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = entry.command,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = timeFormat.format(Date(entry.timestamp)),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Text(
+                text = entry.deviceType.displayName,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        // ステータスインジケータ
+        Box(
+            modifier = Modifier
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(
+                    when (entry.status) {
+                        CommandStatus.SUCCESS -> StatusConnected
+                        CommandStatus.PENDING -> Color(0xFFFF9800)
+                        CommandStatus.FAILED -> StatusDisconnected
+                        CommandStatus.TIMEOUT -> StatusDisconnected
+                    }
+                )
+        )
+    }
+}
+
+@Composable
+private fun PermissionDialog(
+    onDismiss: () -> Unit,
+    onRequestPermission: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("権限が必要です")
+        },
+        text = {
+            Text(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    "BLEデバイスをスキャン・接続するには、Bluetooth権限が必要です。"
+                } else {
+                    "BLEデバイスをスキャンするには、位置情報の権限が必要です。"
+                }
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onRequestPermission,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = NeonRed
+                )
+            ) {
+                Text("許可する")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("キャンセル")
+            }
+        }
+    )
+}
+
+@Composable
+private fun ErrorDialog(
+    message: String,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Error,
+                contentDescription = null,
+                tint = StatusDisconnected
+            )
+        },
+        title = {
+            Text("エラー")
+        },
+        text = {
+            Text(message)
+        },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("OK")
+            }
+        }
+    )
+}
+
+/**
+ * 上部サムネイルカード（横長）
+ * VideoSelectScreenからHero遷移で縮小されて表示
+ */
+@Composable
+private fun ThumbnailCard(
+    videoId: String,
+    modifier: Modifier = Modifier
+) {
+    val content = ContentLibrary.contents.find { it.id == videoId }
+    val thumbnailRes = thumbnailMap[videoId] ?: R.drawable.ic_launcher_foreground
+    val context = LocalContext.current
+
+    // assets 内の候補をチェックしてあれば優先表示
+    val assetName = remember(videoId) {
+        if (videoId.isBlank()) return@remember null
+        val candidates = listOf("$videoId.jpeg", "$videoId.jpg", "$videoId.png")
+        candidates.firstOrNull { name ->
+            try {
+                context.assets.open(name).close()
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
+    }
+
+    val bitmap = remember(assetName) {
+        if (assetName == null) return@remember null
+        try {
+            context.assets.open(assetName).use { stream ->
+                BitmapFactory.decodeStream(stream)?.asImageBitmap()
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+    ) {
+        // サムネイル画像（assets のものを優先）
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap,
+                contentDescription = content?.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            Image(
+                painter = painterResource(id = thumbnailRes),
+                contentDescription = content?.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        // グラデーションオーバーレイ
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.7f)
+                        )
+                    )
+                )
+        )
+
+        // タイトル表示（左下）
+        if (content != null) {
+            Text(
+                text = content.title,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.White,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp)
+            )
+        }
+    }
+}
