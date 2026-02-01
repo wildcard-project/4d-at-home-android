@@ -1,22 +1,8 @@
 # 4D@HOME Android - あなたのおうちで「最高の映像」が「最強の体験」へ。
 
-<div align="center">
+[![Web App (JPHACKS 2025)](https://img.shields.io/badge/Web_App-JPHACKS_2025_はこちら-0078d4?style=for-the-badge&logo=github)](https://github.com/jphacks/kz_2504)
 
-[![4DX@HOME デモ動画](https://img.youtube.com/vi/t1n5mQZU_nM/maxresdefault.jpg)](https://youtu.be/t1n5mQZU_nM)
-
-**クリックして動画を再生**
-
-[![YouTube](https://img.shields.io/badge/▶%20YouTube-紹介動画を見る-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/t1n5mQZU_nM)
-
----
-
-### 🏆 JPHACKS 2025 受賞
-
-[![JPHacks 2025](https://img.shields.io/badge/JPHacks%202025-Best%20Hackday%20Award-gold?style=for-the-badge&logo=trophy)](https://jphacks.com/)
-[![JPHacks 2025](https://img.shields.io/badge/審査委員特別賞-silver?style=for-the-badge&logo=award)](https://jphacks.com/)
-[![JPHacks 2025](https://img.shields.io/badge/Innovator認定-purple?style=for-the-badge&logo=lightbulb)](https://jphacks.com/)
-
-</div>
+本リポジトリは、JPHACKS 2025 で開発した Web アプリシステムを Android アプリ化したものです。
 
 ---
 
@@ -414,13 +400,3 @@ pio device monitor --baud 115200
     ├── specifications/           # 詳細仕様書
     └── plan/                     # 開発計画
 ```
-
----
-
-## ライセンス
-
-MIT License
-
-## 貢献
-
-プルリクエスト歓迎します！
