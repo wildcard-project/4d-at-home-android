@@ -296,38 +296,6 @@ private fun PlaybackContentScreen(
                 activeEffects = uiState.timelineState.activeEffects
             )
 
-            // ★ Caption表示（画面上部中央、effectsVisibleに連動）
-            androidx.compose.animation.AnimatedVisibility(
-                visible = effectsVisible && captionText.isNotEmpty(),
-                enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.slideInVertically(),
-                exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.slideOutVertically(),
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 32.dp)
-            ) {
-                Card(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .widthIn(max = 500.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.Black.copy(alpha = 0.75f)
-                    ),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = captionText,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp, vertical = 12.dp)
-                            .fillMaxWidth(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                        maxLines = 2,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
-                    )
-                }
-            }
-
             // 左端のエフェクト縦並び（アイコン表示）※グレースケール対象外
             // ★ effectsVisible で表示/非表示制御
             androidx.compose.animation.AnimatedVisibility(

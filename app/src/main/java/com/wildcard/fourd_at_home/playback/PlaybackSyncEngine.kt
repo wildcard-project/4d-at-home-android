@@ -111,6 +111,9 @@ class PlaybackSyncEngine @Inject constructor(
                 Log.e(TAG, "全エフェクト停止コマンド送信失敗: ${result.exceptionOrNull()?.message}")
             }
         }
+        
+        // スマホエフェクト停止
+        phoneEffectController.stopAll()
     }
 
     /**
@@ -386,6 +389,9 @@ class PlaybackSyncEngine @Inject constructor(
                         effect = 0,      // 点灯
                         transition = 0   // 即時
                     )
+                    
+                    // スマホフラッシュライト連動（色が変わるので点灯モード）
+                    phoneEffectController.startFlash("steady")
                 }
             }
             
@@ -460,6 +466,9 @@ class PlaybackSyncEngine @Inject constructor(
                     effect = 0,
                     transition = 0
                 )
+                
+                // スマホフラッシュライト停止
+                phoneEffectController.stopFlash()
             }
             
             EffectType.FLASH -> {

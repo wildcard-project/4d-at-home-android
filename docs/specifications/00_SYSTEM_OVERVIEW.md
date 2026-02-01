@@ -272,6 +272,7 @@ pio device monitor --baud 115200
 | `TimelineModels.kt` | 163行 | タイムラインモデル |
 | `TimelineParser.kt` | 170行 | JSONパーサー |
 | `PlaybackSyncEngine.kt` | 605行 | 同期エンジン |
+| `PhoneEffectController.kt` | 259行 | スマホエフェクト制御 |
 | `SettingsRepository.kt` | 220行 | 設定永続化 |
 
 ### ESP32ファームウェア
@@ -281,3 +282,62 @@ pio device monitor --baud 115200
 | `effect_station/main.cpp` | 391行 | EffectStation |
 | `action_drive_motor1/main.cpp` | 308行 | Motor1 |
 | `action_drive_motor2/main.cpp` | 308行 | Motor2 |
+
+---
+
+## 変更履歴
+
+### v1.1.0 (2026年2月1日)
+
+#### 新機能: スマホ本体エフェクト連動
+
+タイムラインのエフェクトに連動して、スマホ本体のバイブレーションとカメラフラッシュライトが反応するようになりました。
+
+| エフェクト | ESP32デバイス | スマホ連動 |
+|-----------|--------------|----------|
+| VIBRATION (start) | 振動モーター | バイブレーション開始（強度連動） |
+| VIBRATION (stop) | 振動モーター停止 | バイブレーション停止 |
+| FLASH (start) | LED点灯/点滅 | フラッシュライト点灯/点滅 |
+| FLASH (stop) | LED消灯 | フラッシュライト停止 |
+| WATER (shot) | 水噴射 | ショットバイブレーション（300ms） |
+
+**追加ファイル:**
+- `PhoneEffectController.kt` - スマホエフェクト制御クラス
+
+**追加権限 (AndroidManifest.xml):**
+- `android.permission.VIBRATE`
+- `android.permission.CAMERA`
+- `android.permission.FLASHLIGHT`
+
+#### フラッシュライト点滅間隔
+
+カメラAPIの応答時間を考慮し、点滅間隔を以下に調整:
+
+| モード | 間隔 |
+|--------|------|
+| fast_blink | 300ms |
+| blink / slow_blink | 800ms |
+| breath | 1500ms |
+
+#### UI改善: VideoSelectScreen
+
+動画選択画面に動的背景演出を追加:
+- 選択中カードのサムネイルを画面背景に表示
+- ブラー(40dp) + 暗めスクリム + グラデーション
+- 微パン/微ズームのアニメーション効果
+- カード切替時にクロスフェード遷移
+
+#### UI改善: PlaybackScreen
+
+- シークバー背景を削除（トラック+つまみのみ）
+- キャプション表示を削除
+- エフェクトアイコン表示ロジックを修正:
+  - WIND → 風アイコン
+  - WATER/MIST → 水アイコン  
+  - COLOR/FLASH → 光アイコン
+  - VIBRATION → 振動アイコン
+- SHOTアクション時も800ms間アイコン表示
+
+#### エフェクト表示トグル
+
+右下の目玉アイコンでエフェクトアイコンの表示/非表示を切替可能

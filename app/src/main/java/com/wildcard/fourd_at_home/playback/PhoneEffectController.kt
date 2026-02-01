@@ -164,24 +164,24 @@ class PhoneEffectController @Inject constructor(
         
         when {
             mode.contains("fast_blink", ignoreCase = true) -> {
-                // 高速点滅（100ms間隔）
+                // 高速点滅（300ms間隔 - カメラAPIの応答時間を考慮）
                 flashBlinkJob = scope.launch {
                     while (isActive) {
                         setFlash(true)
-                        delay(100)
+                        delay(300)
                         setFlash(false)
-                        delay(100)
+                        delay(300)
                     }
                 }
             }
             mode.contains("slow_blink", ignoreCase = true) || mode.contains("blink", ignoreCase = true) -> {
-                // 通常点滅（500ms間隔）
+                // 通常点滅（800ms間隔）
                 flashBlinkJob = scope.launch {
                     while (isActive) {
                         setFlash(true)
-                        delay(500)
+                        delay(800)
                         setFlash(false)
-                        delay(500)
+                        delay(800)
                     }
                 }
             }
@@ -190,9 +190,9 @@ class PhoneEffectController @Inject constructor(
                 flashBlinkJob = scope.launch {
                     while (isActive) {
                         setFlash(true)
-                        delay(1000)
+                        delay(1500)
                         setFlash(false)
-                        delay(1000)
+                        delay(1500)
                     }
                 }
             }
