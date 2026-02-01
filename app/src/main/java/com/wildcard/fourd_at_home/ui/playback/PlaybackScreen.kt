@@ -177,9 +177,6 @@ private fun PlaybackContentScreen(
 
     // ★ エフェクト表示/非表示トグル
     var effectsVisible by remember { mutableStateOf(true) }
-    
-    // ★ キャプション表示/非表示トグル
-    var captionVisible by remember { mutableStateOf(true) }
 
     // 自動非表示ロジック（エフェクトが変化したら短時間表示）
     LaunchedEffect(uiState.timelineState.activeEffects, alwaysShowEffects.value) {
@@ -236,17 +233,13 @@ private fun PlaybackContentScreen(
     var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var isIdle by remember { mutableStateOf(false) }
 
-    // ★ Caption表示状態
-    var showCaption by remember { mutableStateOf(false) }
+    // ★ Caption表示状態（常時表示）
     var captionText by remember { mutableStateOf("") }
 
-    // ★ Caption自動非表示（3秒後）
+    // ★ Caption更新（自動非表示なし、常に表示）
     LaunchedEffect(uiState.currentCaption.text, uiState.currentCaption.timestamp) {
         if (uiState.currentCaption.text.isNotEmpty()) {
             captionText = uiState.currentCaption.text
-            showCaption = true
-            delay(3000) // 3秒間表示
-            showCaption = false
         }
     }
 
@@ -303,41 +296,9 @@ private fun PlaybackContentScreen(
                 activeEffects = uiState.timelineState.activeEffects
             )
 
-            // ★ Caption表示（画面上部中央）
+            // ★ Caption表示（画面上部中央、effectsVisibleに連動）
             androidx.compose.animation.AnimatedVisibility(
-                visible = showCaption && captionText.isNotEmpty() && captionVisible,
-                enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.slideInVertically(),
-                exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.slideOutVertically(),
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 32.dp)
-            ) {
-                Card(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .widthIn(max = 500.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.Black.copy(alpha = 0.75f)
-                    ),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = captionText,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp, vertical = 12.dp)
-                            .fillMaxWidth(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                        maxLines = 2,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
-                    )
-                }
-            }
-
-            // ★ Caption表示（画面上部中央）
-            androidx.compose.animation.AnimatedVisibility(
-                visible = showCaption && captionText.isNotEmpty() && captionVisible,
+                visible = effectsVisible && captionText.isNotEmpty(),
                 enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.slideInVertically(),
                 exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.slideOutVertically(),
                 modifier = Modifier
@@ -401,8 +362,12 @@ private fun PlaybackContentScreen(
                         )
                     }
 
-                    // LED - 光
-                    val ledActive = uiState.timelineState.activeEffects.any { it.equals("LED", ignoreCase = true) || it.equals("COLOR", ignoreCase = true) }
+                    // LED/COLOR/FLASH - 光
+                    val ledActive = uiState.timelineState.activeEffects.any { 
+                        it.equals("LED", ignoreCase = true) || 
+                        it.equals("COLOR", ignoreCase = true) || 
+                        it.equals("FLASH", ignoreCase = true) 
+                    }
                     Box(
                         modifier = Modifier
                             .size(44.dp)
@@ -422,30 +387,34 @@ private fun PlaybackContentScreen(
                         )
                     }
 
-                    // FAN - 風
-                    val fanActive = uiState.timelineState.activeEffects.any { it.equals("FAN", ignoreCase = true) }
+                    // WIND - 風
+                    val windActive = uiState.timelineState.activeEffects.any { 
+                        it.equals("WIND", ignoreCase = true) || it.equals("FAN", ignoreCase = true) 
+                    }
                     Box(
                         modifier = Modifier
                             .size(44.dp)
                             .clip(CircleShape)
                             .background(
-                                if (fanActive) Color(0xFF4CAF50).copy(alpha = 0.3f)
+                                if (windActive) Color(0xFF4CAF50).copy(alpha = 0.3f)
                                 else Color.White.copy(alpha = 0.1f)
                             )
-                            .border(2.dp, if (fanActive) Color(0xFF4CAF50) else Color.White.copy(alpha = 0.3f), CircleShape),
+                            .border(2.dp, if (windActive) Color(0xFF4CAF50) else Color.White.copy(alpha = 0.3f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Default.Air,
                             contentDescription = "風",
                             modifier = Modifier.size(24.dp),
-                            tint = if (fanActive) Color(0xFF4CAF50) else Color.White.copy(alpha = 0.7f)
+                            tint = if (windActive) Color(0xFF4CAF50) else Color.White.copy(alpha = 0.7f)
                         )
                     }
 
-                    // SPLASH/MIST - 水
+                    // WATER/MIST - 水
                     val waterActive = uiState.timelineState.activeEffects.any { 
-                        it.equals("SPLASH", ignoreCase = true) || it.equals("MIST", ignoreCase = true)
+                        it.equals("WATER", ignoreCase = true) || 
+                        it.equals("MIST", ignoreCase = true) || 
+                        it.equals("SPLASH", ignoreCase = true)
                     }
                     Box(
                         modifier = Modifier
@@ -587,47 +556,7 @@ private fun PlaybackContentScreen(
                 }
             }
 
-            // ★ キャプション表示/非表示トグルボタン（エフェクトトグルの上）
-            androidx.compose.animation.AnimatedVisibility(
-                visible = controlsVisible,
-                enter = androidx.compose.animation.fadeIn(),
-                exit = androidx.compose.animation.fadeOut(),
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 10.dp, bottom = 120.dp)
-            ) {
-                IconButton(
-                    onClick = {
-                        resetIdleTimer()
-                        showControls()
-                        captionVisible = !captionVisible
-                    },
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(Color.Black.copy(alpha = 0.35f), shape = RoundedCornerShape(8.dp))
-                        .drawWithCache {
-                            val paint = Paint().apply {
-                                colorFilter = androidx.compose.ui.graphics.ColorFilter.colorMatrix(colorMatrix)
-                            }
-                            onDrawWithContent {
-                                drawIntoCanvas { canvas ->
-                                    canvas.saveLayer(Rect(Offset.Zero, size), paint)
-                                    drawContent()
-                                    canvas.restore()
-                                }
-                            }
-                        }
-                ) {
-                    Text(
-                        text = if (captionVisible) "字" else "字",
-                        color = if (captionVisible) Color.White else Color.Gray,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            // ★ シークバー（下部中央、自動非表示）
+            // ★ シークバー（下部中央、自動非表示、背景なし）
             androidx.compose.animation.AnimatedVisibility(
                 visible = controlsVisible && uiState.duration > 0,
                 enter = androidx.compose.animation.fadeIn(),
@@ -639,7 +568,6 @@ private fun PlaybackContentScreen(
             ) {
                 Column(
                     modifier = Modifier
-                        .background(Color.Black.copy(alpha = 0.3f), shape = RoundedCornerShape(8.dp))
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                         .drawWithCache {
                             val paint = Paint().apply {

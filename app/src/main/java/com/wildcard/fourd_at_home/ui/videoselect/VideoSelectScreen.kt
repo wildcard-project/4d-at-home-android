@@ -1,9 +1,16 @@
 package com.wildcard.fourd_at_home.ui.videoselect
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -49,6 +56,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -120,8 +128,11 @@ fun VideoSelectScreen(
                 
                 val currentContent = contents.getOrNull(pagerState.currentPage)
 
-                // 背景サムネイル（中央の作品）
-                currentContent?.let { content ->
+                // ★ 背景演出：選択中のサムネイル背景
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    // ① 既存の縦グラデ背景（維持）
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -133,62 +144,114 @@ fun VideoSelectScreen(
                                     )
                                 )
                             )
-                    ) {
-                        // 下部グラデーションオーバーレイ
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    Brush.verticalGradient(
-                                        colors = listOf(
-                                            Color.Black.copy(alpha = 0.3f),
-                                            Color.Black.copy(alpha = 0.7f),
-                                            Color.Black.copy(alpha = 0.95f)
-                                        )
-                                    )
-                                )
-                        )
-                    }
-                }
+                    )
 
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                // ロゴ
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "4D@HOME",
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = NeonRed,
-                        fontSize = 32.sp
+                    // ② 選択中サムネ背景（Crossfade + blur + alpha + 微アニメ）
+                    val bgThumbnailPath = currentContent?.let { thumbnailMap[it.id] }
+                    
+                    // 微アニメ（パン/ズーム）
+                    val infiniteTransition = rememberInfiniteTransition(label = "bgAnim")
+                    val panX by infiniteTransition.animateFloat(
+                        initialValue = -18f,
+                        targetValue = 18f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(8000, easing = LinearEasing),
+                            repeatMode = RepeatMode.Reverse
+                        ),
+                        label = "panX"
+                    )
+                    val zoom by infiniteTransition.animateFloat(
+                        initialValue = 1.02f,
+                        targetValue = 1.06f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(9000, easing = LinearEasing),
+                            repeatMode = RepeatMode.Reverse
+                        ),
+                        label = "zoom"
+                    )
+
+                    Crossfade(
+                        targetState = bgThumbnailPath,
+                        animationSpec = tween(350),
+                        label = "bgFade"
+                    ) { path ->
+                        if (path != null) {
+                            AssetImage(
+                                assetPath = path,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .graphicsLayer {
+                                        alpha = 0.28f
+                                        scaleX = zoom
+                                        scaleY = zoom
+                                        translationX = panX
+                                    }
+                                    .blur(40.dp)
+                            )
+                        }
+                    }
+
+                    // ③ scrim（半透明黒）
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.40f))
+                    )
+
+                    // ④ 追加のグラデ（カードを映えさせる）
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    0f to Color.Black.copy(alpha = 0.55f),
+                                    0.55f to Color.Transparent,
+                                    1f to Color.White.copy(alpha = 0.06f)
+                                )
+                            )
                     )
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                // ⑤ 既存UI（ロゴ / Pagerカード / タイトルなど）
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    // ロゴ
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "4D@HOME",
+                            style = MaterialTheme.typography.headlineLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = NeonRed,
+                            fontSize = 32.sp
+                        )
+                    }
 
-                // カルーセル
-                HorizontalPager(
-                    state = pagerState,
-                    contentPadding = PaddingValues(horizontal = 60.dp),
-                    pageSpacing = 16.dp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) { page ->
-                    val content = contents[page]
-                    val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-                    
-                    // Y軸回転（-1.0〜1.0 の範囲を -20度〜20度にマッピング）
-                    val rotationY = (pageOffset * 20f).coerceIn(-20f, 20f)
-                    
-                    // Z軸回転（水平傾き）（-1.0〜1.0 の範囲を -5度〜5度にマッピング）
-                    val rotationZ = (pageOffset * 5f).coerceIn(-5f, 5f)
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    // カルーセル
+                    HorizontalPager(
+                        state = pagerState,
+                        contentPadding = PaddingValues(horizontal = 60.dp),
+                        pageSpacing = 16.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) { page ->
+                        val content = contents[page]
+                        val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
+                        
+                        // Y軸回転（-1.0〜1.0 の範囲を -20度〜20度にマッピング）
+                        val rotationY = (pageOffset * 20f).coerceIn(-20f, 20f)
+                        
+                        // Z軸回転（水平傾き）（-1.0〜1.0 の範囲を -5度〜5度にマッピング）
+                        val rotationZ = (pageOffset * 5f).coerceIn(-5f, 5f)
                     
                     // スケール（中央は1.0、左右は0.88）
                     val scale = 1f - (pageOffset.absoluteValue * 0.12f).coerceIn(0f, 0.12f)
@@ -248,7 +311,6 @@ fun VideoSelectScreen(
         }
     }
 }
-
 /**
  * 動画ID → サムネイルパスのマッピング
  * 未設定の場合はプレースホルダー表示

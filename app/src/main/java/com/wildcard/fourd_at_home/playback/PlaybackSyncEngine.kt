@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,8 @@ class PlaybackSyncEngine @Inject constructor(
         private const val LOOKAHEAD_MS = 200L
         // コマンド間の最小間隔（ESP32の処理時間を考慮）
         private const val MIN_COMMAND_INTERVAL_MS = 20L
+        // SHOTエフェクトのUI表示時間（ミリ秒）
+        private const val SHOT_DISPLAY_DURATION_MS = 800L
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -300,6 +303,7 @@ class PlaybackSyncEngine @Inject constructor(
                     eventData.mode?.let { mode ->
                         val key = "${effect.name}:$mode"
                         activeEffects[key] = eventData
+                        updateActiveEffectsUI()
                         executeEffectStart(effect, mode)
                     }
                 }
@@ -310,6 +314,7 @@ class PlaybackSyncEngine @Inject constructor(
                     eventData.mode?.let { mode ->
                         val key = "${effect.name}:$mode"
                         activeEffects.remove(key)
+                        updateActiveEffectsUI()
                         executeEffectStop(effect, mode)
                     }
                 }
@@ -318,11 +323,35 @@ class PlaybackSyncEngine @Inject constructor(
             EventAction.SHOT -> {
                 eventData.effect?.let { effect ->
                     eventData.mode?.let { mode ->
+                        val key = "${effect.name}:$mode"
+                        // SHOTでもUIに一時的に反映
+                        activeEffects[key] = eventData
+                        updateActiveEffectsUI()
+                        
                         executeEffectShot(effect, mode)
+                        
+                        // 一定時間後にUIから削除（他のSTARTで上書きされていなければ）
+                        scope.launch {
+                            delay(SHOT_DISPLAY_DURATION_MS)
+                            // まだ同じイベントがアクティブなら削除
+                            if (activeEffects[key] == eventData) {
+                                activeEffects.remove(key)
+                                updateActiveEffectsUI()
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+    
+    /**
+     * activeEffectsをUIに反映
+     */
+    private fun updateActiveEffectsUI() {
+        _state.value = _state.value.copy(
+            activeEffects = activeEffects.keys.map { it.substringBefore(':') }.distinct()
+        )
     }
 
     /**
