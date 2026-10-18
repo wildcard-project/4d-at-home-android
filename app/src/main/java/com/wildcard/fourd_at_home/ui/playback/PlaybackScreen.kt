@@ -74,22 +74,24 @@ fun PlaybackScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (uiState.showContentSelector) {
-            // コンテンツ選択画面
-            ContentSelectorScreen(
+            // コンテンツ選択画面（Netflix 風のホーム）
+            NetflixHomeScreen(
                 contents = uiState.availableContents,
                 onContentSelected = { content ->
                     viewModel.loadContent(content)
                 },
                 isEffectStationConnected = uiState.isEffectStationConnected,
-                isMotor1Connected = uiState.isMotor1Connected,
-                isMotor2Connected = uiState.isMotor2Connected
+                isActionDriveConnected = uiState.isActionDriveConnected
             )
         } else {
             // 再生画面
-            PlaybackContentScreen(
+            FullscreenPlayer(
                 viewModel = viewModel,
                 uiState = uiState,
-                onBack = { viewModel.showContentSelector() }
+                onBack = {
+                    viewModel.pause()
+                    viewModel.showContentSelector()
+                }
             )
         }
 
@@ -119,8 +121,7 @@ private fun ContentSelectorScreen(
     contents: List<Content>,
     onContentSelected: (Content) -> Unit,
     isEffectStationConnected: Boolean,
-    isMotor1Connected: Boolean,
-    isMotor2Connected: Boolean
+    isActionDriveConnected: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -135,7 +136,7 @@ private fun ContentSelectorScreen(
         ) {
             Column {
                 Text(
-                    text = "4DX@HOME",
+                    text = "4D@HOME",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -149,8 +150,7 @@ private fun ContentSelectorScreen(
             // 接続状態
             ConnectionStatusBadge(
                 effectStationConnected = isEffectStationConnected,
-                motor1Connected = isMotor1Connected,
-                motor2Connected = isMotor2Connected
+                actionDriveConnected = isActionDriveConnected
             )
         }
 
@@ -202,14 +202,12 @@ private fun ContentSelectorScreen(
 @Composable
 private fun ConnectionStatusBadge(
     effectStationConnected: Boolean,
-    motor1Connected: Boolean,
-    motor2Connected: Boolean
+    actionDriveConnected: Boolean
 ) {
-    val motorsConnected = listOf(motor1Connected, motor2Connected).count { it }
-    val allConnected = effectStationConnected && motorsConnected == 2
+    val allConnected = effectStationConnected && actionDriveConnected
     val color = when {
         allConnected -> StatusConnected
-        effectStationConnected || motorsConnected > 0 -> Color(0xFFFFA500) // Orange
+        effectStationConnected || actionDriveConnected -> Color(0xFFFFA500) // Orange
         else -> Color.Gray
     }
 
@@ -231,8 +229,8 @@ private fun ConnectionStatusBadge(
             Text(
                 text = when {
                     allConnected -> "全デバイス接続済"
-                    effectStationConnected -> "ES接続中 (Motor: $motorsConnected/2)"
-                    motorsConnected > 0 -> "Motor: $motorsConnected/2 (ES未接続)"
+                    effectStationConnected -> "ES接続中 (AD未接続)"
+                    actionDriveConnected -> "AD接続中 (ES未接続)"
                     else -> "未接続"
                 },
                 color = color,
@@ -410,8 +408,7 @@ private fun PlaybackContentScreen(
             // 接続状態インジケータ
             ConnectionIndicators(
                 isEffectStationConnected = uiState.isEffectStationConnected,
-                isMotor1Connected = uiState.isMotor1Connected,
-                isMotor2Connected = uiState.isMotor2Connected
+                isActionDriveConnected = uiState.isActionDriveConnected
             )
         }
 
@@ -450,15 +447,13 @@ private fun PlaybackContentScreen(
 @Composable
 private fun ConnectionIndicators(
     isEffectStationConnected: Boolean,
-    isMotor1Connected: Boolean,
-    isMotor2Connected: Boolean
+    isActionDriveConnected: Boolean
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ConnectionDot(label = "ES", isConnected = isEffectStationConnected)
-        ConnectionDot(label = "M1", isConnected = isMotor1Connected)
-        ConnectionDot(label = "M2", isConnected = isMotor2Connected)
+        ConnectionDot(label = "AD", isConnected = isActionDriveConnected)
     }
 }
 

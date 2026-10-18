@@ -67,6 +67,11 @@ import com.wildcard.fourd_at_home.ble.ScanState
 import com.wildcard.fourd_at_home.ble.ScannedDevice
 import com.wildcard.fourd_at_home.ble.SignalStrength
 import com.wildcard.fourd_at_home.ui.theme.NeonRed
+import com.wildcard.fourd_at_home.ui.common.PageHeader
+import com.wildcard.fourd_at_home.ui.common.StatusChip
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.wildcard.fourd_at_home.ui.theme.StatusConnected
 import com.wildcard.fourd_at_home.ui.theme.StatusDisconnected
 import java.text.SimpleDateFormat
@@ -107,20 +112,32 @@ fun SettingsScreen(
         )
     }
 
+    val esConnected = uiState.connections.values.any { it.deviceType == DeviceType.EFFECT_STATION && it.state == ConnectionState.CONNECTED }
+    val adConnected = uiState.connections.values.any { it.deviceType == DeviceType.ACTION_DRIVE && it.state == ConnectionState.CONNECTED }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 24.dp, vertical = 20.dp)
     ) {
-        // ヘッダー
-        Text(
-            text = "BLE デバイス設定",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        PageHeader(
+            title = "デバイス設定",
+            subtitle = "4D デバイスを探して、Bluetooth でつなぎます"
+        ) {
+            StatusChip("EffectStation", esConnected)
+            StatusChip("ActionDrive", adConnected)
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+        Column(
+            modifier = Modifier
+                .weight(1.25f)
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState())
+        ) {
         // スキャンセクション
         ScanSection(
             scanState = uiState.scanState,
@@ -141,13 +158,20 @@ fun SettingsScreen(
             onDisconnectAll = { viewModel.disconnectAll() }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        }
 
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+        ) {
         // コマンドログセクション
         CommandLogSection(
             commandLog = uiState.commandLog,
             onClearLog = { viewModel.clearCommandLog() }
         )
+        }
+        }
     }
 }
 
@@ -329,8 +353,7 @@ private fun ScannedDeviceItem(
 private fun DeviceTypeIndicator(deviceType: DeviceType) {
     val (color, letter) = when (deviceType) {
         DeviceType.EFFECT_STATION -> StatusConnected to "ES"
-        DeviceType.ACTION_DRIVE_1 -> Color(0xFF2196F3) to "M1"
-        DeviceType.ACTION_DRIVE_2 -> Color(0xFFFF9800) to "M2"
+        DeviceType.ACTION_DRIVE -> Color(0xFF2196F3) to "AD"
         DeviceType.UNKNOWN -> MaterialTheme.colorScheme.outline to "?"
     }
 

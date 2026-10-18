@@ -55,9 +55,11 @@ data class PlaybackUiState(
     
     // 接続状態
     val isEffectStationConnected: Boolean = false,
-    val isMotor1Connected: Boolean = false,
-    val isMotor2Connected: Boolean = false,
+    val isActionDriveConnected: Boolean = false,
     
+    // 再生画面の設定（エフェクトの種類ごとの有効・無効）
+    val disabledEffects: Set<com.wildcard.fourd_at_home.playback.EffectType> = emptySet(),
+
     // その他
     val error: String? = null,
     val showContentSelector: Boolean = true
@@ -157,11 +159,8 @@ class PlaybackViewModel @Inject constructor(
                     isEffectStationConnected = connections.values.any {
                         it.deviceType == DeviceType.EFFECT_STATION && it.state == ConnectionState.READY
                     },
-                    isMotor1Connected = connections.values.any {
-                        it.deviceType == DeviceType.ACTION_DRIVE_1 && it.state == ConnectionState.READY
-                    },
-                    isMotor2Connected = connections.values.any {
-                        it.deviceType == DeviceType.ACTION_DRIVE_2 && it.state == ConnectionState.READY
+                    isActionDriveConnected = connections.values.any {
+                        it.deviceType == DeviceType.ACTION_DRIVE && it.state == ConnectionState.READY
                     }
                 )
             }
@@ -291,6 +290,15 @@ class PlaybackViewModel @Inject constructor(
      */
     fun hideContentSelector() {
         _uiState.value = _uiState.value.copy(showContentSelector = false)
+    }
+
+    /**
+     * エフェクトの種類ごとに有効・無効を切り替える（再生画面の設定パネル）
+     */
+    fun setEffectEnabled(effect: com.wildcard.fourd_at_home.playback.EffectType, enabled: Boolean) {
+        syncEngine.setEffectEnabled(effect, enabled)
+        val cur = _uiState.value.disabledEffects
+        _uiState.value = _uiState.value.copy(disabledEffects = if (enabled) cur - effect else cur + effect)
     }
 
     /**

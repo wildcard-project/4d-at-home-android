@@ -38,6 +38,29 @@ class PlaybackSyncEngine @Inject constructor(
     
     // 現在アクティブなエフェクト状態を追跡
     private val activeEffects = mutableMapOf<String, TimelineEventData>()
+
+    // 再生画面の設定で切ったエフェクト（タイムラインに出てきても送らない）
+    @Volatile
+    private var disabledEffects: Set<EffectType> = emptySet()
+
+    /**
+     * エフェクトの種類ごとに有効・無効を切り替える。
+     * 無効にしたときは今動いているものを止め、有効に戻したときは再生中なら今の状態から再開する。
+     */
+    fun setEffectEnabled(effect: EffectType, enabled: Boolean) {
+        disabledEffects = if (enabled) disabledEffects - effect else disabledEffects + effect
+        val targets = activeEffects.values.filter { it.effect == effect }
+        scope.launch {
+            targets.forEach { ev ->
+                val mode = ev.mode ?: return@forEach
+                if (enabled) {
+                    if (_state.value.isPlaying) executeEffectStart(effect, mode)
+                } else {
+                    executeEffectStop(effect, mode)
+                }
+            }
+        }
+    }
     
     // colorエフェクトがアクティブかどうかを追跡
     // colorがアクティブな間はflashを抑制する（同一LEDのため）
@@ -329,6 +352,7 @@ class PlaybackSyncEngine @Inject constructor(
      * エフェクト開始
      */
     private suspend fun executeEffectStart(effect: EffectType, mode: String) {
+        if (effect in disabledEffects) return
         when (effect) {
             EffectType.WIND -> {
                 commandSender.sendFanCommand(true)
@@ -385,8 +409,8 @@ class PlaybackSyncEngine @Inject constructor(
                             commandSender.sendMotor2StringCommand(command)
                         }
                         MotorTarget.BOTH -> {
-                            // 並列送信で両モーターに同時にコマンドを送信
-                            commandSender.sendBothMotorsParallel(command)
+                            // 1回の書き込みで両モーターに同時にコマンドを送信
+                            commandSender.sendBothMotors(command)
                         }
                     }
                 }
@@ -446,8 +470,8 @@ class PlaybackSyncEngine @Inject constructor(
                             commandSender.sendMotor2StringCommand("OFF")
                         }
                         MotorTarget.BOTH -> {
-                            // 並列送信で両モーターを同時にOFF
-                            commandSender.sendBothMotorsParallel("OFF")
+                            // 1回の書き込みで両モーターを同時にOFF
+                            commandSender.sendBothMotors("OFF")
                         }
                     }
                 }
@@ -463,6 +487,7 @@ class PlaybackSyncEngine @Inject constructor(
      * ワンショットエフェクト
      */
     private suspend fun executeEffectShot(effect: EffectType, mode: String) {
+        if (effect in disabledEffects) return
         when (effect) {
             EffectType.WATER -> {
                 commandSender.sendSplashCommand()

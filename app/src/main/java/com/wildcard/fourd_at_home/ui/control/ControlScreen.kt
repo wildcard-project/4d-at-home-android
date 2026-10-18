@@ -54,6 +54,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.wildcard.fourd_at_home.ui.theme.NeonRed
 import com.wildcard.fourd_at_home.ui.theme.StatusConnected
 import com.wildcard.fourd_at_home.ui.theme.StatusDisconnected
+import com.wildcard.fourd_at_home.ui.theme.NeonRed
+import com.wildcard.fourd_at_home.ui.common.PageHeader
+import com.wildcard.fourd_at_home.ui.common.StatusChip
 
 @Composable
 fun ControlScreen(
@@ -65,27 +68,19 @@ fun ControlScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 20.dp)
         ) {
-            // ヘッダー
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            PageHeader(
+                title = "エフェクト制御",
+                subtitle = "デバイスを手で動かして、動作を確かめます"
             ) {
-                Text(
-                    text = "エフェクト制御",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
+                StatusChip("EffectStation", uiState.isEffectStationConnected)
+                StatusChip("ActionDrive", uiState.isActionDriveConnected)
                 // 緊急停止ボタン
                 Button(
                     onClick = { viewModel.stopAllEffects() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = StatusDisconnected
-                    )
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = NeonRed)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Stop,
@@ -93,21 +88,20 @@ fun ControlScreen(
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("全停止")
+                    Text("全停止", fontWeight = FontWeight.Bold)
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 接続状態表示
-            ConnectionStatusRow(
-                isEffectStationConnected = uiState.isEffectStationConnected,
-                isMotor1Connected = uiState.isMotor1Connected,
-                isMotor2Connected = uiState.isMotor2Connected
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
+            // 横向きの画面を生かして、EffectStation と ActionDrive を左右に並べる
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
             // EffectStation制御
             EffectStationCard(
                 isConnected = uiState.isEffectStationConnected,
@@ -122,13 +116,16 @@ fun ControlScreen(
                 onLedOff = { viewModel.ledOff() },
                 onStopEffectStation = { viewModel.stopEffectStation() }
             )
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
             // ActionDrive制御
             ActionDriveCard(
-                isMotor1Connected = uiState.isMotor1Connected,
-                isMotor2Connected = uiState.isMotor2Connected,
+                isConnected = uiState.isActionDriveConnected,
                 motor1Level = uiState.effectState.motor1Level,
                 motor2Level = uiState.effectState.motor2Level,
                 onMotor1Level = { viewModel.setMotor1Level(it) },
@@ -139,6 +136,8 @@ fun ControlScreen(
                 onBothMotorsPattern = { viewModel.sendBothMotorsPattern(it) },
                 onStopMotors = { viewModel.stopMotors() }
             )
+            }
+            }
         }
 
         // エラー表示
@@ -162,16 +161,14 @@ fun ControlScreen(
 @Composable
 private fun ConnectionStatusRow(
     isEffectStationConnected: Boolean,
-    isMotor1Connected: Boolean,
-    isMotor2Connected: Boolean
+    isActionDriveConnected: Boolean
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         ConnectionChip(label = "EffectStation", isConnected = isEffectStationConnected)
-        ConnectionChip(label = "Motor1", isConnected = isMotor1Connected)
-        ConnectionChip(label = "Motor2", isConnected = isMotor2Connected)
+        ConnectionChip(label = "ActionDrive", isConnected = isActionDriveConnected)
     }
 }
 
@@ -485,8 +482,7 @@ private fun ColorButton(
 
 @Composable
 private fun ActionDriveCard(
-    isMotor1Connected: Boolean,
-    isMotor2Connected: Boolean,
+    isConnected: Boolean,
     motor1Level: VibrationLevel,
     motor2Level: VibrationLevel,
     onMotor1Level: (VibrationLevel) -> Unit,
@@ -497,7 +493,6 @@ private fun ActionDriveCard(
     onBothMotorsPattern: (VibrationPattern) -> Unit,
     onStopMotors: () -> Unit
 ) {
-    val anyMotorConnected = isMotor1Connected || isMotor2Connected
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -515,12 +510,12 @@ private fun ActionDriveCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                TextButton(onClick = onStopMotors, enabled = anyMotorConnected) {
+                TextButton(onClick = onStopMotors, enabled = isConnected) {
                     Text("停止", color = StatusDisconnected)
                 }
             }
 
-            if (!anyMotorConnected) {
+            if (!isConnected) {
                 Text(
                     text = "モーターが接続されていません",
                     style = MaterialTheme.typography.bodyMedium,
@@ -530,73 +525,67 @@ private fun ActionDriveCard(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 // Motor1
-                if (isMotor1Connected) {
-                    MotorControlSection(
-                        label = "Motor 1 (背中)",
-                        color = Color(0xFF2196F3),
-                        currentLevel = motor1Level,
-                        onLevelChange = onMotor1Level,
-                        onPatternSelect = onMotor1Pattern
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                MotorControlSection(
+                    label = "Motor 1 (背中)",
+                    color = Color(0xFF2196F3),
+                    currentLevel = motor1Level,
+                    onLevelChange = onMotor1Level,
+                    onPatternSelect = onMotor1Pattern
+                )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Motor2
-                if (isMotor2Connected) {
-                    MotorControlSection(
-                        label = "Motor 2 (お尻)",
-                        color = Color(0xFFFF9800),
-                        currentLevel = motor2Level,
-                        onLevelChange = onMotor2Level,
-                        onPatternSelect = onMotor2Pattern
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                MotorControlSection(
+                    label = "Motor 2 (お尻)",
+                    color = Color(0xFFFF9800),
+                    currentLevel = motor2Level,
+                    onLevelChange = onMotor2Level,
+                    onPatternSelect = onMotor2Pattern
+                )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // 両モーター同時制御
-                if (isMotor1Connected && isMotor2Connected) {
-                    Text(
-                        text = "両モーター同時",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    // 強度ボタン
-                    Text(
-                        text = "強度",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        VibrationLevel.basicLevels.forEach { level ->
-                            OutlinedButton(
-                                onClick = { onBothMotorsLevel(level) },
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Text(level.displayName, style = MaterialTheme.typography.labelSmall)
-                            }
+                Text(
+                    text = "両モーター同時",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // 強度ボタン
+                Text(
+                    text = "強度",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    VibrationLevel.basicLevels.forEach { level ->
+                        OutlinedButton(
+                            onClick = { onBothMotorsLevel(level) },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(level.displayName, style = MaterialTheme.typography.labelSmall)
                         }
                     }
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    // パターンボタン
-                    Text(
-                        text = "パターン",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        VibrationPattern.entries.forEach { pattern ->
-                            OutlinedButton(
-                                onClick = { onBothMotorsPattern(pattern) }
-                            ) {
-                                Text("${pattern.icon} ${pattern.displayName}")
-                            }
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // パターンボタン
+                Text(
+                    text = "パターン",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    VibrationPattern.entries.forEach { pattern ->
+                        OutlinedButton(
+                            onClick = { onBothMotorsPattern(pattern) }
+                        ) {
+                            Text("${pattern.icon} ${pattern.displayName}")
                         }
                     }
                 }

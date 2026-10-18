@@ -11,7 +11,6 @@ import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.ParcelUuid
 import android.util.Log
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -160,12 +159,10 @@ class BleScanner @Inject constructor(
 
         currentScanCallback = callback
 
-        // スキャンフィルターとセッティング
-        val filters = listOf(
-            ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid(BleConstants.SERVICE_UUID))
-                .build()
-        )
+        // Android/ESP32の組み合わせによってはService UUIDやデバイス名が
+        // Scan Response側に載り、ハードウェアフィルターで落ちることがある。
+        // まず全広告を受け取り、handleScanResult()でアプリ側フィルターする。
+        val filters = emptyList<ScanFilter>()
 
         val settings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
@@ -213,15 +210,30 @@ class BleScanner @Inject constructor(
 
     private fun handleScanResult(result: ScanResult): ScannedDevice? {
         val device = result.device
-        val name: String
-        try {
-            name = device.name ?: return null
+        val scanRecord = result.scanRecord
+        val advertisedName = scanRecord?.deviceName
+        val bondedName = try {
+            device.name
         } catch (e: SecurityException) {
+            null
+        }
+        val name = advertisedName ?: bondedName
+
+        if (name == null) {
+            Log.v(TAG, "スキャン結果を除外: name=null, address=${device.address}, rssi=${result.rssi}")
             return null
         }
 
         // デバイス名パターンチェック
         if (!BleConstants.DEVICE_NAME_PATTERN.matches(name)) {
+            Log.v(TAG, "スキャン結果を除外: name=$name, address=${device.address}")
+            return null
+        }
+
+        val hasServiceUuid = scanRecord?.serviceUuids
+            ?.any { it.uuid == BleConstants.SERVICE_UUID } == true
+        if (!hasServiceUuid) {
+            Log.v(TAG, "スキャン結果を除外: serviceUuid未検出, name=$name, address=${device.address}")
             return null
         }
 
