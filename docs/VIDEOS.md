@@ -14,18 +14,23 @@
 
 ## Git に入れていない動画（市販作品）
 
-Fast X 予告編は権利物なので、公開リポジトリには入れません。チーム内限定の Google ドライブから取得して置いてください。
+Fast X と Michael の予告編は権利物なので、公開リポジトリには入れません。チーム内限定の Google ドライブから取得して置いてください。
 
 - 置き場所: Google ドライブ「4DX@HOME 試験動画 (権利物・チーム内限定)」
   https://drive.google.com/drive/folders/12Y0UUzoV6GmhX6i7K9HmqHBBDKMgUomu
-- ファイル: `wild_speed_fire_boost.mp4`（151.558 秒、103,478,635 バイト）
-- 置く先: `app/src/main/assets/videos/wild_speed_fire_boost.mp4`（`.gitignore` 済み）
+- 置く先はどちらも `app/src/main/assets/videos/`（`.gitignore` 済み）
 - 照合: 次の値と一致することを確認してください。一致しない場合はタイムラインとずれます。
 
+| ファイル | 長さ | バイト数 | sha1 |
+|---|---|---|---|
+| `wild_speed_fire_boost.mp4`（Fast X 予告） | 151.558 秒 | 103,478,635 | `b7934d7261b938b053668d963bbd2f7f9f1f6830` |
+| `michael_trailer.mp4`（映画『Michael／マイケル』US版第1弾予告、キノフィルムズ） | 73.886 秒 | 17,174,872 | `ea7f13d13f053de424ea1fba8d113e6757f66ba8` |
+
 ```bash
-shasum app/src/main/assets/videos/wild_speed_fire_boost.mp4
-# b7934d7261b938b053668d963bbd2f7f9f1f6830
+shasum app/src/main/assets/videos/*.mp4
 ```
+
+動画が無いカードは再生できないだけで、アプリの他の機能には影響しません。
 
 ## Fast X のタイムライン（聴き比べ用に 3 枚のカード）
 
@@ -37,4 +42,4 @@ shasum app/src/main/assets/videos/wild_speed_fire_boost.mp4
 | 〃（v4 演出多め） | `timelines/wild_speed_fire_boost.rich.json` |
 | 〃（v4 快適） | `timelines/wild_speed_fire_boost.comfort.json` |
 
-他の 3 本は `timelines/<id>.json` が v4 演出多め、`<id>.rich.json` / `<id>.comfort.json` がモード別です。
+Michael と他の 3 本は `timelines/<id>.json` が v4 演出多め、`<id>.rich.json` / `<id>.comfort.json` がモード別です。

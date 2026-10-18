@@ -92,6 +92,22 @@ object ContentLibrary {
             year = 2023
         ),
         Content(
+            id = "michael_trailer",
+            title = "Michael／マイケル 予告編",
+            description = "静かな録音スタジオから、満員のスタジアムへ。ビートとステージの火花を全身で (市販作品: 動画は Google ドライブから取得)",
+            videoAssetPath = "videos/michael_trailer.mp4",
+            timelineAssetPath = "timelines/michael_trailer.json",
+            durationMs = 73886,
+            effectTypes = listOf(
+                EffectType.FAN,
+                EffectType.VIBRATION,
+                EffectType.LED,
+                EffectType.MIST
+            ),
+            englishTitle = "MICHAEL",
+            year = 2026
+        ),
+        Content(
             id = "sintel_trailer",
             title = "Sintel 予告編",
             description = "吹雪の山、竜との出会い、そして宿命の狩り。ファンタジーの風と衝撃を体感 (Blender Foundation, CC-BY 3.0)",
