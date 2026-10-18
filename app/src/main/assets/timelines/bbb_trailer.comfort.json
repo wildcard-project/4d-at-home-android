@@ -1,0 +1,244 @@
+{
+  "events": [
+    {
+      "t": 0.0,
+      "action": "caption",
+      "text": "穏やかなピアノの旋律とともに、陽光が差し込む緑豊かな森と木の根元の巣穴が映し出される。"
+    },
+    {
+      "t": 0.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "green"
+    },
+    {
+      "t": 6.8,
+      "action": "caption",
+      "text": "壮大なオーケストラの盛り上がりに合わせ、広々とした草原に立つ大きな白ウサギが登場する。"
+    },
+    {
+      "t": 6.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 6.8,
+      "action": "stop",
+      "effect": "color",
+      "mode": "green"
+    },
+    {
+      "t": 6.83,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow_green"
+    },
+    {
+      "t": 9.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 11.2,
+      "action": "caption",
+      "text": "いたずら好きな3匹の小動物が木の実を投げつけ、ウサギの頭に命中して笑い飛ばす。"
+    },
+    {
+      "t": 16.64,
+      "action": "caption",
+      "text": "重厚な打楽器とともに音楽が一転し、怒ったウサギによる激しい仕返しが次々と展開する。"
+    },
+    {
+      "t": 16.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 16.65,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow_green"
+    },
+    {
+      "t": 16.68,
+      "action": "start",
+      "effect": "color",
+      "mode": "dark_green"
+    },
+    {
+      "t": 17.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 22.1,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 22.1,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 22.1,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 22.41,
+      "action": "shot",
+      "effect": "mist",
+      "mode": "burst"
+    },
+    {
+      "t": 22.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 22.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 22.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 22.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 22.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 22.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 22.9,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 23.0,
+      "action": "caption",
+      "text": "緊迫した空気の中、リスが紫色の蝶を石で潰そうとし、ウサギが驚愕の表情を浮かべる。"
+    },
+    {
+      "t": 23.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 23.0,
+      "action": "stop",
+      "effect": "color",
+      "mode": "dark_green"
+    },
+    {
+      "t": 23.03,
+      "action": "start",
+      "effect": "color",
+      "mode": "purple"
+    },
+    {
+      "t": 25.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 26.6,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 26.7,
+      "action": "stop",
+      "effect": "color",
+      "mode": "purple"
+    },
+    {
+      "t": 26.72,
+      "action": "caption",
+      "text": "軽快で華やかなブラス音楽とともに「Big Buck BUNNY」のタイトルロゴと公開予告が表示される。"
+    },
+    {
+      "t": 27.05,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 27.05,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_weak"
+    },
+    {
+      "t": 27.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 27.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_weak"
+    },
+    {
+      "t": 27.75,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 27.77,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 30.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 31.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 32.99,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    }
+  ]
+}

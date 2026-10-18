@@ -1,0 +1,207 @@
+{
+  "events": [
+    {
+      "t": 0.0,
+      "action": "caption",
+      "text": "吹雪が荒れ狂う雪山の尾根を、杖をつきながら一人で進む少女。"
+    },
+    {
+      "t": 0.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 5.0,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 5.3,
+      "action": "shot",
+      "effect": "mist",
+      "mode": "burst"
+    },
+    {
+      "t": 5.8,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 9.4,
+      "action": "caption",
+      "text": "暗闇に浮かぶロゴに続き、薄暗い室内で老人が少女に旅の目的を問いかける。"
+    },
+    {
+      "t": 9.4,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 9.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 16.48,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 16.5,
+      "action": "caption",
+      "text": "雪原での激しい戦闘のフラッシュバック。少女が杖で敵の攻撃を受け止める。"
+    },
+    {
+      "t": 16.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 16.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 17.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 17.2,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 21.5,
+      "action": "caption",
+      "text": "夕焼けに染まる遺跡の頂へと駆け上がり、空を舞う小さな竜を見上げて微笑む少女。"
+    },
+    {
+      "t": 21.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 25.92,
+      "action": "caption",
+      "text": "突如現れた巨大な竜が幼い竜を連れ去り、手を伸ばす少女の目の前を巨大な翼が掠める。"
+    },
+    {
+      "t": 26.15,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 26.15,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 30.05,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 30.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 35.5,
+      "action": "caption",
+      "text": "果てしなく続く黄金の砂漠を、孤独な狩人としてただ一人歩き続ける少女。"
+    },
+    {
+      "t": 35.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 35.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 35.5,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 35.53,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 41.5,
+      "action": "caption",
+      "text": "暗闇にタイトルロゴが浮かび上がり、激しい太鼓の連打とともに幕を閉じる。"
+    },
+    {
+      "t": 41.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 44.55,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 47.1,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 47.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 47.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 47.41,
+      "action": "shot",
+      "effect": "mist",
+      "mode": "burst"
+    },
+    {
+      "t": 47.65,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 47.85,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    }
+  ]
+}

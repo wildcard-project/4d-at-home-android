@@ -118,8 +118,12 @@ esp32/**/.vscode/ipch/
 # =============================================================================
 # [7] プロジェクト固有の除外
 # =============================================================================
-# 動画ファイル（著作権の問題があるため除外）
-app/src/main/assets/videos/
+# 動画ファイル（著作権の問題があるため原則除外。権利上問題の無い試験用だけ同梱する）
+# Fast X (wild_speed_fire_boost.mp4) は市販作品のため Git に入れない。チームの Google ドライブから取得して置く (docs/VIDEOS.md)
+app/src/main/assets/videos/*
+!app/src/main/assets/videos/sintel_trailer.mp4
+!app/src/main/assets/videos/bbb_trailer.mp4
+!app/src/main/assets/videos/fourdx_promo.mp4
 # ポスター画像（著作権の問題があるため除外）
 app/src/main/assets/posters/
 

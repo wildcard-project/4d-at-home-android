@@ -1,0 +1,748 @@
+{
+  "events": [
+    {
+      "t": 0.0,
+      "action": "caption",
+      "text": "嵐の水没都市で巨大ロボットと怪獣が激突し、火花を散らして噛みつく。"
+    },
+    {
+      "t": 0.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 0.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 0.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 0.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 0.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 0.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 2.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 2.03,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 2.55,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 2.58,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 2.85,
+      "action": "shot",
+      "effect": "water",
+      "mode": "burst"
+    },
+    {
+      "t": 2.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 2.88,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 3.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 3.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 3.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 3.58,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 3.6,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 4.1,
+      "action": "caption",
+      "text": "雨のサイバーパンク都市の屋上で、剣士が銃弾を赤い斬撃で弾き返し爆発が起きる。"
+    },
+    {
+      "t": 4.2,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 4.22,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 4.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 4.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 4.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 4.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 4.95,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 5.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 5.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 5.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 5.75,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 5.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 5.93,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_weak"
+    },
+    {
+      "t": 6.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_weak"
+    },
+    {
+      "t": 6.18,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 6.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 6.78,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 6.78,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 7.38,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 7.4,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 7.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 7.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 7.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 7.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 7.93,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 7.93,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 8.0,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 8.4,
+      "action": "caption",
+      "text": "嵐の海で帆船同士が砲撃戦を展開し、大砲の発射と被弾で船内が激しく揺れる。"
+    },
+    {
+      "t": 8.4,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 8.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 8.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 8.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 8.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 9.1,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 9.12,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 9.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 9.18,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_weak"
+    },
+    {
+      "t": 9.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_weak"
+    },
+    {
+      "t": 9.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 10.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 10.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 10.58,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 10.6,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 10.7,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 11.2,
+      "action": "shot",
+      "effect": "water",
+      "mode": "burst"
+    },
+    {
+      "t": 11.25,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 11.27,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 11.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 11.33,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 11.33,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 11.65,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 12.65,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 12.73,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 12.75,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 12.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 12.78,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 13.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 13.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 13.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 13.4,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 13.42,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 13.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 15.15,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 15.4,
+      "action": "caption",
+      "text": "夕焼けの雲海の上空で、近未来の戦闘機が急旋回しながらドッグファイトを繰り広げる。"
+    },
+    {
+      "t": 15.4,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 15.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 15.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 15.43,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 15.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 17.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 17.93,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 17.93,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 18.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 18.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 18.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 18.43,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 19.95,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 20.1,
+      "action": "caption",
+      "text": "暗い雨の森で恐竜が瓦礫の陰に一歩ずつ近づき、目の前で白い息を吐きながら咆哮する。"
+    },
+    {
+      "t": 20.1,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 20.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 20.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 20.13,
+      "action": "start",
+      "effect": "color",
+      "mode": "dark_green"
+    },
+    {
+      "t": 20.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 20.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 21.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 21.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 22.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 22.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 23.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 23.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 24.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 25.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "heartbeat"
+    },
+    {
+      "t": 26.12,
+      "action": "shot",
+      "effect": "mist",
+      "mode": "burst"
+    },
+    {
+      "t": 26.95,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 27.0,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 27.1,
+      "action": "caption",
+      "text": "暗闇に赤いロゴが浮かび上がり、風圧とともに一気に迫ってくる。"
+    },
+    {
+      "t": 27.1,
+      "action": "stop",
+      "effect": "color",
+      "mode": "dark_green"
+    },
+    {
+      "t": 27.13,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 27.8,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 27.95,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 29.4,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 29.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 30.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 30.4,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 31.35,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    }
+  ]
+}
