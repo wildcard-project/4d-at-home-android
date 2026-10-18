@@ -11,15 +11,13 @@ object BleConstants {
 
     // === デバイス名パターン ===
     // 4D_ES_XXXX  : EffectStation
-    // 4D_AD1_XXXX : ActionDrive Motor1
-    // 4D_AD2_XXXX : ActionDrive Motor2
+    // 4D_AD_XXXX  : ActionDrive（ESP32 1台で背中 Motor1 とお尻 Motor2 を制御）
     // 4D_で始まるすべてのデバイスを受け入れる
     val DEVICE_NAME_PATTERN = Regex("4D_[A-Za-z0-9]+_[0-9A-Fa-f]{4}")
 
     // デバイスタイプ判定用プレフィックス
     const val PREFIX_EFFECT_STATION = "4D_ES_"
-    const val PREFIX_ACTION_DRIVE_1 = "4D_AD1_"
-    const val PREFIX_ACTION_DRIVE_2 = "4D_AD2_"
+    const val PREFIX_ACTION_DRIVE = "4D_AD_"
 
     // === タイムアウト設定 (ms) ===
     const val SCAN_TIMEOUT_MS = 15_000L

@@ -116,8 +116,7 @@ data class EffectState(
 data class ControlUiState(
     val effectState: EffectState = EffectState(),
     val isEffectStationConnected: Boolean = false,
-    val isMotor1Connected: Boolean = false,
-    val isMotor2Connected: Boolean = false,
+    val isActionDriveConnected: Boolean = false,
     val lastError: String? = null,
     val isSending: Boolean = false
 )
@@ -148,17 +147,13 @@ class ControlViewModel @Inject constructor(
                 val esConnected = connections.values.any { 
                     it.deviceType == DeviceType.EFFECT_STATION && it.state == ConnectionState.READY 
                 }
-                val m1Connected = connections.values.any { 
-                    it.deviceType == DeviceType.ACTION_DRIVE_1 && it.state == ConnectionState.READY 
-                }
-                val m2Connected = connections.values.any { 
-                    it.deviceType == DeviceType.ACTION_DRIVE_2 && it.state == ConnectionState.READY 
+                val adConnected = connections.values.any { 
+                    it.deviceType == DeviceType.ACTION_DRIVE && it.state == ConnectionState.READY 
                 }
                 
                 _uiState.value = _uiState.value.copy(
                     isEffectStationConnected = esConnected,
-                    isMotor1Connected = m1Connected,
-                    isMotor2Connected = m2Connected
+                    isActionDriveConnected = adConnected
                 )
             }
         }

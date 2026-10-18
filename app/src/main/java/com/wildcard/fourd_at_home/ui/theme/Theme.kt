@@ -36,7 +36,13 @@ private val DarkColorScheme = darkColorScheme(
     outlineVariant = md_theme_dark_outlineVariant,
     inverseSurface = md_theme_dark_inverseSurface,
     inverseOnSurface = md_theme_dark_inverseOnSurface,
-    inversePrimary = md_theme_dark_inversePrimary
+    inversePrimary = md_theme_dark_inversePrimary,
+    // カードや入れ物の段階（黒から少しずつ明るく）
+    surfaceContainerLowest = androidx.compose.ui.graphics.Color(0xFF0E0E0E),
+    surfaceContainerLow = androidx.compose.ui.graphics.Color(0xFF131313),
+    surfaceContainer = androidx.compose.ui.graphics.Color(0xFF161616),
+    surfaceContainerHigh = androidx.compose.ui.graphics.Color(0xFF1C1C1C),
+    surfaceContainerHighest = androidx.compose.ui.graphics.Color(0xFF232323)
 )
 
 @Composable

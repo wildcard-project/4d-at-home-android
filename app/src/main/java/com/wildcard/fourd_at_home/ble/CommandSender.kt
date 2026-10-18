@@ -14,7 +14,7 @@ import javax.inject.Singleton
  * 
  * コマンド形式:
  * - EffectStation: "FAN,0/1", "LED,colorId,brightness,effect,transition", "SPLASH", "MIST,0/1/2"
- * - ActionDrive: "MOTOR,mode_name" (up_weak, down_strong, etc.)
+ * - ActionDrive: "MOTOR1,mode"（背中）, "MOTOR2,mode"（お尻）, "MOTOR,mode"（両方）
  * 
  * 250msイベント間隔に対応するため、複数デバイスへの並列送信をサポート
  */
@@ -66,15 +66,12 @@ class CommandSender @Inject constructor(
     }
 
     /**
-     * 両方のモーターに同じコマンドを並列送信
+     * 両方のモーターに同じコマンドを送信
+     * ESP32 1台が背中とお尻を制御するので、1回の書き込みで両方が同時に切り替わる
      * @param mode モーターモード
      */
-    suspend fun sendBothMotorsParallel(mode: String): Result<Unit> {
-        val commands = listOf(
-            DeviceType.ACTION_DRIVE_1 to "MOTOR,$mode",
-            DeviceType.ACTION_DRIVE_2 to "MOTOR,$mode"
-        )
-        return sendCommandsParallel(commands)
+    suspend fun sendBothMotors(mode: String): Result<Unit> {
+        return sendStringToActionDrive("MOTOR,$mode")
     }
 
     // ===============================
@@ -212,16 +209,16 @@ class CommandSender @Inject constructor(
      * @param mode VibrationModeの名前（up_weak, down_strong, heartbeat等）
      */
     suspend fun sendMotor1StringCommand(mode: String): Result<Unit> {
-        val command = "MOTOR,$mode"
-        return sendStringToActionDrive1(command)
+        val command = "MOTOR1,$mode"
+        return sendStringToActionDrive(command)
     }
 
     /**
      * Motor2に振動モードを送信
      */
     suspend fun sendMotor2StringCommand(mode: String): Result<Unit> {
-        val command = "MOTOR,$mode"
-        return sendStringToActionDrive2(command)
+        val command = "MOTOR2,$mode"
+        return sendStringToActionDrive(command)
     }
 
     /**
@@ -241,43 +238,30 @@ class CommandSender @Inject constructor(
     }
 
     /**
-     * 両方のモーターを制御（並列送信版）
+     * 両方のモーターを制御
      * @param mode OFF, WEAK, MEDIUM_WEAK, MEDIUM_STRONG, STRONG, HEARTBEAT, RUMBLE_FAST, RUMBLE_SLOW
      */
     suspend fun sendBothMotorsCommand(mode: String): Result<Unit> {
-        return sendBothMotorsParallel(mode)
+        return sendBothMotors(mode)
     }
 
     /**
-     * 全モーターをOFF（並列送信版）
+     * 全モーターをOFF
      */
     suspend fun sendAllMotorsOff(): Result<Unit> {
-        return sendBothMotorsParallel("OFF")
+        return sendStringToActionDrive("OFF")
     }
 
     /**
-     * ActionDrive Motor1に文字列コマンドを送信
+     * ActionDriveに文字列コマンドを送信
      */
-    private suspend fun sendStringToActionDrive1(command: String): Result<Unit> {
-        val device = deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_1)
+    private suspend fun sendStringToActionDrive(command: String): Result<Unit> {
+        val device = deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE)
         if (device == null) {
-            Log.w(TAG, "ActionDrive Motor1が接続されていません")
-            return Result.failure(Exception("ActionDrive Motor1が接続されていません"))
+            Log.w(TAG, "ActionDriveが接続されていません")
+            return Result.failure(Exception("ActionDriveが接続されていません"))
         }
-        Log.d(TAG, "ActionDrive1送信: $command")
-        return deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
-    }
-
-    /**
-     * ActionDrive Motor2に文字列コマンドを送信
-     */
-    private suspend fun sendStringToActionDrive2(command: String): Result<Unit> {
-        val device = deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_2)
-        if (device == null) {
-            Log.w(TAG, "ActionDrive Motor2が接続されていません")
-            return Result.failure(Exception("ActionDrive Motor2が接続されていません"))
-        }
-        Log.d(TAG, "ActionDrive2送信: $command")
+        Log.d(TAG, "ActionDrive送信: $command")
         return deviceManager.sendCommand(device.address, command.toByteArray(Charsets.UTF_8))
     }
 
@@ -296,10 +280,8 @@ class CommandSender @Inject constructor(
             jobs.add(async { sendEffectStationAllOff() })
         }
 
-        // ActionDrive（両モーター並列）
-        if (deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_1) != null ||
-            deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE_2) != null
-        ) {
+        // ActionDrive（背中・お尻とも）
+        if (deviceManager.getDeviceByType(DeviceType.ACTION_DRIVE) != null) {
             jobs.add(async { sendAllMotorsOff() })
         }
 

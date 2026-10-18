@@ -7,8 +7,7 @@ import android.bluetooth.BluetoothDevice
  */
 enum class DeviceType(val prefix: String, val displayName: String) {
     EFFECT_STATION(BleConstants.PREFIX_EFFECT_STATION, "EffectStation"),
-    ACTION_DRIVE_1(BleConstants.PREFIX_ACTION_DRIVE_1, "ActionDrive Motor1"),
-    ACTION_DRIVE_2(BleConstants.PREFIX_ACTION_DRIVE_2, "ActionDrive Motor2"),
+    ACTION_DRIVE(BleConstants.PREFIX_ACTION_DRIVE, "ActionDrive"),
     UNKNOWN("", "不明");
 
     companion object {

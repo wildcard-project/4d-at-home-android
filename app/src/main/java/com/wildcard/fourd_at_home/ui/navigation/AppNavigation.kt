@@ -68,13 +68,15 @@ val screens = listOf(
 fun AppNavigation() {
     val navController = rememberNavController()
 
+    val fullscreen = AppChrome.fullscreen.value
     Scaffold { innerPadding ->
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .then(if (fullscreen) Modifier else Modifier.padding(innerPadding))
         ) {
-            AppNavigationRail(navController = navController)
+            // 再生画面が全画面の間はナビゲーションを隠す
+            if (!fullscreen) AppNavigationRail(navController = navController)
 
             NavHost(
                 navController = navController,
@@ -100,7 +102,8 @@ fun AppNavigationRail(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationRail {
+    // ホーム画面の黒に合わせる
+    NavigationRail(containerColor = androidx.compose.ui.graphics.Color(0xFF0B0B0B)) {
         screens.forEach { screen ->
             val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
 
