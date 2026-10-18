@@ -6,52 +6,70 @@
       "text": "吹雪が荒れ狂う雪山の尾根を、杖をつきながら一人で進む少女。"
     },
     {
-      "t": 0.0,
-      "action": "start",
-      "effect": "color",
-      "mode": "white"
-    },
-    {
-      "t": 5.0,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 5.0,
+      "t": 1.0,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 5.3,
-      "action": "shot",
+      "t": 1.75,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 4.5,
+      "action": "start",
       "effect": "mist",
-      "mode": "burst"
+      "mode": "stream"
     },
     {
-      "t": 5.35,
+      "t": 5.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 6.0,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 8.15,
-      "action": "stop",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 9.3,
+      "t": 7.0,
       "action": "start",
-      "effect": "wind",
-      "mode": "burst"
+      "effect": "vibration",
+      "mode": "down_weak"
     },
     {
-      "t": 9.38,
+      "t": 7.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 8.75,
       "action": "stop",
       "effect": "color",
       "mode": "white"
+    },
+    {
+      "t": 8.85,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 8.85,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 9.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
       "t": 9.4,
@@ -59,111 +77,111 @@
       "text": "暗闇に浮かぶロゴに続き、薄暗い室内で老人が少女に旅の目的を問いかける。"
     },
     {
-      "t": 9.4,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 9.4,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 9.85,
+      "t": 9.75,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 10.0,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 10.02,
-      "action": "start",
-      "effect": "color",
-      "mode": "white"
-    },
-    {
-      "t": 10.1,
-      "action": "stop",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 11.0,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "heartbeat"
-    },
-    {
-      "t": 14.7,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "heartbeat"
-    },
-    {
-      "t": 16.48,
-      "action": "stop",
-      "effect": "color",
-      "mode": "white"
-    },
-    {
-      "t": 16.5,
+      "t": 16.4,
       "action": "caption",
       "text": "雪原での激しい戦闘のフラッシュバック。少女が杖で敵の攻撃を受け止める。"
     },
     {
       "t": 16.5,
       "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 16.5,
+      "action": "start",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
       "t": 16.5,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
-      "t": 16.8,
+      "t": 16.5,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 16.85,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 16.85,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
-      "t": 16.83,
+      "t": 16.95,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "mode": "down_strong"
     },
     {
-      "t": 17.15,
+      "t": 17.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 17.08,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 17.4,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 17.4,
       "action": "stop",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
+    },
+    {
+      "t": 17.45,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 17.5,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
     },
     {
       "t": 17.5,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 19.6,
+      "t": 19.65,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 19.95,
+      "t": 20.15,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_weak"
     },
     {
       "t": 21.5,
@@ -173,97 +191,91 @@
     {
       "t": 21.5,
       "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 22.25,
+      "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 21.5,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_weak"
-    },
-    {
-      "t": 22.5,
+      "t": 22.65,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 22.53,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_strong"
-    },
-    {
-      "t": 22.53,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_strong"
-    },
-    {
-      "t": 22.9,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_strong"
-    },
-    {
-      "t": 22.9,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_strong"
-    },
-    {
-      "t": 22.93,
+      "t": 23.0,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
       "t": 24.0,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 25.55,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 25.58,
+      "t": 24.5,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_strong"
+      "mode": "down_weak"
+    },
+    {
+      "t": 25.0,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 25.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 25.28,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 25.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_weak"
+    },
+    {
+      "t": 25.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 25.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
     },
     {
       "t": 25.9,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_strong"
-    },
-    {
-      "t": 25.92,
       "action": "caption",
       "text": "突如現れた巨大な竜が幼い竜を連れ去り、手を伸ばす少女の目の前を巨大な翼が掠める。"
-    },
-    {
-      "t": 25.93,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "heartbeat"
     },
     {
       "t": 26.4,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_weak"
+      "mode": "up_mid_weak"
     },
     {
-      "t": 26.7,
+      "t": 26.9,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_weak"
+      "mode": "up_mid_weak"
     },
     {
       "t": 27.3,
@@ -272,34 +284,118 @@
       "mode": "down_mid_strong"
     },
     {
-      "t": 27.75,
+      "t": 27.35,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 27.7,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
+      "t": 27.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 27.8,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 28.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 28.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 28.5,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
       "t": 30.05,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_weak"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 30.4,
+      "t": 30.15,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_weak"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 32.1,
+      "t": 30.18,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 32.55,
+      "t": 30.65,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 30.68,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 30.95,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_weak"
+    },
+    {
+      "t": 31.25,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 32.0,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 32.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 34.75,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 34.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 34.78,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
     },
     {
       "t": 35.5,
@@ -307,34 +403,34 @@
       "text": "果てしなく続く黄金の砂漠を、孤独な狩人としてただ一人歩き続ける少女。"
     },
     {
-      "t": 35.5,
-      "action": "stop",
-      "effect": "color",
-      "mode": "orange"
+      "t": 36.0,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
     },
     {
-      "t": 35.5,
+      "t": 36.0,
       "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 40.0,
+      "action": "start",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_weak"
     },
     {
-      "t": 35.5,
+      "t": 40.5,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 35.53,
-      "action": "start",
-      "effect": "color",
-      "mode": "yellow"
-    },
-    {
-      "t": 36.5,
-      "action": "start",
+      "t": 40.6,
+      "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_weak"
     },
     {
       "t": 41.5,
@@ -348,76 +444,76 @@
       "mode": "yellow"
     },
     {
-      "t": 42.5,
+      "t": 44.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 45.1,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_mid_weak"
     },
     {
-      "t": 44.55,
+      "t": 45.2,
       "action": "start",
       "effect": "vibration",
-      "mode": "heartbeat"
-    },
-    {
-      "t": 44.6,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 45.55,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_mid_weak"
     },
     {
-      "t": 47.1,
+      "t": 45.9,
       "action": "start",
-      "effect": "flash",
-      "mode": "blink"
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
-      "t": 47.1,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 47.1,
+      "t": 46.2,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 47.13,
+      "t": 46.23,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 46.55,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 46.7,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 47.41,
-      "action": "shot",
-      "effect": "mist",
-      "mode": "burst"
-    },
-    {
-      "t": 47.85,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 47.95,
+      "t": 47.3,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 48.3,
+      "t": 47.45,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 48.15,
       "action": "stop",
-      "effect": "wind",
-      "mode": "burst"
+      "effect": "vibration",
+      "mode": "down_mid_weak"
     }
   ]
 }

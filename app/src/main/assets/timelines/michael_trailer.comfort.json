@@ -6,238 +6,496 @@
       "text": "録音スタジオの静かな室内。マイケルがヘッドホンを装着し、プロデューサーのクインシー・ジョーンズが静かに語りかける。"
     },
     {
-      "t": 0.0,
-      "action": "start",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 11.58,
+      "t": 11.2,
       "action": "caption",
       "text": "テープデッキのボタンが押され、リールが回り始める。スピーカーが振動し、軽快なビートとコーラスがスタジオに響き渡る。"
     },
     {
-      "t": 14.2,
+      "t": 11.3,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_strong"
     },
     {
-      "t": 14.7,
+      "t": 11.65,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_strong"
+    },
+    {
+      "t": 12.3,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 12.65,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 14.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 14.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 20.75,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 20.75,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 20.75,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
     },
     {
       "t": 20.9,
-      "action": "stop",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 20.92,
       "action": "caption",
       "text": "夜空に輝く満員のスタジアムの全景から、ステージへと向かう足取りや熱狂する観客の姿が次々と映し出される。"
     },
     {
-      "t": 20.93,
-      "action": "start",
+      "t": 22.75,
+      "action": "stop",
       "effect": "color",
-      "mode": "blue"
+      "mode": "white"
     },
     {
-      "t": 21.05,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
+      "t": 22.75,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
     },
     {
-      "t": 21.85,
+      "t": 22.75,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 28.65,
-      "action": "stop",
-      "effect": "color",
-      "mode": "blue"
+      "t": 24.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 28.67,
+      "t": 25.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 28.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 29.3,
       "action": "caption",
       "text": "家族との温かい団らんの記憶や、無数のカメラフラッシュを浴びる姿、ピアノを囲んで笑い合う瞬間が交錯する。"
     },
     {
-      "t": 28.68,
+      "t": 29.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 31.5,
       "action": "start",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 32.58,
+      "t": 31.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 31.9,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 32.0,
       "action": "stop",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 32.6,
+      "t": 32.03,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 32.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 32.4,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 32.43,
       "action": "start",
       "effect": "flash",
       "mode": "blink"
     },
     {
-      "t": 33.6,
+      "t": 33.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 33.25,
       "action": "stop",
       "effect": "flash",
       "mode": "blink"
     },
     {
-      "t": 33.62,
-      "action": "start",
-      "effect": "color",
-      "mode": "yellow"
-    },
-    {
-      "t": 35.28,
-      "action": "stop",
-      "effect": "color",
-      "mode": "yellow"
-    },
-    {
-      "t": 35.3,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 35.6,
-      "action": "shot",
-      "effect": "mist",
-      "mode": "burst"
-    },
-    {
-      "t": 35.75,
+      "t": 35.2,
       "action": "caption",
       "text": "青いレーザーが飛び交うステージや『スリラー』のダンス、シルエットでの象徴的なポーズが音楽の盛り上がりとともに展開する。"
     },
     {
-      "t": 35.8,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 35.82,
+      "t": 35.75,
       "action": "start",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 41.4,
+      "t": 35.75,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 35.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 36.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 36.5,
       "action": "stop",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 41.42,
+      "t": 36.5,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 36.53,
+      "action": "start",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 37.35,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 39.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 39.0,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 39.35,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 39.35,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 39.65,
+      "action": "start",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 39.65,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 39.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 40.05,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 40.05,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 40.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 40.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 40.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 41.35,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 41.35,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 41.4,
       "action": "caption",
       "text": "ヘッドライトの光の中から現れる姿や熱狂する群衆、火花が噴き上がるステージでの激しいパフォーマンスが畳み掛ける。"
     },
     {
-      "t": 41.43,
-      "action": "start",
-      "effect": "color",
-      "mode": "blue"
-    },
-    {
-      "t": 46.88,
-      "action": "stop",
-      "effect": "color",
-      "mode": "blue"
-    },
-    {
-      "t": 46.9,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 46.9,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_strong"
-    },
-    {
-      "t": 47.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_strong"
-    },
-    {
-      "t": 47.43,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 47.43,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 47.65,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 47.67,
-      "action": "start",
-      "effect": "color",
-      "mode": "blue"
-    },
-    {
-      "t": 48.1,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 48.1,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 48.13,
+      "t": 41.45,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 48.58,
+      "t": 41.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 42.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 42.25,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 44.15,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 44.55,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 46.1,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 46.45,
+      "action": "start",
+      "effect": "color",
+      "mode": "pink"
+    },
+    {
+      "t": 46.45,
+      "action": "start",
+      "effect": "flash",
+      "mode": "breathe"
+    },
+    {
+      "t": 46.55,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 46.95,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 46.95,
+      "action": "stop",
+      "effect": "color",
+      "mode": "pink"
+    },
+    {
+      "t": 46.95,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "breathe"
+    },
+    {
+      "t": 46.98,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 46.98,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 47.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 47.08,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 47.45,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 47.45,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 47.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 47.85,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 47.85,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 48.05,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 48.55,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 48.55,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 48.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 49.0,
       "action": "caption",
       "text": "再び静かなスタジオ。マイケルが照明を落とすよう頼み、クインシーと軽口を交わして無邪気に笑う。"
     },
     {
-      "t": 48.6,
-      "action": "stop",
-      "effect": "color",
-      "mode": "blue"
-    },
-    {
-      "t": 48.63,
+      "t": 59.25,
       "action": "start",
       "effect": "color",
-      "mode": "orange"
+      "mode": "yellow"
     },
     {
-      "t": 48.65,
-      "action": "stop",
+      "t": 59.25,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 59.25,
+      "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_strong"
     },
     {
       "t": 59.3,
@@ -245,147 +503,159 @@
       "text": "静寂を破る大歓声とともに、圧巻のダンスとスタジアムの熱狂が最高潮に達し、つま先立ちのポーズで決まる。"
     },
     {
-      "t": 59.3,
-      "action": "start",
+      "t": 59.75,
+      "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 59.3,
+      "t": 60.0,
       "action": "stop",
       "effect": "color",
-      "mode": "orange"
+      "mode": "yellow"
     },
     {
-      "t": 59.33,
+      "t": 60.0,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 60.95,
       "action": "start",
       "effect": "color",
-      "mode": "white"
+      "mode": "blue"
     },
     {
-      "t": 59.7,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 59.73,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 59.73,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 61.75,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 61.75,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 61.78,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 62.1,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 62.13,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 62.13,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 63.78,
-      "action": "stop",
-      "effect": "color",
-      "mode": "white"
-    },
-    {
-      "t": 63.8,
+      "t": 60.95,
       "action": "start",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
-      "t": 63.8,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 63.83,
+      "t": 60.95,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 64.2,
+      "t": 61.2,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 64.2,
+      "t": 61.6,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
+      "effect": "color",
+      "mode": "blue"
     },
     {
-      "t": 64.23,
+      "t": 61.6,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 61.75,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 64.25,
+      "t": 62.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 62.7,
+      "action": "start",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 62.7,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 63.2,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 63.23,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 63.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 63.65,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 63.68,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 64.2,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 64.2,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 64.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 64.5,
       "action": "caption",
       "text": "軽快なファンクビートに乗って金色のタイトルロゴ『Michael』が描かれ、公開日の告知とともに余韻を残して締めくくられる。"
     },
     {
-      "t": 64.55,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 64.57,
+      "t": 67.5,
       "action": "start",
-      "effect": "color",
-      "mode": "yellow"
+      "effect": "vibration",
+      "mode": "down_strong"
     },
     {
-      "t": 64.85,
+      "t": 67.85,
       "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 70.4,
+      "action": "start",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 73.89,
+      "t": 71.15,
       "action": "stop",
-      "effect": "color",
-      "mode": "yellow"
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     }
   ]
 }

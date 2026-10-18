@@ -6,10 +6,58 @@
       "text": "晴天のローマの街並みを背景に、ドムたちのチームが黄金のランボルギーニやスポーツカーで軽快に疾走する。"
     },
     {
-      "t": 0.0,
+      "t": 0.65,
       "action": "start",
-      "effect": "color",
-      "mode": "yellow"
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 0.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 2.75,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 3.75,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 4.9,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 5.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 10.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 10.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 10.88,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
       "t": 11.1,
@@ -17,22 +65,58 @@
       "text": "暴走するトラックに閉じ込められたテズとラムジーが、荷台に積まれた巨大な球体爆弾に気づき緊迫する。"
     },
     {
-      "t": 11.1,
+      "t": 11.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 11.28,
       "action": "start",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "up_mid_strong"
     },
     {
-      "t": 11.1,
+      "t": 11.75,
       "action": "stop",
-      "effect": "color",
-      "mode": "yellow"
+      "effect": "vibration",
+      "mode": "up_mid_strong"
     },
     {
-      "t": 11.13,
+      "t": 12.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 12.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 15.3,
       "action": "start",
       "effect": "color",
       "mode": "red"
+    },
+    {
+      "t": 15.3,
+      "action": "start",
+      "effect": "flash",
+      "mode": "breathe"
+    },
+    {
+      "t": 16.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 16.25,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "breathe"
     },
     {
       "t": 16.5,
@@ -40,16 +124,28 @@
       "text": "バチカンを見下ろすバルコニーで、悪役ダンテが不敵に笑いながら起爆装置のレバーを倒す。"
     },
     {
-      "t": 16.5,
-      "action": "stop",
-      "effect": "color",
-      "mode": "red"
+      "t": 22.6,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
-      "t": 16.5,
+      "t": 22.7,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 22.73,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 22.75,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
     },
     {
       "t": 22.8,
@@ -57,190 +153,309 @@
       "text": "巨大な球体爆弾がローマの街を転がり落ち、ガソリンスタンドを大爆発させながらバスや橋を次々と破壊していく。"
     },
     {
-      "t": 22.8,
-      "action": "start",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 24.05,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 24.5,
+      "t": 23.3,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 24.53,
+      "t": 23.7,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_strong"
     },
     {
-      "t": 24.53,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 24.85,
+      "t": 23.8,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_strong"
     },
     {
-      "t": 24.85,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 27.95,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 28.3,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 28.33,
+      "t": 23.83,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 28.33,
+      "t": 24.35,
       "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 24.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 25.0,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 25.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 25.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 25.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 26.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 26.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 27.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 27.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 27.88,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 28.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 28.2,
+      "action": "start",
       "effect": "color",
-      "mode": "orange"
+      "mode": "yellow"
+    },
+    {
+      "t": 28.2,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
     },
     {
       "t": 28.35,
       "action": "start",
-      "effect": "flash",
-      "mode": "blink"
+      "effect": "vibration",
+      "mode": "down_strong"
     },
     {
-      "t": 28.85,
+      "t": 28.35,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 28.45,
       "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 28.48,
+      "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 28.88,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 28.88,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 29.05,
+      "t": 28.85,
       "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
+      "effect": "color",
+      "mode": "yellow"
     },
     {
-      "t": 29.07,
+      "t": 28.88,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 29.2,
+      "t": 29.25,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 29.2,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 31.05,
+      "t": 29.28,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_mid_strong"
     },
     {
-      "t": 32.75,
+      "t": 30.0,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_mid_strong"
     },
     {
-      "t": 32.78,
+      "t": 30.0,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 30.6,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 32.78,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 33.1,
+      "t": 31.0,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_strong"
     },
     {
-      "t": 33.1,
+      "t": 31.15,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 31.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 31.25,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "down_strong"
+    },
+    {
+      "t": 31.28,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 31.28,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 31.65,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 31.65,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 31.8,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 32.25,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 32.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 32.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 32.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 32.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 33.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 33.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
       "t": 33.6,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_strong"
     },
     {
-      "t": 34.05,
+      "t": 33.7,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_strong"
     },
     {
-      "t": 34.08,
+      "t": 33.73,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "up_down_strong"
     },
     {
-      "t": 34.08,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
+      "t": 34.4,
+      "action": "caption",
+      "text": "川に落下した巨大爆弾が大爆発を起こし、巨大な水柱と衝撃波がバチカンと街全体を襲う。"
     },
     {
       "t": 34.4,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "up_down_strong"
     },
     {
-      "t": 34.4,
+      "t": 34.45,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
+      "effect": "mist",
+      "mode": "stream"
     },
     {
       "t": 35.5,
@@ -249,80 +464,69 @@
       "mode": "burst"
     },
     {
-      "t": 35.6,
-      "action": "caption",
-      "text": "川に落下した巨大爆弾が大爆発を起こし、巨大な水柱と衝撃波がバチカンと街全体を襲う。"
+      "t": 35.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
     },
     {
-      "t": 36.38,
+      "t": 36.4,
       "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 36.75,
+      "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 36.4,
+      "t": 36.75,
       "action": "start",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
-      "t": 36.4,
+      "t": 36.75,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_strong"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 36.8,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 36.9,
+      "t": 37.25,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_strong"
-    },
-    {
-      "t": 36.93,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 37.1,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 37.12,
-      "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
       "t": 37.25,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
+      "effect": "flash",
+      "mode": "steady"
     },
     {
-      "t": 40.2,
+      "t": 37.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 38.3,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 39.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 40.0,
       "action": "caption",
       "text": "煙が立ち上るローマの街を見下ろしながら、ドムとクイーニーが静かに語り合う。"
-    },
-    {
-      "t": 40.2,
-      "action": "stop",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 40.2,
-      "action": "stop",
-      "effect": "wind",
-      "mode": "burst"
     },
     {
       "t": 44.5,
@@ -330,16 +534,118 @@
       "text": "過去の橋の上での金庫強奪戦が回想され、車ごと川へ転落したダンテが水中で目を見開く。"
     },
     {
-      "t": 44.5,
+      "t": 44.75,
       "action": "start",
-      "effect": "color",
-      "mode": "cyan"
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
-      "t": 46.75,
+      "t": 44.75,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 45.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 45.33,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 45.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 45.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 45.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 45.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 45.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 45.88,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 46.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 46.5,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 46.58,
       "action": "shot",
       "effect": "water",
       "mode": "burst"
+    },
+    {
+      "t": 46.6,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 46.6,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 46.85,
+      "action": "start",
+      "effect": "color",
+      "mode": "dark_green"
+    },
+    {
+      "t": 46.95,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 46.95,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 49.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "dark_green"
     },
     {
       "t": 49.5,
@@ -347,22 +653,34 @@
       "text": "暗いモニタールームで、ダンテがドムのファミリーを標的にすると電話越しに宣告する。"
     },
     {
-      "t": 49.5,
+      "t": 49.75,
       "action": "start",
-      "effect": "vibration",
-      "mode": "heartbeat"
+      "effect": "color",
+      "mode": "cyan"
     },
     {
-      "t": 49.5,
+      "t": 52.65,
       "action": "stop",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 49.53,
+      "t": 53.35,
       "action": "start",
-      "effect": "color",
-      "mode": "blue"
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 53.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 53.48,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
       "t": 53.5,
@@ -370,98 +688,260 @@
       "text": "武装部隊が家に突入して激しい格闘となり、傷ついたサイファーが「悪魔が来る」とドムに警告する。"
     },
     {
-      "t": 53.5,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 53.5,
-      "action": "stop",
-      "effect": "color",
-      "mode": "blue"
-    },
-    {
-      "t": 53.5,
+      "t": 53.85,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 56.8,
+      "t": 54.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 55.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 55.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 55.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_strong"
+    },
+    {
+      "t": 55.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 55.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_strong"
+    },
+    {
+      "t": 58.2,
       "action": "caption",
       "text": "バイクに乗ったダンテが走行中の車両の下に爆弾を滑り込ませ、「バーン」の合図で車体を大爆発させる。"
     },
     {
-      "t": 56.8,
+      "t": 60.5,
       "action": "start",
       "effect": "color",
-      "mode": "orange"
+      "mode": "yellow"
     },
     {
-      "t": 56.8,
-      "action": "stop",
+      "t": 60.5,
+      "action": "start",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
-      "t": 60.58,
-      "action": "stop",
-      "effect": "color",
-      "mode": "orange"
+      "t": 60.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 60.5,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
     },
     {
       "t": 60.6,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
     },
     {
-      "t": 60.6,
+      "t": 60.63,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 61.35,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
+      "t": 60.75,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
     },
     {
-      "t": 61.37,
+      "t": 60.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 60.78,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 61.45,
+      "t": 61.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 61.25,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 63.8,
+      "t": 61.28,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 61.28,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 61.28,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 61.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 61.78,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 62.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 62.25,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 62.25,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 62.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 62.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 62.25,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 62.7,
       "action": "caption",
       "text": "夜のストリートパーティーにドムが現れ、群衆が銃を構える緊迫した空気の中でダンテと対峙する。"
     },
     {
-      "t": 63.8,
+      "t": 62.75,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 62.75,
+      "action": "start",
+      "effect": "flash",
+      "mode": "breathe"
+    },
+    {
+      "t": 62.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 63.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 63.65,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 63.68,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 66.0,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 63.83,
-      "action": "start",
-      "effect": "color",
-      "mode": "purple"
+      "t": 66.0,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "breathe"
     },
     {
-      "t": 66.2,
+      "t": 68.1,
       "action": "start",
-      "effect": "vibration",
-      "mode": "heartbeat"
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 68.1,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 68.85,
+      "action": "stop",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 68.85,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
     },
     {
       "t": 72.6,
@@ -469,85 +949,397 @@
       "text": "隠れ家の扉がノックされ、中から現れた男と静かに言葉を交わす。"
     },
     {
-      "t": 72.6,
-      "action": "stop",
-      "effect": "color",
-      "mode": "purple"
+      "t": 72.85,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 72.6,
+      "t": 73.1,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 76.9,
+      "t": 73.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 73.65,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 76.7,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 76.7,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 76.8,
+      "action": "start",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 76.8,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 76.8,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 77.1,
       "action": "caption",
       "text": "青い回転灯を光らせた装甲車が突入し、煙と銃火の中で特殊部隊との激しい接近戦が繰り広げられる。"
     },
     {
-      "t": 76.9,
+      "t": 77.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 77.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 77.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 77.5,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 77.6,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 78.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 78.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 78.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 78.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 78.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 78.75,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 78.78,
       "action": "start",
       "effect": "color",
       "mode": "blue"
     },
     {
-      "t": 85.4,
+      "t": 79.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 79.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 79.75,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 80.15,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 80.15,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 80.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 80.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 80.2,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 85.65,
-      "action": "start",
-      "effect": "mist",
-      "mode": "stream"
-    },
-    {
-      "t": 86.65,
+      "t": 80.8,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 86.8,
+      "t": 81.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 82.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 82.35,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 83.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 83.35,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 83.85,
+      "action": "start",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 83.85,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 84.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 84.75,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 85.45,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 85.45,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_strong"
+    },
+    {
+      "t": 85.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "blue"
+    },
+    {
+      "t": 85.5,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 86.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 86.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_strong"
+    },
+    {
+      "t": 86.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 86.75,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 86.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 87.0,
       "action": "caption",
       "text": "レンガ造りのガレージで仲間たちが言い合い、スーパーカーのエンジンが咆哮を上げてヘッドライトが閃く。"
     },
     {
-      "t": 86.8,
-      "action": "stop",
-      "effect": "color",
-      "mode": "blue"
+      "t": 91.35,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 86.8,
-      "action": "stop",
-      "effect": "mist",
-      "mode": "stream"
-    },
-    {
-      "t": 86.83,
+      "t": 91.5,
       "action": "start",
       "effect": "color",
-      "mode": "cyan"
+      "mode": "white"
     },
     {
-      "t": 92.1,
+      "t": 91.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 91.9,
       "action": "caption",
       "text": "軽快なビートに乗り、酒場での乱闘や隠し武器庫の展開、武装マシンの登場が次々と映し出される。"
     },
     {
-      "t": 92.1,
+      "t": 92.0,
       "action": "stop",
       "effect": "color",
-      "mode": "cyan"
+      "mode": "white"
     },
     {
-      "t": 92.13,
+      "t": 92.0,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 92.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 92.15,
       "action": "start",
-      "effect": "color",
-      "mode": "orange"
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 92.65,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 93.7,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 94.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 94.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 94.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 94.63,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 95.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 99.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
     },
     {
       "t": 99.8,
@@ -555,40 +1347,106 @@
       "text": "砂漠の渓谷で武装車両がロケット弾を放ち、追跡車を大爆発させて少年とハイタッチを交わす。"
     },
     {
-      "t": 100.45,
+      "t": 100.1,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 100.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 100.13,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 100.95,
+      "t": 100.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 100.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 100.5,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 100.5,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 100.98,
+      "t": 100.53,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 100.98,
+      "t": 101.0,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 101.03,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 101.6,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 101.6,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 101.6,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 101.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 101.6,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 103.85,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 103.9,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 101.3,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 101.3,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "down_mid_strong"
     },
     {
       "t": 104.1,
@@ -596,33 +1454,105 @@
       "text": "氷雪の大地に立つ2人の女性と、電話越しに不敵に笑う男が映し出される。"
     },
     {
-      "t": 104.1,
+      "t": 104.55,
       "action": "stop",
-      "effect": "color",
-      "mode": "orange"
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
-      "t": 104.13,
-      "action": "start",
+      "t": 106.1,
+      "action": "stop",
       "effect": "color",
       "mode": "white"
     },
     {
-      "t": 107.5,
+      "t": 107.4,
       "action": "caption",
       "text": "無機質な白い施設内で、2人の女性が激しい打撃と投げ技を応酬する。"
     },
     {
       "t": 107.5,
-      "action": "stop",
-      "effect": "color",
-      "mode": "white"
-    },
-    {
-      "t": 107.53,
       "action": "start",
       "effect": "color",
       "mode": "cyan"
+    },
+    {
+      "t": 108.4,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 108.8,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 109.2,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 109.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 109.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 109.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 110.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 110.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 111.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 111.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_strong"
+    },
+    {
+      "t": 112.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 112.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_strong"
+    },
+    {
+      "t": 112.2,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
       "t": 112.3,
@@ -630,81 +1560,213 @@
       "text": "床に倒れた女性が立ち上がり、相手を挑発しながら再び構える。"
     },
     {
+      "t": 112.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
       "t": 115.6,
       "action": "caption",
       "text": "突進した女性が相手ごと分厚いガラス壁を突き破り、破片と共に床へ叩きつけられる。"
     },
     {
-      "t": 116.6,
+      "t": 115.7,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_mid_strong"
     },
     {
-      "t": 116.95,
+      "t": 116.25,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_mid_strong"
     },
     {
-      "t": 116.98,
+      "t": 116.35,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 117.4,
+      "t": 116.4,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 117.0,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 117.8,
+      "t": 117.7,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 117.75,
       "action": "stop",
       "effect": "color",
       "mode": "cyan"
     },
     {
-      "t": 117.83,
+      "t": 121.05,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 121.2,
       "action": "start",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 122.45,
+      "t": 121.2,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 121.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 121.45,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 121.45,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 121.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 121.55,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 121.55,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 121.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 121.8,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 121.8,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 121.85,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 121.95,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 121.98,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 122.95,
+      "t": 122.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 122.0,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 122.25,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_mid_strong"
     },
     {
-      "t": 122.98,
+      "t": 122.28,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_strong"
     },
     {
-      "t": 122.98,
+      "t": 122.6,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 122.63,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 122.7,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 122.73,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 123.3,
+      "t": 123.0,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
+      "effect": "color",
+      "mode": "yellow"
     },
     {
-      "t": 123.3,
+      "t": 123.0,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 123.0,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "up_down_strong"
     },
     {
       "t": 123.8,
@@ -712,129 +1774,207 @@
       "text": "夜のストリートレースで車が一斉に加速し、仕掛けられた爆弾で緑の車が火花を散らして宙を舞う。"
     },
     {
-      "t": 123.8,
+      "t": 124.1,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 124.1,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 124.1,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 124.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 124.75,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 124.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 127.1,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 127.1,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 127.1,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 127.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 127.23,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 127.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 127.75,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 127.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 128.65,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 128.65,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 129.15,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 129.2,
       "action": "stop",
       "effect": "color",
       "mode": "orange"
     },
     {
-      "t": 123.83,
+      "t": 129.23,
       "action": "start",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 127.08,
+      "t": 129.25,
       "action": "stop",
-      "effect": "color",
-      "mode": "yellow"
+      "effect": "vibration",
+      "mode": "down_strong"
     },
     {
-      "t": 127.1,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 127.1,
+      "t": 129.28,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
-    },
-    {
-      "t": 127.6,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_strong"
-    },
-    {
-      "t": 127.63,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 127.63,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 127.8,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 127.82,
-      "action": "start",
-      "effect": "color",
-      "mode": "yellow"
-    },
-    {
-      "t": 127.95,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 127.95,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 128.85,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
     },
     {
       "t": 129.5,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 129.7,
       "action": "caption",
       "text": "暗転ののち、挑発する敵の言葉に男が静かに覚悟を決める。"
     },
     {
-      "t": 129.7,
+      "t": 129.65,
       "action": "stop",
       "effect": "color",
       "mode": "yellow"
     },
     {
-      "t": 131.9,
+      "t": 129.65,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 129.65,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 132.75,
       "action": "start",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 133.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 134.25,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 134.55,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 134.7,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
     },
     {
       "t": 134.8,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 135.85,
+      "t": 134.83,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_strong"
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 135.85,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
+      "t": 135.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     },
     {
       "t": 136.0,
       "action": "start",
-      "effect": "flash",
-      "mode": "blink"
+      "effect": "vibration",
+      "mode": "down_strong"
     },
     {
       "t": 136.1,
@@ -842,278 +1982,404 @@
       "text": "頭上でトレーラーが大爆発を起こし、迫りくる紅蓮の炎を背に車がダムの絶壁を垂直に駆け下りる。"
     },
     {
-      "t": 136.3,
-      "action": "shot",
+      "t": 136.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 136.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 136.25,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 136.25,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 136.25,
+      "action": "start",
       "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 136.25,
+      "action": "start",
+      "effect": "wind",
       "mode": "burst"
     },
     {
       "t": 136.75,
       "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
+      "effect": "color",
+      "mode": "yellow"
     },
     {
-      "t": 136.77,
+      "t": 136.78,
       "action": "start",
       "effect": "color",
-      "mode": "red"
+      "mode": "orange"
     },
     {
-      "t": 136.95,
+      "t": 137.0,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 136.98,
+      "t": 137.03,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "mode": "up_mid_strong"
     },
     {
-      "t": 137.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_weak"
-    },
-    {
-      "t": 137.83,
+      "t": 137.5,
       "action": "stop",
       "effect": "color",
-      "mode": "red"
+      "mode": "orange"
     },
     {
-      "t": 137.85,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 137.85,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 138.5,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 138.6,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 138.62,
+      "t": 137.53,
       "action": "start",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 139.85,
+      "t": 138.2,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 138.2,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 138.2,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 138.23,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 138.23,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_strong"
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 138.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 138.33,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 139.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 139.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 139.53,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 139.9,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 140.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 140.25,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
     },
     {
       "t": 140.25,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_strong"
+      "mode": "up_down_strong"
     },
     {
-      "t": 140.28,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 140.65,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 140.85,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 141.1,
-      "action": "caption",
-      "text": "ダムの急斜面に着地した車が、背後から迫る巨大な火球を振り切るように猛スピードで絶壁を駆け下りる。"
-    },
-    {
-      "t": 141.1,
-      "action": "stop",
-      "effect": "color",
-      "mode": "red"
-    },
-    {
-      "t": 141.13,
-      "action": "start",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 141.35,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 142.1,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 142.95,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 142.98,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 142.98,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 143.35,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 143.35,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 143.38,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 143.7,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 143.73,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 143.73,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 144.5,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 144.53,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 144.85,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 144.88,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 146.35,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 146.38,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_strong"
-    },
-    {
-      "t": 146.85,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_strong"
-    },
-    {
-      "t": 146.88,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 147.3,
-      "action": "caption",
-      "text": "火の粉が舞う暗闇の中に映画のタイトルロゴと公開日が重低音とともに力強く浮かび上がる。"
-    },
-    {
-      "t": 147.3,
-      "action": "stop",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 147.33,
-      "action": "start",
-      "effect": "color",
-      "mode": "red"
-    },
-    {
-      "t": 147.55,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 147.55,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 147.9,
+      "t": 140.25,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 151.55,
+      "t": 140.28,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 140.95,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 141.0,
+      "action": "caption",
+      "text": "ダムの急斜面に着地した車が、背後から迫る巨大な火球を振り切るように猛スピードで絶壁を駆け下りる。"
+    },
+    {
+      "t": 141.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 141.0,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 141.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 141.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 141.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 141.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 141.63,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 142.35,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 142.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 142.38,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 143.5,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 143.5,
       "action": "stop",
       "effect": "color",
       "mode": "red"
+    },
+    {
+      "t": 143.53,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 144.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 144.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 144.5,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 144.8,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 145.1,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 145.1,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 145.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 145.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 146.15,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 146.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 146.18,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 146.18,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 146.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 146.28,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 147.2,
+      "action": "caption",
+      "text": "火の粉が舞う暗闇の中に映画のタイトルロゴと公開日が重低音とともに力強く浮かび上がる。"
+    },
+    {
+      "t": 147.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 147.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 147.28,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 147.4,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 148.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 148.25,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 148.25,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 149.55,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 150.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
     }
   ]
 }

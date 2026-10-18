@@ -8,110 +8,188 @@
     {
       "t": 0.0,
       "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 0.05,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 0.6,
+      "action": "start",
       "effect": "color",
-      "mode": "blue"
+      "mode": "cyan"
     },
     {
-      "t": 0.0,
+      "t": 0.6,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 0.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 0.85,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 1.25,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 1.35,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 1.35,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 1.38,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 1.85,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 1.85,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 2.15,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 2.15,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 2.18,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 2.2,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 2.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 2.65,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 2.65,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 2.7,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 0.0,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 0.5,
+      "t": 3.0,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 0.5,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 0.53,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 2.0,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 2.03,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 2.55,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 2.58,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 2.85,
-      "action": "shot",
-      "effect": "water",
-      "mode": "burst"
-    },
-    {
-      "t": 2.85,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 2.88,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 3.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 3.43,
+      "t": 3.03,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 3.43,
+      "t": 3.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 3.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 3.35,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 3.35,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 3.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 3.78,
       "action": "start",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 3.58,
+      "t": 3.95,
       "action": "stop",
-      "effect": "color",
-      "mode": "blue"
+      "effect": "vibration",
+      "mode": "up_mid_strong"
     },
     {
-      "t": 3.6,
-      "action": "start",
+      "t": 4.0,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 4.0,
+      "action": "stop",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
       "t": 4.1,
@@ -119,166 +197,274 @@
       "text": "雨のサイバーパンク都市の屋上で、剣士が銃弾を赤い斬撃で弾き返し爆発が起きる。"
     },
     {
-      "t": 4.2,
-      "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 4.22,
+      "t": 4.1,
       "action": "start",
       "effect": "color",
       "mode": "red"
     },
     {
-      "t": 4.35,
+      "t": 4.1,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "down_strong"
+      "effect": "mist",
+      "mode": "stream"
     },
     {
-      "t": 4.35,
+      "t": 4.65,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 4.65,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 4.8,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 4.8,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 4.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_weak"
+    },
+    {
+      "t": 5.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 5.0,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 5.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 5.55,
+      "action": "stop",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 5.55,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 5.55,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 5.6,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 6.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 6.05,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 6.3,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 6.35,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 6.35,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 6.7,
       "action": "stop",
       "effect": "vibration",
       "mode": "up_mid_strong"
     },
     {
-      "t": 4.38,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_weak"
-    },
-    {
-      "t": 4.38,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 4.95,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 5.1,
+      "t": 6.75,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "down_weak"
-    },
-    {
-      "t": 5.1,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 5.13,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 5.75,
-      "action": "stop",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 5.9,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 5.93,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_weak"
-    },
-    {
-      "t": 6.15,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_weak"
-    },
-    {
-      "t": 6.18,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
+      "effect": "color",
+      "mode": "yellow"
     },
     {
       "t": 6.75,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
+      "effect": "flash",
+      "mode": "steady"
     },
     {
-      "t": 6.78,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_weak"
-    },
-    {
-      "t": 6.78,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 7.38,
+      "t": 6.8,
       "action": "stop",
-      "effect": "color",
-      "mode": "red"
+      "effect": "wind",
+      "mode": "burst"
     },
     {
-      "t": 7.4,
+      "t": 6.95,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 6.95,
       "action": "start",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
-      "t": 7.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_weak"
-    },
-    {
-      "t": 7.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 7.43,
+      "t": 7.0,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 7.9,
+      "t": 7.01,
+      "action": "shot",
+      "effect": "water",
+      "mode": "burst"
+    },
+    {
+      "t": 7.45,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 7.45,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 7.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 7.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 7.5,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 7.5,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 7.93,
+      "t": 7.53,
       "action": "start",
       "effect": "vibration",
       "mode": "down_strong"
     },
     {
-      "t": 7.93,
-      "action": "start",
+      "t": 7.6,
+      "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_weak"
+      "mode": "down_strong"
     },
     {
-      "t": 8.0,
+      "t": 7.63,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 7.8,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 7.83,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 8.05,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 8.05,
       "action": "stop",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
+    },
+    {
+      "t": 8.05,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 8.05,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 8.35,
+      "action": "start",
+      "effect": "color",
+      "mode": "white"
+    },
+    {
+      "t": 8.35,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 8.35,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
     },
     {
       "t": 8.4,
@@ -286,214 +472,292 @@
       "text": "嵐の海で帆船同士が砲撃戦を展開し、大砲の発射と被弾で船内が激しく揺れる。"
     },
     {
-      "t": 8.4,
-      "action": "start",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 8.5,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 8.5,
+      "t": 8.8,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_strong"
+      "mode": "down_mid_weak"
     },
     {
-      "t": 8.5,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 8.53,
+      "t": 8.83,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "down_weak"
     },
     {
-      "t": 9.1,
+      "t": 8.85,
       "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 9.12,
-      "action": "start",
       "effect": "color",
-      "mode": "cyan"
+      "mode": "white"
     },
     {
-      "t": 9.15,
+      "t": 8.85,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 9.18,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "effect": "flash",
+      "mode": "steady"
     },
     {
       "t": 9.4,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 9.43,
+      "t": 9.9,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 10.4,
+      "t": 10.5,
+      "action": "start",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 10.5,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 10.5,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 10.5,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 10.43,
+      "t": 10.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 10.6,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 10.63,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 10.58,
-      "action": "stop",
-      "effect": "color",
-      "mode": "cyan"
-    },
-    {
-      "t": 10.6,
-      "action": "start",
-      "effect": "flash",
-      "mode": "blink"
-    },
-    {
-      "t": 10.7,
+      "t": 10.8,
       "action": "start",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 11.2,
+      "t": 10.95,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 10.98,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 11.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 11.03,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 11.35,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 11.35,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 11.4,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 11.45,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 11.45,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 11.5,
+      "action": "stop",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 11.68,
       "action": "shot",
       "effect": "water",
       "mode": "burst"
     },
     {
-      "t": 11.25,
+      "t": 11.7,
       "action": "stop",
-      "effect": "flash",
-      "mode": "blink"
+      "effect": "vibration",
+      "mode": "down_weak"
     },
     {
-      "t": 11.27,
+      "t": 11.73,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 12.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_strong"
+    },
+    {
+      "t": 12.33,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 12.4,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 12.75,
       "action": "start",
       "effect": "color",
-      "mode": "cyan"
-    },
-    {
-      "t": 11.3,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_strong"
-    },
-    {
-      "t": 11.33,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 11.33,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 11.65,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 12.65,
-      "action": "stop",
-      "effect": "mist",
-      "mode": "stream"
-    },
-    {
-      "t": 12.73,
-      "action": "stop",
-      "effect": "color",
-      "mode": "cyan"
+      "mode": "orange"
     },
     {
       "t": 12.75,
       "action": "start",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
       "t": 12.75,
-      "action": "stop",
+      "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_strong"
     },
     {
-      "t": 12.78,
+      "t": 12.85,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_strong"
+    },
+    {
+      "t": 12.88,
       "action": "start",
       "effect": "vibration",
       "mode": "up_down_strong"
     },
     {
-      "t": 13.35,
+      "t": 13.2,
       "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_strong"
+      "effect": "color",
+      "mode": "orange"
     },
     {
-      "t": 13.38,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 13.38,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 13.4,
+      "t": 13.2,
       "action": "stop",
       "effect": "flash",
-      "mode": "blink"
+      "mode": "steady"
     },
     {
-      "t": 13.42,
+      "t": 13.23,
       "action": "start",
       "effect": "color",
-      "mode": "cyan"
+      "mode": "yellow"
     },
     {
-      "t": 13.7,
+      "t": 13.23,
+      "action": "start",
+      "effect": "flash",
+      "mode": "breathe"
+    },
+    {
+      "t": 13.25,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "up_down_strong"
     },
     {
-      "t": 15.15,
+      "t": 13.28,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_weak"
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 13.75,
+      "action": "stop",
+      "effect": "color",
+      "mode": "yellow"
+    },
+    {
+      "t": 13.75,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "breathe"
+    },
+    {
+      "t": 13.75,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 13.78,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 15.35,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 15.35,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 15.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
     },
     {
       "t": 15.4,
@@ -501,82 +765,166 @@
       "text": "夕焼けの雲海の上空で、近未来の戦闘機が急旋回しながらドッグファイトを繰り広げる。"
     },
     {
-      "t": 15.4,
+      "t": 15.65,
       "action": "stop",
       "effect": "color",
-      "mode": "cyan"
+      "mode": "orange"
     },
     {
-      "t": 15.4,
+      "t": 15.7,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 15.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_weak"
-    },
-    {
-      "t": 15.43,
-      "action": "start",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 15.43,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 17.9,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 17.93,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "down_strong"
-    },
-    {
-      "t": 17.93,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_strong"
-    },
-    {
-      "t": 18.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_strong"
-    },
-    {
-      "t": 18.4,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_strong"
-    },
-    {
-      "t": 18.43,
+      "t": 15.73,
       "action": "start",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 18.43,
-      "action": "start",
+      "t": 16.4,
+      "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 19.95,
+      "t": 16.45,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 16.45,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 16.45,
+      "action": "start",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 17.0,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 17.03,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 17.5,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 17.5,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_mid_strong"
+    },
+    {
+      "t": 17.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 17.53,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 17.9,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 18.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 18.13,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 18.8,
+      "action": "start",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 18.8,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 18.8,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
+    },
+    {
+      "t": 18.83,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 19.55,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 19.6,
+      "action": "start",
+      "effect": "flash",
+      "mode": "blink"
+    },
+    {
+      "t": 19.6,
+      "action": "stop",
+      "effect": "color",
+      "mode": "orange"
+    },
+    {
+      "t": 19.63,
+      "action": "start",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 19.9,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 20.0,
+      "action": "stop",
+      "effect": "color",
+      "mode": "cyan"
+    },
+    {
+      "t": 20.0,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "blink"
     },
     {
       "t": 20.1,
@@ -584,165 +932,183 @@
       "text": "暗い雨の森で恐竜が瓦礫の陰に一歩ずつ近づき、目の前で白い息を吐きながら咆哮する。"
     },
     {
-      "t": 20.1,
-      "action": "stop",
-      "effect": "color",
-      "mode": "orange"
-    },
-    {
-      "t": 20.1,
+      "t": 20.3,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_weak"
     },
     {
-      "t": 20.1,
+      "t": 20.7,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_weak"
+    },
+    {
+      "t": 21.1,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_weak"
+      "mode": "down_weak"
     },
     {
-      "t": 20.13,
-      "action": "start",
-      "effect": "color",
-      "mode": "dark_green"
-    },
-    {
-      "t": 20.13,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "heartbeat"
-    },
-    {
-      "t": 20.8,
+      "t": 21.85,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 21.2,
+      "t": 22.25,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 21.8,
+      "t": 22.95,
       "action": "start",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 22.2,
+      "t": 23.35,
       "action": "stop",
       "effect": "vibration",
       "mode": "down_mid_weak"
     },
     {
-      "t": 22.8,
+      "t": 24.0,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 23.2,
+      "t": 24.45,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "down_mid_strong"
     },
     {
-      "t": 23.8,
+      "t": 24.85,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_weak"
-    },
-    {
-      "t": 24.05,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_weak"
+      "mode": "up_down_mid_strong"
     },
     {
       "t": 25.3,
       "action": "stop",
       "effect": "vibration",
-      "mode": "heartbeat"
+      "mode": "up_down_mid_strong"
     },
     {
-      "t": 26.12,
-      "action": "shot",
-      "effect": "mist",
-      "mode": "burst"
-    },
-    {
-      "t": 26.95,
+      "t": 25.6,
       "action": "start",
-      "effect": "mist",
-      "mode": "stream"
+      "effect": "vibration",
+      "mode": "up_down_strong"
     },
     {
-      "t": 27.0,
+      "t": 25.65,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 27.1,
+      "t": 25.75,
+      "action": "start",
+      "effect": "mist",
+      "mode": "stream"
+    },
+    {
+      "t": 26.3,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 26.33,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 26.95,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_mid_strong"
+    },
+    {
+      "t": 26.95,
+      "action": "stop",
+      "effect": "wind",
+      "mode": "burst"
+    },
+    {
+      "t": 27.0,
       "action": "caption",
       "text": "暗闇に赤いロゴが浮かび上がり、風圧とともに一気に迫ってくる。"
     },
     {
-      "t": 27.1,
-      "action": "stop",
-      "effect": "color",
-      "mode": "dark_green"
-    },
-    {
-      "t": 27.13,
-      "action": "start",
-      "effect": "color",
-      "mode": "red"
-    },
-    {
-      "t": 27.8,
-      "action": "stop",
-      "effect": "wind",
-      "mode": "burst"
-    },
-    {
-      "t": 27.95,
+      "t": 27.0,
       "action": "stop",
       "effect": "mist",
       "mode": "stream"
     },
     {
-      "t": 29.4,
+      "t": 29.0,
+      "action": "start",
+      "effect": "color",
+      "mode": "red"
+    },
+    {
+      "t": 29.0,
+      "action": "start",
+      "effect": "flash",
+      "mode": "steady"
+    },
+    {
+      "t": 29.0,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "down_mid_weak"
+    },
+    {
+      "t": 29.2,
       "action": "start",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 29.8,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_weak"
-    },
-    {
-      "t": 30.15,
+      "t": 29.35,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_weak"
+      "mode": "down_mid_weak"
     },
     {
-      "t": 30.4,
+      "t": 29.38,
+      "action": "start",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 30.1,
+      "action": "stop",
+      "effect": "vibration",
+      "mode": "up_down_strong"
+    },
+    {
+      "t": 30.3,
       "action": "stop",
       "effect": "wind",
       "mode": "burst"
     },
     {
-      "t": 31.35,
+      "t": 30.5,
       "action": "stop",
       "effect": "color",
       "mode": "red"
+    },
+    {
+      "t": 30.5,
+      "action": "stop",
+      "effect": "flash",
+      "mode": "steady"
     }
   ]
 }

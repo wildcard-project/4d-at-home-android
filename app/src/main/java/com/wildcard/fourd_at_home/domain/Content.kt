@@ -58,7 +58,7 @@ object ContentLibrary {
         Content(
             id = "wild_speed_fire_boost_v4_rich",
             title = "ワイルド・スピード／ファイヤーブースト（v4 演出多め）",
-            description = "v4 自動解析・演出多め。音に合わせて 0.25 秒刻みで振動、衝撃で背中と座面が強く鳴る",
+            description = "v4.3 自動解析・演出多め。手動の文法で出来事ごとに 1 手ずつ、物理の向きで背中と座面を打ち分け",
             videoAssetPath = "videos/wild_speed_fire_boost.mp4",
             timelineAssetPath = "timelines/wild_speed_fire_boost.rich.json",
             durationMs = 151558, // 同梱動画の実測 (タイムラインはこのファイルで解析)
@@ -76,7 +76,7 @@ object ContentLibrary {
         Content(
             id = "wild_speed_fire_boost_v4_comfort",
             title = "ワイルド・スピード／ファイヤーブースト（v4 快適）",
-            description = "v4 自動解析・快適。平常時は静か、大きな爆発・衝突・水の場面だけ全力",
+            description = "v4.3 自動解析・快適。肝心な衝撃 (中強以上) と水・大きな風だけ。平常時の刻みは無し",
             videoAssetPath = "videos/wild_speed_fire_boost.mp4",
             timelineAssetPath = "timelines/wild_speed_fire_boost.comfort.json",
             durationMs = 151558, // 同梱動画の実測 (タイムラインはこのファイルで解析)
