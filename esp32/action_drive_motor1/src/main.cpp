@@ -374,7 +374,16 @@ void setup() {
     
     // アドバタイジング開始
     BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
-    pAdvertising->addServiceUUID(SERVICE_UUID);
+
+    BLEAdvertisementData advertisementData;
+    advertisementData.setFlags(0x06);  // LE General Discoverable + BR/EDR Not Supported
+    advertisementData.setCompleteServices(BLEUUID(SERVICE_UUID));
+
+    BLEAdvertisementData scanResponseData;
+    scanResponseData.setName(deviceName.c_str());
+
+    pAdvertising->setAdvertisementData(advertisementData);
+    pAdvertising->setScanResponseData(scanResponseData);
     pAdvertising->setScanResponse(true);
     pAdvertising->setMinPreferred(0x06);
     pAdvertising->setMaxPreferred(0x12);
