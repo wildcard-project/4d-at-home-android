@@ -38,13 +38,13 @@
       "t": 14.0,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 14.5,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 16.15,
@@ -163,13 +163,13 @@
       "t": 24.83,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 25.4,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 27.25,
@@ -199,7 +199,7 @@
       "t": 28.75,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 29.3,
@@ -210,7 +210,7 @@
       "t": 29.35,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 31.5,
@@ -240,7 +240,7 @@
       "t": 31.93,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 32.0,
@@ -258,7 +258,7 @@
       "t": 32.3,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 32.4,
@@ -329,13 +329,13 @@
       "t": 35.75,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 36.3,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 36.5,
@@ -380,18 +380,6 @@
       "mode": "up_mid_weak"
     },
     {
-      "t": 38.65,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "up_mid_weak"
-    },
-    {
-      "t": 38.68,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_strong"
-    },
-    {
       "t": 39.0,
       "action": "start",
       "effect": "color",
@@ -407,7 +395,7 @@
       "t": 39.0,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 39.03,
@@ -449,7 +437,7 @@
       "t": 39.38,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 39.65,
@@ -467,7 +455,7 @@
       "t": 39.65,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 39.68,
@@ -479,7 +467,7 @@
       "t": 39.75,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 39.85,
@@ -509,7 +497,7 @@
       "t": 40.1,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 40.13,
@@ -527,7 +515,7 @@
       "t": 40.5,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 40.5,
@@ -539,7 +527,7 @@
       "t": 40.9,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 41.2,
@@ -622,13 +610,13 @@
       "t": 44.15,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 44.55,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 45.1,
@@ -646,7 +634,7 @@
       "t": 46.1,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 46.45,
@@ -670,13 +658,13 @@
       "t": 46.55,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 46.58,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 46.95,
@@ -700,7 +688,7 @@
       "t": 46.95,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 46.95,
@@ -760,7 +748,7 @@
       "t": 47.5,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 47.85,
@@ -778,7 +766,7 @@
       "t": 47.85,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 48.05,
@@ -919,32 +907,20 @@
     {
       "t": 61.15,
       "action": "start",
-      "effect": "wind",
-      "mode": "burst"
+      "effect": "vibration",
+      "mode": "up_mid_weak"
     },
     {
       "t": 61.15,
-      "action": "stop",
-      "effect": "vibration",
-      "mode": "down_mid_strong"
-    },
-    {
-      "t": 61.18,
       "action": "start",
-      "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "effect": "wind",
+      "mode": "burst"
     },
     {
       "t": 61.2,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
-    },
-    {
-      "t": 61.23,
-      "action": "start",
-      "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "down_mid_strong"
     },
     {
       "t": 61.6,
@@ -962,7 +938,7 @@
       "t": 61.6,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 61.63,
@@ -998,13 +974,13 @@
       "t": 61.98,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 62.3,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_mid_strong"
+      "mode": "up_mid_weak"
     },
     {
       "t": 62.33,
@@ -1046,7 +1022,7 @@
       "t": 62.98,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 63.2,
@@ -1058,7 +1034,7 @@
       "t": 63.2,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 63.23,
@@ -1070,7 +1046,7 @@
       "t": 63.23,
       "action": "start",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 63.65,
@@ -1088,7 +1064,7 @@
       "t": 63.65,
       "action": "stop",
       "effect": "vibration",
-      "mode": "down_mid_strong"
+      "mode": "down_mid_weak"
     },
     {
       "t": 63.68,
@@ -1177,13 +1153,13 @@
       "t": 70.43,
       "action": "start",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     },
     {
       "t": 71.15,
       "action": "stop",
       "effect": "vibration",
-      "mode": "up_down_mid_strong"
+      "mode": "up_down_mid_weak"
     }
   ]
 }

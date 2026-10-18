@@ -31,8 +31,8 @@ data class Content(
  * 内蔵コンテンツライブラリ
  *
  * タイムラインは analysis-v4 (wildcard-project/4DatHOME) で同梱動画そのものを解析して生成。
- * Fast X は同じ動画に 手動 / v4 演出多め / v4 快適 の 3 枚を並べて聴き比べられるようにしている。
- * それ以外は timelines/<id>.json = v4 演出多め、<id>.rich.json / <id>.comfort.json = モード別。
+ * Fast X は同じ動画に 手動 / 自動解析 の 2 枚を並べて聴き比べられるようにしている。
+ * それ以外の timelines/<id>.json は自動解析 (v4.3)。
  * 動画を差し替えた場合はタイムラインも作り直すこと (別の切り出しの動画だと全体がずれる)。
  */
 object ContentLibrary {
@@ -56,29 +56,11 @@ object ContentLibrary {
             year = 2023
         ),
         Content(
-            id = "wild_speed_fire_boost_v4_rich",
-            title = "ワイルド・スピード／ファイヤーブースト（v4 演出多め）",
-            description = "v4.3 自動解析・演出多め。手動の文法で出来事ごとに 1 手ずつ、物理の向きで背中と座面を打ち分け",
+            id = "wild_speed_fire_boost_auto",
+            title = "ワイルド・スピード／ファイヤーブースト（自動解析）",
+            description = "自動解析 (v4.3)。手動版の文法で出来事ごとに 1 手ずつ、物理の向きで背中と座面を打ち分け。手動版と聴き比べる用",
             videoAssetPath = "videos/wild_speed_fire_boost.mp4",
-            timelineAssetPath = "timelines/wild_speed_fire_boost.rich.json",
-            durationMs = 151558, // 同梱動画の実測 (タイムラインはこのファイルで解析)
-            effectTypes = listOf(
-                EffectType.FAN,
-                EffectType.VIBRATION,
-                EffectType.LED,
-                EffectType.SPLASH,
-                EffectType.MIST
-            ),
-            posterAssetPath = "posters/fast_x.webp",
-            englishTitle = "FAST X",
-            year = 2023
-        ),
-        Content(
-            id = "wild_speed_fire_boost_v4_comfort",
-            title = "ワイルド・スピード／ファイヤーブースト（v4 快適）",
-            description = "v4.3 自動解析・快適。肝心な衝撃 (中強以上) と水・大きな風だけ。平常時の刻みは無し",
-            videoAssetPath = "videos/wild_speed_fire_boost.mp4",
-            timelineAssetPath = "timelines/wild_speed_fire_boost.comfort.json",
+            timelineAssetPath = "timelines/wild_speed_fire_boost.auto.json",
             durationMs = 151558, // 同梱動画の実測 (タイムラインはこのファイルで解析)
             effectTypes = listOf(
                 EffectType.FAN,

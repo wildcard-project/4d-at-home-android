@@ -32,14 +32,13 @@ shasum app/src/main/assets/videos/*.mp4
 
 動画が無いカードは再生できないだけで、アプリの他の機能には影響しません。
 
-## Fast X のタイムライン（聴き比べ用に 3 枚のカード）
+## Fast X のタイムライン（聴き比べ用に 2 枚のカード）
 
-同じ動画に 3 種類のタイムラインを割り当て、ホーム画面に並べています。アプリを入れ直さずに比べられます。
+同じ動画に 2 種類のタイムラインを割り当て、ホーム画面に並べています。アプリを入れ直さずに比べられます。
 
 | カード | タイムライン |
 |---|---|
 | ワイルド・スピード／ファイヤーブースト（手動） | `timelines/wild_speed_fire_boost.json`（従来の手動版） |
-| 〃（v4 演出多め） | `timelines/wild_speed_fire_boost.rich.json` |
-| 〃（v4 快適） | `timelines/wild_speed_fire_boost.comfort.json` |
+| 〃（自動解析） | `timelines/wild_speed_fire_boost.auto.json`（v4.3） |
 
-Michael と他の 3 本は `timelines/<id>.json` が v4 演出多め、`<id>.rich.json` / `<id>.comfort.json` がモード別です。
+Michael と他の 3 本の `timelines/<id>.json` は自動解析 (v4.3) です。
